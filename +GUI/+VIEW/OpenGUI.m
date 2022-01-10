@@ -191,7 +191,7 @@ else % Create the figure
     r_sd.y   = 0.1 ;
     r_sd.w   = p_sm.w;
     r_sd.h   = 0.8;
-    r_sd.tag = 'radiobutton_SaveData';
+    r_sd.tag = 'radiobutton_Save_1';
     handles.(r_sd.tag) = uicontrol(handles.uipanel_SaveMode,...
         'Style','radiobutton',...
         'Units', 'Normalized',...
@@ -211,7 +211,7 @@ else % Create the figure
     r_ns.y   = 0.1 ;
     r_ns.w   = p_sm.w;
     r_ns.h   = 0.8;
-    r_ns.tag = 'radiobutton_NoSave';
+    r_ns.tag = 'radiobutton_Save_0';
     handles.(r_ns.tag) = uicontrol(handles.uipanel_SaveMode,...
         'Style','radiobutton',...
         'Units', 'Normalized',...
@@ -315,7 +315,7 @@ else % Create the figure
     r_elon.y   = p_el_up.y ;
     r_elon.w   = p_el_up.w;
     r_elon.h   = p_el_up.h;
-    r_elon.tag = 'radiobutton_EyelinkOn';
+    r_elon.tag = 'radiobutton_Eyelink_1';
     handles.(r_elon.tag) = uicontrol(handles.uipanel_EyelinkMode,...
         'Style','radiobutton',...
         'Units', 'Normalized',...
@@ -335,7 +335,7 @@ else % Create the figure
     r_eloff.y   = p_el_up.y ;
     r_eloff.w   = p_el_up.w;
     r_eloff.h   = p_el_up.h;
-    r_eloff.tag = 'radiobutton_EyelinkOff';
+    r_eloff.tag = 'radiobutton_Eyelink_0';
     handles.(r_eloff.tag) = uicontrol(handles.uipanel_EyelinkMode,...
         'Style','radiobutton',...
         'Units', 'Normalized',...
@@ -605,14 +605,14 @@ else % Create the figure
     o_movie = GUI.VIEW.ObjectDispatcher( [1 1] , 0.25 );
     
     % ---------------------------------------------------------------------
-    % RadioButton : Nutcracker == joystick IO
+    % RadioButton : 0
     
     o_movie.next();
     r_movie_off.x   = o_movie.xpos;
     r_movie_off.y   = 0.1 ;
     r_movie_off.w   = p_movie.w;
     r_movie_off.h   = 0.8;
-    r_movie_off.tag = 'radiobutton_movie_off';
+    r_movie_off.tag = 'radiobutton_movie_0';
     handles.(r_movie_off.tag) = uicontrol(handles.uipanel_Movie,...
         'Style','radiobutton'                             ,...
         'Units', 'Normalized'                             ,...
@@ -624,14 +624,14 @@ else % Create the figure
     
     
     % ---------------------------------------------------------------------
-    % RadioButton : Mouse (for debugging)
+    % RadioButton : 1
     
     o_movie.next();
     r_movie_on.x   = o_movie.xpos;
     r_movie_on.y   = 0.1 ;
     r_movie_on.w   = p_movie.w;
     r_movie_on.h   = 0.8;
-    r_movie_on.tag = 'radiobutton_movie_on';
+    r_movie_on.tag = 'radiobutton_movie_1';
     handles.(r_movie_on.tag) = uicontrol(handles.uipanel_Movie,...
         'Style','radiobutton'                               ,...
         'Units', 'Normalized'                               ,...
@@ -651,8 +651,8 @@ else % Create the figure
     % handles=guidata(hObject)
     
     % Init with EYELINK Off
-    set(handles.uipanel_EyelinkMode,'SelectedObject',handles.radiobutton_EyelinkOff)
-    eventdata.NewValue = handles.radiobutton_EyelinkOff;
+    set(handles.uipanel_EyelinkMode,'SelectedObject',handles.radiobutton_Eyelink_0)
+    eventdata.NewValue = handles.radiobutton_Eyelink_0;
     GUI.VIEW.SelectionChangeFcn.uipanel_EyelinkMode(handles.uipanel_EyelinkMode, eventdata)
     
     

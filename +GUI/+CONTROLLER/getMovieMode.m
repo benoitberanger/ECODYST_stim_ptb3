@@ -1,12 +1,15 @@
 function [ MovieMode ] = getMovieMode( handles )
+global S
 
-switch get(get(handles.uipanel_Movie,'SelectedObject'),'Tag')
-    case 'radiobutton_movie_off'
-        MovieMode = 0;
-    case 'radiobutton_movie_on'
-        MovieMode = 1;
-    otherwise
-        warning('Error in MovieMode selection')
+radiobutton = get(get(handles.uipanel_Movie,'SelectedObject'),'Tag');
+
+MovieMode_str = strrep(radiobutton, 'radiobutton_movie_', '');
+
+MovieMode = str2double(MovieMode_str);
+
+if MovieMode && ~(strcmp(S.OperationMode,'Acquisition') && S.SaveMode)
+    MovieMode = 0;
+    warning('Movie can only be savec with SaveMode=1 & OperationMode=''Acquisition''')
 end
 
 end % function

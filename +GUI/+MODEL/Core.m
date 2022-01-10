@@ -29,80 +29,54 @@ S.TimeStampSimple = datestr(now, 'yyyy-mm-dd HH:MM'); % readable
 S.TimeStampFile   = datestr(now, 30                ); % yyyymmddTHHMMSS : to sort automatically by time of creation
 
 
-%% Task selection
+%% Lots of get*
 
-Task   = GUI.CONTROLLER.getTask( hObject );
-S.Task = Task;
-
-
-%% Save mode selection
-
-SaveMode   = GUI.CONTROLLER.getSaveMode( handles );
-S.SaveMode = SaveMode;
-
-
-%% Mode selection
-
-OperationMode   = GUI.CONTROLLER.getOperationMode( handles );
-S.OperationMode = OperationMode;
-
-
-%% Movie off/on
-
-MovieMode   = GUI.CONTROLLER.getMovieMode( handles );
-if MovieMode && ~(strcmp(OperationMode,'Acquisition') && SaveMode)
-    MovieMode = 0;
-    warning('Movie can only be savec with SaveMode=1 & OperationMode=''Acquisition''')
-end
-
-S.MovieMode = MovieMode;
+S.Task          = GUI.CONTROLLER.getTask         ( hObject );
+S.SaveMode      = GUI.CONTROLLER.getSaveMode     ( handles );
+S.OperationMode = GUI.CONTROLLER.getOperationMode( handles );
+S.MovieMode     = GUI.CONTROLLER.getMovieMode    ( handles );
+S.ScreenID      = GUI.CONTROLLER.getScreenID     ( handles );
+S.WindowedMode  = GUI.CONTROLLER.getWindowedMode ( handles );
+S.EyelinkMode   = GUI.CONTROLLER.getEyelinkMode  ( handles );
+S.ParPort       = GUI.CONTROLLER.getParPort      ( handles );
 
 
 %% Subject ID & Run number
 
-[ SubjectID, ~, dirpath_SubjectID ] = GUI.CONTROLLER.getSubjectID( handles );
+[ S.SubjectID, ~, S.dirpath_SubjectID ] = GUI.CONTROLLER.getSubjectID( handles );
 
-if SaveMode && strcmp(OperationMode,'Acquisition')
+if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
     
-    if ~exist(dirpath_SubjectID, 'dir')
-        mkdir(dirpath_SubjectID);
+    if ~exist(S.dirpath_SubjectID, 'dir')
+        mkdir(S.dirpath_SubjectID);
     end
     
 end
 
-DataFile_noRun  = sprintf('%s_%s', SubjectID, Task );
-RunNumber       = GUI.MODEL.getRunNumber( DataFile_noRun );
-DataFile        = sprintf('%s%s_%s_%s_run%0.2d', dirpath_SubjectID, S.TimeStampFile, SubjectID, Task, RunNumber );
-DataFileName    = sprintf(  '%s_%s_%s_run%0.2d',                    S.TimeStampFile, SubjectID, Task, RunNumber );
-
-S.SubjectID     = SubjectID;
-S.RunNumber     = RunNumber;
-S.DataPath      = dirpath_SubjectID;
-S.DataFile      = DataFile;
-S.DataFileName  = DataFileName;
+DataFile_noRun  = sprintf('%s_%s', S.SubjectID, S.Task );
+S.RunNumber     = GUI.MODEL.getRunNumber( DataFile_noRun );
+S.DataFileFPath = sprintf('%s%s_%s_%s_run%0.2d', S.dirpath_SubjectID, S.TimeStampFile, S.SubjectID, S.Task, S.RunNumber );
+S.DataFileName  = sprintf(  '%s_%s_%s_run%0.2d',                      S.TimeStampFile, S.SubjectID, S.Task, S.RunNumber );
 
 
 %% Quick warning
 
 % Acquisition => save data
-if strcmp(OperationMode,'Acquisition') && ~SaveMode
+if strcmp(S.OperationMode,'Acquisition') && ~S.SaveMode
     warning('In acquisition mode, data should be saved')
 end
 
 
 %% Parallel port ?
 
-ParPort           = GUI.CONTROLLER.getParPort( handles );
-S.ParPort         = ParPort;
-S.ParPortMessages = PARPORT.Prepare();
+if S.ParPort
+    S.ParPortMessages = PARPORT.Prepare();
+end
 
 
 %% Eyelink ?
 
-EyelinkMode   = GUI.CONTROLLER.getEyelinkMode( handles );
-S.EyelinkMode = EyelinkMode;
-
-if EyelinkMode
+if S.EyelinkMode
     
     % 'Eyelink.m' exists ?
     assert( ~isempty(which('Eyelink.m')), 'no ''Eyelink.m'' detected in the path')
@@ -128,15 +102,9 @@ end
 %% Security : NEVER overwrite a file
 % If erasing a file is needed, we need to do it manually
 
-if SaveMode && strcmp(OperationMode,'Acquisition')
-    assert( ~exist([DataFile '.mat'],'file'), ' \n ---> \n The file %s.mat already exists .  <--- \n \n', DataFile );
+if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
+    assert( ~exist([S.DataFile '.mat'],'file'), ' \n ---> \n The file %s.mat already exists .  <--- \n \n', S.DataFile );
 end
-
-
-%% ScreenID & ScreenMode selection
-
-S.ScreenID     = GUI.CONTROLLER.getScreenID    ( handles );
-S.WindowedMode = GUI.CONTROLLER.getWindowedMode( handles );
 
 
 %% Open PTB window & sound, if need
@@ -156,17 +124,17 @@ PTB_ENGINE.KEYBOARD.Parameters(); % <= here is all paramters
 
 %% Everything is read, start Task
 
-EchoStart(Task)
+EchoStart(S.Task)
 
-if strcmp(Task, 'EyelinkCalibration')
+if strcmp(S.Task, 'EyelinkCalibration')
     Eyelink.Calibration(S.PTB.Video.wPtr);
     S.TaskData.ER.Data = {};
 else
     % TASK.TASK_1.Parameters <= here is all paramters
-    TASK.(upper(Task)).RunTime() % execution of the task
+    TASK.(upper(S.Task)).RunTime() % execution of the task
 end
 
-EchoStop(Task)
+EchoStop(S.Task)
 
 
 %% Save the file on the fly, without any prcessing => just a security
@@ -191,10 +159,10 @@ Priority(0);
 
 %% Save
 
-if SaveMode && strcmp(OperationMode,'Acquisition')
+if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
     
-    save( DataFile        , 'S', 'names', 'onsets', 'durations'); % complet file
-    save([DataFile '_SPM']     , 'names', 'onsets', 'durations'); % light weight file with only the onsets for SPM
+    save( S.DataFileFPath        , 'S', 'names', 'onsets', 'durations'); % complet file
+    save([S.DataFileFPath '_SPM']     , 'names', 'onsets', 'durations'); % light weight file with only the onsets for SPM
     
 end
 
@@ -210,7 +178,7 @@ assignin('base', 'durations', durations);
 %% MAIN : End recording of Eyelink
 
 % Eyelink mode 'On' ?
-if EyelinkMode
+if S.EyelinkMode
     
     % Stop recording and retrieve the file
     Eyelink.StopRecording( S.EyelinkFile )
@@ -222,7 +190,7 @@ end
 
 set(handles.text_LastFileNameAnnouncer, 'Visible', 'on')
 set(handles.text_LastFileName         , 'Visible', 'on')
-set(handles.text_LastFileName         , 'String' , DataFile(length(dirpath_SubjectID)+1:end))
+set(handles.text_LastFileName         , 'String' , S.DataFileName)
 
 WaitSecs(0.100);
 pause(0.100);

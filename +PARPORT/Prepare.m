@@ -1,21 +1,11 @@
 function [ ParPortMessages ] = Prepare()
-global S
 
-%% On ? Off ?
+% Open parallel port
+OpenParPort();
 
-switch S.ParPort
-    
-    case 'On'
-        
-        % Open parallel port
-        OpenParPort;
-        
-        % Set pp to 0
-        WriteParPort(0)
-        
-    case 'Off'
-        
-end
+% Set pp to 0
+WriteParPort(0)
+
 
 %% Prepare messages
 

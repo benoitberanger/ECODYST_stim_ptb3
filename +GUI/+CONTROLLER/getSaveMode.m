@@ -1,12 +1,9 @@
 function [ SaveMode ] = getSaveMode( handles )
 
-switch get(get(handles.uipanel_SaveMode,'SelectedObject'),'Tag')
-    case 'radiobutton_SaveData'
-        SaveMode = 1;
-    case 'radiobutton_NoSave'
-        SaveMode = 0;
-    otherwise
-        warning('Error in SaveMode selection')
-end
+radiobutton = get(get(handles.uipanel_SaveMode,'SelectedObject'),'Tag');
+
+SaveMode_str = strrep( radiobutton, 'radiobutton_Save_', '' );
+
+SaveMode = str2double(SaveMode_str);
 
 end % function

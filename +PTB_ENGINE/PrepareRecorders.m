@@ -15,14 +15,6 @@ ER.AddStartTime( 'StartTime' , 0 );
 S.ER = ER;
 
 
-%% Sample recorder
-% This will record numeric data, usually 1 line for each frame
-
-SR = SampleRecorder( { 'time (s)', 'X', 'Y', 'value_Left', 'value_Right' } , round(EP.Data{end,2}*S.PTB.Video.FPS*1.20) ); % ( expected duration of the task +20% )
-
-S.SR = SR;
-
-
 %% Behaviour recorder
 
 RT_produce = SampleRecorder({'onset(s)' 'block#' 'trial#' 'side(LR=-1+1)' 'RT(s)'}, S.TaskParam.nBlock * S.TaskParam.nTrialPerBlock);

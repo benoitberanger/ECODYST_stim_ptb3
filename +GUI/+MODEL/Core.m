@@ -131,7 +131,7 @@ if strcmp(S.Task, 'EyelinkCalibration')
     S.TaskData.ER.Data = {};
 else
     % TASK.TASK_1.Parameters <= here is all paramters
-    TASK.(upper(S.Task)).RunTime() % execution of the task
+    TASK.(S.Task).Runtime() % execution of the task
 end
 
 EchoStop(S.Task)

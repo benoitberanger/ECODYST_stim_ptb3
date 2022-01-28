@@ -25,9 +25,6 @@ S.KL.ScaleTime();
 S.KL.ComputeDurations();
 S.KL.BuildGraph();
 
-% SampleRecorder => records the nutcrackers(joystick) or mouse
-S.SR.ClearEmptySamples();
-
 assignin('base','EP',S.EP)
 assignin('base','ER',S.ER)
 assignin('base','KL',S.KL)

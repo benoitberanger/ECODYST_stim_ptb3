@@ -39,7 +39,8 @@ p = TASK.Graphics( p );
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Define a planning <--- paradigme
 
-nTrials = length(p.angle) * p.num_tetris * 2; % x2 because of same VS mirror
+nAngle  = length(p.angle);
+nTrials = nAngle * p.num_tetris * 2; % x2 because of same VS mirror
 
 
 %% Generate tetris
@@ -85,3 +86,102 @@ all_jitters = linspace(p.durFixation(1), p.durFixation(2), nTrials);
 all_jitters = Shuffle(all_jitters);
 
 
+%% Pseudo-randomize events
+
+event_list = cell(nTrials, 3);
+
+mb_length = nAngle * 2;
+
+for n = 1 : p.num_tetris
+    
+    miniblock_same = cell(nAngle,2);
+    miniblock_same(:,1) = num2cell(p.angle');
+    miniblock_same(:,2) = {'same'};
+    
+    miniblock_mirror = miniblock_same;
+    miniblock_mirror(:,2) = {'mirror'};
+    
+    miniblock = Shuffle([miniblock_same ; miniblock_mirror], 2);
+    
+    idx = (1:mb_length) + (n-1)*mb_length;
+    event_list(idx,1:2) = miniblock;
+    
+end
+
+tetris_list = repmat(all_tetris, [mb_length 1]);
+tetris_list = Shuffle(tetris_list,2);
+
+event_list(:,3) = num2cell(tetris_list,2);
+
+
+%% Build planning
+
+% Create and prepare
+header = { 'event_name', 'onset(s)', 'duration(s)', 'iTrial', 'angle(°)', 'condition', 'tetris'};
+EP     = EventPlanning(header);
+
+% NextOnset = PreviousOnset + PreviousDuration
+NextOnset = @(EP) EP.Data{end,2} + EP.Data{end,3};
+
+% --- Start ---------------------------------------------------------------
+
+EP.AddStartTime('StartTime',0);
+
+% --- Stim ----------------------------------------------------------------
+
+for iTrial = 1 : nTrials
+    
+    EP.AddPlanning({ 'Rest'  NextOnset(EP) all_jitters(iTrial) iTrial [] [] []})
+    EP.AddPlanning({ 'Trial' NextOnset(EP) p.durTetris         iTrial event_list{iTrial,:}})
+    
+end
+
+
+% --- Stop ----------------------------------------------------------------
+
+EP.AddStopTime('StopTime',NextOnset(EP));
+
+EP.BuildGraph();
+
+%% Display
+
+% To prepare the planning and visualize it, we can execute the function
+% without output argument
+
+if nargout < 1
+    
+    fprintf( '\n' )
+    fprintf(' \n Total stim duration : %g seconds \n' , NextOnset(EP) )
+    fprintf( '\n' )
+    
+    EP.Plot();
+    
+end
+
+
+%% Save
+
+TaskParam = p;
+
+S.EP        = EP;
+S.TaskParam = TaskParam;
+
+
+end % function
+
+function tetris = generate_random_tetris(nSeg)
+
+% generate X Y Z order
+order = Shuffle([1 2 3]);
+if nSeg > 3
+    order = repmat(order, [1 ceil(nSeg/3)]);
+    order = order(1:nSeg);
+end
+
+% generate positive or negative axis direction
+signs = sign(rand(1,nSeg) - 0.5);
+
+% finalize
+tetris = order.*signs;
+
+end % function

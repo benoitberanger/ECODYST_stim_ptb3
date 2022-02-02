@@ -10,6 +10,12 @@ try
     
     % 'names' for SPM
     switch S.Task
+        
+        case 'MentalRotation'
+            names = {
+                'Rest'
+                'Trial'
+                };
             
         case 'EyelinkCalibration'
             names = {};

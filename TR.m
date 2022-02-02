@@ -1,5 +1,5 @@
 function [ repetition_time ] = TR()
 
-repetition_time = warning('TR not defined yet'); % seconds
+repetition_time = 1.660; % seconds
 
 end % function

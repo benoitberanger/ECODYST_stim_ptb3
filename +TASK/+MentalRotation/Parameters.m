@@ -1,7 +1,7 @@
 function [ EP, TaskParam ] = Parameters( OperationMode )
 global S
 
-if nargout < 1 % only to plot the paradigme when we execute the function outside of the main script
+if nargin < 1 % only to plot the paradigme when we execute the function outside of the main script
     OperationMode = 'Acquisition';
 end
 
@@ -26,6 +26,23 @@ p.durTetris   = 10;    %           seconds
 p.durFixation = [5 6]; % [min max] seconds
 
 
+%% Debugging
+
+switch OperationMode
+    case 'FastDebug'
+        p.angle       = [20 100];
+        p.num_tetris  = 2;
+        p.durTetris   = 1;
+        p.durFixation = [0.5 0.6];
+    case 'RealisticDebug'
+        
+    case 'Acquisition'
+        % pass
+    otherwise
+        error('mode ?')
+end
+
+
 %% Graphics
 % graphic parameters are in a sub-function because they are common across tasks
 
@@ -41,6 +58,7 @@ p = TASK.Graphics( p );
 
 nAngle  = length(p.angle);
 nTrials = nAngle * p.num_tetris * 2; % x2 because of same VS mirror
+p.nTrials = nTrials;
 
 
 %% Generate tetris
@@ -113,6 +131,10 @@ tetris_list = Shuffle(tetris_list,2);
 
 event_list(:,3) = num2cell(tetris_list,2);
 
+% event_table = cell2table(event_list,...
+%     'VariableNames', {'angle', 'condition', 'tetris'},...
+%     'RowNames', cellstr(num2str( (1:nTrials)' )));
+
 
 %% Build planning
 
@@ -143,12 +165,13 @@ EP.AddStopTime('StopTime',NextOnset(EP));
 
 EP.BuildGraph();
 
+
 %% Display
 
 % To prepare the planning and visualize it, we can execute the function
 % without output argument
 
-if nargout < 1
+if nargin < 1
     
     fprintf( '\n' )
     fprintf(' \n Total stim duration : %g seconds \n' , NextOnset(EP) )

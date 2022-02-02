@@ -7,25 +7,15 @@ global S
 % comparaison with EP (EventPlaning) the expected onsets.
 
 % Create
-ER = EventRecorder( EP.Header , EP.EventCount );
+S.ER = EventRecorder( EP.Header , EP.EventCount );
 
 % Prepare
-ER.AddStartTime( 'StartTime' , 0 );
-
-S.ER = ER;
+S.ER.AddStartTime( 'StartTime' , 0 );
 
 
 %% Behaviour recorder
 
-RT_produce = SampleRecorder({'onset(s)' 'block#' 'trial#' 'side(LR=-1+1)' 'RT(s)'}, S.TaskParam.nBlock * S.TaskParam.nTrialPerBlock);
-RT_rest    = RT_produce.CopyObject();
-Stability  = SampleRecorder({'onset(s)' 'block#' 'trial#' 'side(LR=-1+1)'...
-    'sample_start' 'sample_stop' 'score_accuracy' 'ratio_over_under' 'score_overshot' 'score_undershot' 'score_stability' },...
-    S.TaskParam.nBlock * S.TaskParam.nTrialPerBlock);
-
-S.RT_produce = RT_produce;
-S.RT_rest    = RT_rest;
-S.Stability  = Stability;
+S.BR = EventRecorder({'trial#' 'condition' 'tetris[4]' 'RT(s)' 'subj_resp' 'resp_ok'}, S.TaskParam.nTrials);
 
 
 %% Prepare the keylogger, including MRI triggers
@@ -34,14 +24,12 @@ S.Stability  = Stability;
 
 KbName('UnifyKeyNames');
 
-KL = KbLogger( ...
+S.KL = KbLogger( ...
     struct2array(S.Keybinds)         ,...
     KbName(struct2array(S.Keybinds)) );
 
 % Start recording events
-KL.Start();
-
-S.KL = KL;
+S.KL.Start();
 
 
 end % function

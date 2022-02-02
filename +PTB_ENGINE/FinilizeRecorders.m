@@ -27,11 +27,8 @@ S.KL.BuildGraph();
 
 assignin('base','EP',S.EP)
 assignin('base','ER',S.ER)
+assignin('base','BR',S.BR)
 assignin('base','KL',S.KL)
-assignin('base','SR',S.SR)
 
-assignin('base','RT_produce',S.RT_produce)
-assignin('base','RT_rest'   ,S.RT_rest   )
-assignin('base','Stability' ,S.Stability )
 
 end % function

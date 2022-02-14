@@ -1,4 +1,4 @@
-function Render( self, tetris_axis )
+function Render( self, tetris_axis, theta, rotatev )
 global GL
 Screen('BeginOpenGL', self.wPtr);
 
@@ -11,25 +11,33 @@ glMatrixMode(GL.MODELVIEW);
 glLoadIdentity();
 
 cam_center = barycenter(tetris_axis, self.segment_length); % local function, see below
+% cam_center = [0 0 0];
 
 gluLookAt(...
     cam_center(1)+self.camera_pos(1), cam_center(2)+self.camera_pos(2), cam_center(3)+self.camera_pos(3), ...
     cam_center(1)                   , cam_center(2)                   , cam_center(3)                   , ...
     0,1,0); % axis Y is the "up" axis
 
+glTranslatef( cam_center(1),  cam_center(2),  cam_center(3));
+glRotatef(theta,rotatev(1),rotatev(2),rotatev(3));
+glTranslatef(-cam_center(1), -cam_center(2), -cam_center(3));
+
 glPushMatrix();
-glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.2 0.2 0.2 1 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 0.5 0.5 0.5 1 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, 30);
-glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.5 0.5 0.5 1 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.1 0.1 0.1  1.0 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 0.5 0.5 0.5  1.0 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, 10);
+glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.0 0.0 0.0  0.0 ]);
+% glutSolidSphere(1.1,100,100)
 draw_cubes(tetris_axis, self.segment_length, 'solid', 0.999)  % local function, see below
 glPopMatrix();
 
 glPushMatrix();
-glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.0 0.0 0.0 1 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 0.0 0.0 0.0 1 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.0 0.0 0.0 1 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.0 0.0 0.0  1.0 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 2.0 2.0 2.0  1.0 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, 10);
+glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.0 0.0 0.0  1.0 ]);
 draw_cubes(tetris_axis, self.segment_length, 'wired', 1.005)  % local function, see below
+% glutSolidSphere(1.1,100,100)
 glPopMatrix();
 
 Screen('EndOpenGL', self.wPtr);

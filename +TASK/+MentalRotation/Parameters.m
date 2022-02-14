@@ -31,8 +31,8 @@ p.durFixation = [5 6]; % [min max] seconds
 switch OperationMode
     case 'FastDebug'
         p.num_tetris  = 2;
-        p.durTetris   = 1;
-        p.durFixation = [0.5 0.6];
+%         p.durTetris   = 1;
+        p.durFixation = [0.1 0.1];
     case 'RealisticDebug'
         
     case 'Acquisition'

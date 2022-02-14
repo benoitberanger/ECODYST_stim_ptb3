@@ -112,11 +112,23 @@ try
     
     glEnable(GL.LIGHT0);
     
-    glLightfv(GL.LIGHT0, GL.DIFFUSE , [1 1 1]);
-    glLightfv(GL.LIGHT0, GL.AMBIENT , [1 1 1]);
-    glLightfv(GL.LIGHT0, GL.SPECULAR, [1 1 1]);
+    glLightfv(GL.LIGHT0, GL.AMBIENT , [0.0 0.0 0.0  1.0]);
+    glLightfv(GL.LIGHT0, GL.DIFFUSE , [1.0 1.0 1.0  1.0]);
+    glLightfv(GL.LIGHT0, GL.SPECULAR, [0.5 0.5 0.5  0.5]);
     
     glLightfv(GL.LIGHT0,GL.POSITION,[ p.Tetris3D.LIGHT0_pos p.Tetris3D.LIGHT0_is_pt ]);
+    
+    
+    % LIGHT1 --------------------------------------------------------------
+    
+    glEnable(GL.LIGHT1);
+    
+    glLightfv(GL.LIGHT1, GL.AMBIENT , [0.0 0.0 0.0  1.0]);
+    glLightfv(GL.LIGHT1, GL.DIFFUSE , [0.2 0.2 0.2  1.0]);
+    glLightfv(GL.LIGHT1, GL.SPECULAR, [0.0 0.0 0.0  1.0]);
+    
+    glLightfv(GL.LIGHT1,GL.POSITION,[ p.Tetris3D.LIGHT1_pos p.Tetris3D.LIGHT1_is_pt ]);
+    
     
     % Finish OpenGL rendering into PTB window. This will switch back to the
     % standard 2D drawing functions of Screen and will check for OpenGL errors.
@@ -197,7 +209,7 @@ try
             case 'Trial' % ------------------------------------------------
                 
                 % Draw
-                TETRIS3D.Render(tetris)
+%                 TETRIS3D.Render(tetris)
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                 
                 % Flip at the right moment
@@ -217,6 +229,10 @@ try
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = prev_onset + evt_duration - slack;
+                
+                % Initialize amount and direction of rotation
+                theta=0;
+                rotatev=[ 0 0 1 ];
                 while secs < next_onset
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
@@ -224,13 +240,15 @@ try
                         EXIT = keyCode(ESCAPE);
                         if EXIT, break, end
                     end
-
-                    % Draw
-                    %pass
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
-                                        
-%                     flip_onset = Screen('Flip', wPtr);
                     
+                    % Draw
+                    % Calculate rotation angle for next frame:
+                    theta=mod(theta+0.2,360);
+                    rotatev=rotatev+0.1*[ sin((pi/180)*theta) sin((pi/180)*2*theta) sin((pi/180)*theta/5) ];
+                    rotatev=rotatev/sqrt(sum(rotatev.^2));
+                    TETRIS3D.Render(tetris, theta, rotatev)
+                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                    flip_onset = Screen('Flip', wPtr);
                     
                 end % while
                 

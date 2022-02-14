@@ -2,7 +2,7 @@ function Parameters()
 global S
 
 S.PTB.Video                = struct;
-S.PTB.Video.ScreenBGColor  = [50 50 50]; % [R G B] ( from 0 to 255 )
+S.PTB.Video.ScreenBGColor  = [0 0 0]; % [R G B] ( from 0 to 255 )
 S.PTB.Video.AntiAliazing   = 4;             % [], 0, 1, 2, ...
 S.PTB.Video.Text.Font      = 'Arial';
 S.PTB.Video.Text.Color     = [255 255 255]; % [R G B] ( from 0 to 255 )

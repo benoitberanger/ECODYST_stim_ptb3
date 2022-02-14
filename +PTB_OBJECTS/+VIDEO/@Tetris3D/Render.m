@@ -4,29 +4,32 @@ Screen('BeginOpenGL', self.wPtr);
 
 % Reset
 glClear();
-glMatrixMode(GL.MODELVIEW);
-glLoadIdentity();
 
 % Setup modelview matrix: This defines the position, orientation and
 % looking direction of the virtual camera:
+glMatrixMode(GL.MODELVIEW);
+glLoadIdentity();
+
+cam_center = barycenter(tetris_axis, self.segment_length); % local function, see below
+
 gluLookAt(...
-    self.camera_pos(1), self.camera_pos(2), self.camera_pos(3),...
-    0,0,0,...
-    0,1,0);
+    cam_center(1)+self.camera_pos(1), cam_center(2)+self.camera_pos(2), cam_center(3)+self.camera_pos(3), ...
+    cam_center(1)                   , cam_center(2)                   , cam_center(3)                   , ...
+    0,1,0); % axis Y is the "up" axis
 
 glPushMatrix();
 glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.2 0.2 0.2 1 ]);
 glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 0.5 0.5 0.5 1 ]);
 glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, 30);
 glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.5 0.5 0.5 1 ]);
-draw_cubes(tetris_axis, self.segment_length, 'solid', 0.999)
+draw_cubes(tetris_axis, self.segment_length, 'solid', 0.999)  % local function, see below
 glPopMatrix();
 
 glPushMatrix();
 glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.0 0.0 0.0 1 ]);
 glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 0.0 0.0 0.0 1 ]);
 glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.0 0.0 0.0 1 ]);
-draw_cubes(tetris_axis, self.segment_length, 'wired', 1.005)
+draw_cubes(tetris_axis, self.segment_length, 'wired', 1.005)  % local function, see below
 glPopMatrix();
 
 Screen('EndOpenGL', self.wPtr);
@@ -46,7 +49,7 @@ nSegment = length(tetris_axis);
 for iSegment = 1 : nSegment
     
     seg = [0 0 0];
-    ax  = abs(tetris_axis(iSegment));
+    ax  =  abs(tetris_axis(iSegment));
     dir = sign(tetris_axis(iSegment));
     seg(ax) = dir;
     nDisplacement = segment_length(iSegment) - 1;
@@ -63,3 +66,35 @@ for iSegment = 1 : nSegment
 end
 
 end % function
+
+function coords = barycenter(tetris_axis, segment_length)
+
+% empty array that will contain the middle point of each segement
+middles = NaN(length(tetris_axis),3);
+ends    = NaN(length(tetris_axis),3);
+
+nSegment = length(tetris_axis);
+
+for iSegment = 1 : nSegment
+    
+    seg = [0 0 0];
+    ax  =  abs(tetris_axis(iSegment));
+    dir = sign(tetris_axis(iSegment));
+    seg(ax) = dir*segment_length(iSegment);
+    
+    if iSegment == 1
+        start_point = [0 0 0];
+    else
+        % start_point is simply the sum of each previous displacement
+        start_point = sum(ends(1:(iSegment-1),:));
+    end
+    
+    middles(iSegment,:) = start_point + seg/2;
+    ends   (iSegment,:) = seg;
+    
+end
+
+weights = abs(tetris_axis); % the weigth is the length of each segment
+coords = sum( middles.*weights' ) / sum(weights); % weigted sum
+
+end

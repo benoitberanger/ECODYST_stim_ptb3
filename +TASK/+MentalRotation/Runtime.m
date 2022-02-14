@@ -4,7 +4,7 @@ global S GL
 try
     %% Tuning of the task
     
-    TASK.MentalRotation.Parameters( S.OperationMode );
+   [ EP, p ] = TASK.MentalRotation.Parameters( S.OperationMode );
     
     
     %% Prepare recorders
@@ -15,11 +15,11 @@ try
     %% Initialize stim objects
     
     FIXATIONCROSS = TASK.MentalRotation.PREPARE.FixationCross();
+    TETRIS3D      = TASK.MentalRotation.PREPARE.Tetris3D     ();
     
     
     %% Shortcuts
     
-    EP          = S.EP; % EventPlanning
     ER          = S.ER; % EventRecorder
     BR          = S.BR; % BehaviourRecorder (EventRecorder)
     wPtr        = S.PTB.Video.wPtr;
@@ -90,15 +90,18 @@ try
     % well, the best aproximation one can do with 3 lines of code ;-)
     glMatrixMode(GL.PROJECTION);
     glLoadIdentity;
-    
-    
+        
     % Get the aspect ratio of the screen:
     AspectRatio = wRect(4)/wRect(3);
     
     % Field of view is 25 degrees from line of sight. Objects closer than
     % 0.01 distance units or farther away than 100 distance units get
     % clipped away, aspect ratio is adapted to the monitors aspect ratio:
-    gluPerspective(25,1/AspectRatio,0.01,100);
+    gluPerspective(           ....
+        p.Tetris3D.FieldOfView,...
+        1/AspectRatio         ,...
+        0.01,100               ...
+    );
     
     
     % Enable the first local light source GL.LIGHT_0. Each OpenGL
@@ -113,9 +116,7 @@ try
     glLightfv(GL.LIGHT0, GL.AMBIENT , [1 1 1]);
     glLightfv(GL.LIGHT0, GL.SPECULAR, [1 1 1]);
     
-    LIGHT0_pos = [100 100 100]; % OpenGL X Z Y coordinates
-    LIGHT0_is_point = 0; % 0 == infinit distance (direction) // 1 == finit distance (point)
-    glLightfv(GL.LIGHT0,GL.POSITION,[ LIGHT0_pos LIGHT0_is_point ]);
+    glLightfv(GL.LIGHT0,GL.POSITION,[ p.Tetris3D.LIGHT0_pos p.Tetris3D.LIGHT0_is_pt ]);
     
     % Finish OpenGL rendering into PTB window. This will switch back to the
     % standard 2D drawing functions of Screen and will check for OpenGL errors.
@@ -196,13 +197,20 @@ try
             case 'Trial' % ------------------------------------------------
                 
                 % Draw
-                %pass
+                TETRIS3D.Render(tetris)
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                 
                 % Flip at the right moment
                 desired_onset =  prev_onset + prev_duration - slack;
                 real_onset = Screen('Flip', wPtr, desired_onset);
                 prev_onset = real_onset;
+                
+                fprintf('#trial=%02d   angle=%02d   condition=%6s   tetris=%s \n',...
+                    trial,...
+                    angle,...
+                    condition,...
+                    num2str(tetris) ...
+                    )
                 
                 % Save onset
                 ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
@@ -216,15 +224,12 @@ try
                         EXIT = keyCode(ESCAPE);
                         if EXIT, break, end
                     end
-                    
-                    Screen('BeginOpenGL', wPtr);
-                    Screen('EndOpenGL', wPtr);
-                    
+
                     % Draw
                     %pass
                     if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                                         
-                    flip_onset = Screen('Flip', wPtr);
+%                     flip_onset = Screen('Flip', wPtr);
                     
                     
                 end % while

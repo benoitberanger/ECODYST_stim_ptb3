@@ -111,6 +111,13 @@ end
 % comment/uncomment as needed
 
 PTB_ENGINE.VIDEO.Parameters(); % <= here is all paramters
+if strcmp(S.Task, 'MentalRotation')
+    % Call this function at the beginning of your experiment script before
+    % calling *any* Psychtoolbox Screen() command, if you intend to use
+    % low-level OpenGL drawing commands in your script as provided by
+    % Richard Murrays moglcore extension.
+    InitializeMatlabOpenGL();
+end
 PTB_ENGINE.VIDEO.OpenWindow(); % this opens the windows and setup the drawings according the the paramters above
 
 % PTB_ENGINE.AUDIO.         Initialize(); % !!! This must be done once before !!!

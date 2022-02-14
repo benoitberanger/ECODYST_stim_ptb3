@@ -16,7 +16,7 @@ p = struct; % This structure will contain all task specific parameters, such as 
 %% 3D Tetris
 
 p.cube_segment = [3 2 2 2];
-p.angle        = [20 40 60 100]; % degees
+p.angle        = [ 0 60 ]; % degees == difficulty level
 p.num_tetris   = 10;
 
 

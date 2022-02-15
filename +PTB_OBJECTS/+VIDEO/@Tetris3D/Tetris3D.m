@@ -10,7 +10,11 @@ classdef Tetris3D < PTB_OBJECTS.VIDEO.Base
         camera_pos      = zeros(0,3) % [X Y Z] position in OpenGL
         
         % Internal variables
-                
+        tex_cubeface                 % vector containing pointer to OpenGL texture
+        cube_vertex
+        cube_face
+        cube_normal
+        
     end % properties
     
     

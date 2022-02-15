@@ -101,8 +101,14 @@ try
         p.Tetris3D.FieldOfView,...
         1/AspectRatio         ,...
         0.01,100               ...
-    );
+        );
     
+    %     % Enable two-sided lighting - Back sides of polygons are lit as well.
+    %     glLightModelfv(GL.LIGHT_MODEL_TWO_SIDE,GL.TRUE);
+    %
+    %     % Enable alpha-blending for smooth dot drawing:
+    %     glEnable(GL.BLEND);
+    %     glBlendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
     
     % Enable the first local light source GL.LIGHT_0. Each OpenGL
     % implementation is guaranteed to support at least 8 light sources,
@@ -112,9 +118,9 @@ try
     
     glEnable(GL.LIGHT0);
     
-    glLightfv(GL.LIGHT0, GL.AMBIENT , [0.0 0.0 0.0  1.0]);
+    glLightfv(GL.LIGHT0, GL.AMBIENT , [0.1 0.1 0.1  1.0]);
     glLightfv(GL.LIGHT0, GL.DIFFUSE , [1.0 1.0 1.0  1.0]);
-    glLightfv(GL.LIGHT0, GL.SPECULAR, [0.5 0.5 0.5  0.5]);
+    glLightfv(GL.LIGHT0, GL.SPECULAR, [1.0 1.0 1.0  1.0]);
     
     glLightfv(GL.LIGHT0,GL.POSITION,[ p.Tetris3D.LIGHT0_pos p.Tetris3D.LIGHT0_is_pt ]);
     
@@ -277,6 +283,8 @@ try
     
     
     %% End of task execution stuff
+    
+    TETRIS3D.deleteTextures();
     
     % Save some values
     S.StartTime = StartTime;

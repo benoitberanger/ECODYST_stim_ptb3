@@ -103,7 +103,7 @@ end
 % If erasing a file is needed, we need to do it manually
 
 if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
-    assert( ~exist([S.DataFile '.mat'],'file'), ' \n ---> \n The file %s.mat already exists .  <--- \n \n', S.DataFile );
+    assert( ~exist([S.DataFileFPath '.mat'],'file'), ' \n ---> \n The file %s.mat already exists .  <--- \n \n', S.DataFileFPath );
 end
 
 

@@ -15,6 +15,15 @@ classdef Tetris3D < PTB_OBJECTS.VIDEO.Base
         cube_face
         cube_normal
         
+        img_L_cropped (:,:,4) uint8 % R G B a
+        img_R_cropped (:,:,4) uint8 % R G B a
+        
+        img_L_rect (1,4) double
+        img_R_rect (1,4) double
+        
+        texture_L
+        texture_R
+        
     end % properties
     
     

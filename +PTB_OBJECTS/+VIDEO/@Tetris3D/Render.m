@@ -16,7 +16,7 @@ cam_center = self.getBarycenter(tetris_axis);
 
 gluLookAt(...
     cam_center.x+self.camera_pos.x, cam_center.y+self.camera_pos.y, cam_center.z+self.camera_pos.z, ...
-    cam_center.x                   , cam_center.y                   , cam_center.z                , ...
+    cam_center.x                  , cam_center.y                  , cam_center.z                , ...
     0,1,0); % axis Y is the "up" axis
 
 glTranslatef( cam_center.x,  cam_center.y,  cam_center.z);
@@ -33,11 +33,13 @@ self.drawCubeTextured(tetris_axis); % cube size is 1.000
 glPopMatrix();
 
 glPushMatrix();
-glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 8.0 8.0 8.0  1.0 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 2.0 2.0 2.0  1.0 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.0 0.0 0.0  1.0 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 0.0 0.0 0.0  1.0 ]);
 glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, 30);
 glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.0 0.0 0.0  1.0 ]);
-self.drawCubeWired(tetris_axis, 1.005)
+% Set thickness of reference lines:
+glLineWidth(4.0);
+self.drawCubeWired(tetris_axis, 1.01)
 % glutSolidSphere(1.1,100,100)
 glPopMatrix();
 

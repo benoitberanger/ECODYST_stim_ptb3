@@ -9,6 +9,4 @@ TETRIS3D.LinkToWindowPtr(S.PTB.Video.wPtr);
 TETRIS3D.genCubeTexture();
 TETRIS3D.prepareNormal();
 
-TETRIS3D.AssertReady();
-
 end % function

@@ -4,7 +4,7 @@ global S GL
 try
     %% Tuning of the task
     
-   [ EP, p ] = TASK.MentalRotation.Parameters( S.OperationMode );
+    [ EP, p ] = TASK.MentalRotation.Parameters( S.OperationMode );
     
     
     %% Prepare recorders
@@ -48,7 +48,7 @@ try
     % Setup default drawing color to yellow (R,G,B)=(1,1,0). This color only
     % gets used when lighting is disabled - if you comment out the call to
     % glEnable(GL.LIGHTING).
-    glColor3f(1,1,0); % cyan == error !
+    glColor3f(1,0,1); % cyan == error !
     
     % Turn on OpenGL local lighting model: The lighting model supported by
     % OpenGL is a local Phong model with Gouraud shading. The color values
@@ -75,6 +75,18 @@ try
     % Enable proper occlusion handling via depth tests:
     glEnable(GL.DEPTH_TEST);
     
+    % Use alpha-blending:
+    glEnable(GL.BLEND);
+    glBlendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+    
+    % Enable two-sided lighting - Back sides of polygons are lit as well.
+    glLightModelfv(GL.LIGHT_MODEL_TWO_SIDE,GL.TRUE);
+    
+    % Make sure that surface normals are always normalized to unit-length,
+    % regardless what happens to them during morphing. This is important for
+    % correct lighting calculations:
+    glEnable(GL.NORMALIZE);
+    
     % Set background clear color (RGBa)
     glClearColor(...
         S.PTB.Video.ScreenBGColor(1)/255, ...
@@ -83,14 +95,13 @@ try
         1                                 ...
         );
     
-    
     % Set projection matrix: This defines a perspective projection,
     % corresponding to the model of a pin-hole camera - which is a good
     % approximation of the human eye and of standard real world cameras --
     % well, the best aproximation one can do with 3 lines of code ;-)
     glMatrixMode(GL.PROJECTION);
     glLoadIdentity;
-        
+    
     % Get the aspect ratio of the screen:
     AspectRatio = wRect(4)/wRect(3);
     
@@ -103,12 +114,7 @@ try
         0.01,100               ...
         );
     
-    %     % Enable two-sided lighting - Back sides of polygons are lit as well.
-    %     glLightModelfv(GL.LIGHT_MODEL_TWO_SIDE,GL.TRUE);
-    %
-    %     % Enable alpha-blending for smooth dot drawing:
-    %     glEnable(GL.BLEND);
-    %     glBlendFunc(GL.SRC_ALPHA, GL.ONE_MINUS_SRC_ALPHA);
+    
     
     % Enable the first local light source GL.LIGHT_0. Each OpenGL
     % implementation is guaranteed to support at least 8 light sources,
@@ -133,7 +139,7 @@ try
     glLightfv(GL.LIGHT1, GL.DIFFUSE , [0.2 0.2 0.2  1.0]);
     glLightfv(GL.LIGHT1, GL.SPECULAR, [0.0 0.0 0.0  1.0]);
     
-    glLightfv(GL.LIGHT1,GL.POSITION,[ p.Tetris3D.LIGHT1_pos p.Tetris3D.LIGHT1_is_pt ]);
+    glLightfv(GL.LIGHT1, GL.POSITION, [ p.Tetris3D.LIGHT1_pos p.Tetris3D.LIGHT1_is_pt ]);
     
     
     % Finish OpenGL rendering into PTB window. This will switch back to the
@@ -215,7 +221,7 @@ try
             case 'Trial' % ------------------------------------------------
                 
                 % Draw
-%                 TETRIS3D.Render(tetris)
+                %                 TETRIS3D.Render(tetris)
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                 
                 % Flip at the right moment
@@ -252,7 +258,18 @@ try
                     theta=mod(theta+0.2,360);
                     rotatev=rotatev+0.1*[ sin((pi/180)*theta) sin((pi/180)*2*theta) sin((pi/180)*theta/5) ];
                     rotatev=rotatev/sqrt(sum(rotatev.^2));
+                    
                     TETRIS3D.Render(tetris, theta, rotatev)
+                    TETRIS3D.Capture('R')
+                    TETRIS3D.Render(tetris, theta, rotatev)
+                    TETRIS3D.Capture('L')
+                    glClear();
+                    
+                    Screen('DrawTexture', wPtr, TETRIS3D.texture_L, [], CenterRectOnPoint(TETRIS3D.img_L_rect, wRect(3)*1/4, wRect(4)/2))
+                    Screen('DrawTexture', wPtr, TETRIS3D.texture_R, [], CenterRectOnPoint(TETRIS3D.img_R_rect, wRect(3)*3/4, wRect(4)/2))
+                    Screen('Close', TETRIS3D.texture_L);
+                    Screen('Close', TETRIS3D.texture_R);
+                    
                     if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                     flip_onset = Screen('Flip', wPtr);
                     

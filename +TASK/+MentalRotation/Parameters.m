@@ -15,7 +15,7 @@ p = struct; % This structure will contain all task specific parameters, such as 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 3D Tetris
 
-p.cube_segment = [1 1 1 1] * 4;
+p.cube_segment = [4 3 4 3];
 p.angle        = [0 60]; % degees == difficulty level
 p.num_tetris   = 10;
 
@@ -31,7 +31,6 @@ p.durFixation = [5 6]; % [min max] seconds
 switch OperationMode
     case 'FastDebug'
         p.num_tetris  = 2;
-%         p.durTetris   = 1;
         p.durFixation = [0.1 0.1];
     case 'RealisticDebug'
         

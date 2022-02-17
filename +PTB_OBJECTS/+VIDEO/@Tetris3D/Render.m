@@ -38,7 +38,7 @@ glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 0.0 0.0 0.0  1.0 ]);
 glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, 30);
 glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.0 0.0 0.0  1.0 ]);
 % Set thickness of reference lines:
-glLineWidth(4.0);
+glLineWidth(2.0);
 self.drawCubeWired(tetris_axis, 1.01)
 % glutSolidSphere(1.1,100,100)
 glPopMatrix();

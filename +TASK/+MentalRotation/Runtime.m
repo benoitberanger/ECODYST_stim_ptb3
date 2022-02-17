@@ -25,7 +25,9 @@ try
     wPtr        = S.PTB.Video.wPtr;
     wRect       = S.PTB.Video.wRect;
     slack       = S.PTB.Video.slack;
-    ESCAPE      = S.Keybinds.Stop_Escape;
+    KEY_ESCAPE  = S.Keybinds.Stop_Escape;
+    KEY_Same    = S.Keybinds.Same;
+    KEY_Mirror  = S.Keybinds.Mirror;
     if S.MovieMode, moviePtr = S.moviePtr; end
     
     
@@ -147,6 +149,9 @@ try
     Screen('EndOpenGL', wPtr);
     
     
+    % The rest of OpenGL stuff will be done in the Tetris3D object as a method
+    
+    
     %% GO
     
     EXIT = false;
@@ -204,7 +209,7 @@ try
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
                     if keyIsDown
-                        EXIT = keyCode(ESCAPE);
+                        EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
                     end
                     
@@ -220,8 +225,30 @@ try
                 
             case 'Trial' % ------------------------------------------------
                 
-                % Draw
-                %                 TETRIS3D.Render(tetris)
+                % Perspective hack : render L at center of screen, save
+                % image, render R at center of screen, save image, re-draw
+                % both on Left and Right side of the screen
+                
+                rotatev = [0 1 1];
+                theta = angle;
+                
+                TETRIS3D.Render(+tetris, theta, rotatev)
+                TETRIS3D.Capture('L')
+                if     strcmp(condition,'same'  )
+                    TETRIS3D.Render(+tetris, theta, rotatev)
+                elseif strcmp(condition,'mirror')
+                    TETRIS3D.Render(-tetris, theta, rotatev)
+                else
+                    error('???')
+                end
+                TETRIS3D.Capture('R')
+                
+                glClear();
+                Screen('DrawTexture', wPtr, TETRIS3D.texture_L, [], CenterRectOnPoint(TETRIS3D.img_L_rect, wRect(3)*1/4, wRect(4)/2))
+                Screen('DrawTexture', wPtr, TETRIS3D.texture_R, [], CenterRectOnPoint(TETRIS3D.img_R_rect, wRect(3)*3/4, wRect(4)/2))
+                Screen('Close', TETRIS3D.texture_L);
+                Screen('Close', TETRIS3D.texture_R);
+                
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                 
                 % Flip at the right moment
@@ -242,38 +269,49 @@ try
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = prev_onset + evt_duration - slack;
                 
-                % Initialize amount and direction of rotation
-                theta=0;
-                rotatev=[ 0 0 1 ];
+                %                 % Initialize amount and direction of rotation
+                %                 theta=0;
+                %                 rotatev=[ 0 0 1 ];
+                has_responded = 0;
                 while secs < next_onset
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
                     if keyIsDown
-                        EXIT = keyCode(ESCAPE);
+                        EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
+                        
+                        if keyCode(KEY_Same)
+                            subj_resp = 'same';
+                            has_responded = 1;
+                        end
+                        if keyCode(KEY_Mirror)
+                            subj_resp = 'mirror';
+                            has_responded = 1;
+                        end
+                        
+                        if has_responded
+                            RT = secs - real_onset;
+                            resp_ok = strcmp(subj_resp, condition);
+                            BR.AddEvent({trial condition tetris RT subj_resp resp_ok})
+                            break
+                        end
+                        
                     end
                     
-                    % Draw
-                    % Calculate rotation angle for next frame:
-                    theta=mod(theta+0.2,360);
-                    rotatev=rotatev+0.1*[ sin((pi/180)*theta) sin((pi/180)*2*theta) sin((pi/180)*theta/5) ];
-                    rotatev=rotatev/sqrt(sum(rotatev.^2));
+                    %                     % Calculate rotation angle for next frame:
+                    %                     theta=mod(theta+0.2,360);
+                    %                     rotatev=rotatev+0.1*[ sin((pi/180)*theta) sin((pi/180)*2*theta) sin((pi/180)*theta/5) ];
+                    %                     rotatev=rotatev/sqrt(sum(rotatev.^2));
+                    %                     TETRIS3D.Render(tetris, theta, rotatev)
+                    %                     flip_onset = Screen('Flip', wPtr);
                     
-                    TETRIS3D.Render(tetris, theta, rotatev)
-                    TETRIS3D.Capture('R')
-                    TETRIS3D.Render(tetris, theta, rotatev)
-                    TETRIS3D.Capture('L')
-                    glClear();
-                    
-                    Screen('DrawTexture', wPtr, TETRIS3D.texture_L, [], CenterRectOnPoint(TETRIS3D.img_L_rect, wRect(3)*1/4, wRect(4)/2))
-                    Screen('DrawTexture', wPtr, TETRIS3D.texture_R, [], CenterRectOnPoint(TETRIS3D.img_R_rect, wRect(3)*3/4, wRect(4)/2))
-                    Screen('Close', TETRIS3D.texture_L);
-                    Screen('Close', TETRIS3D.texture_R);
-                    
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
-                    flip_onset = Screen('Flip', wPtr);
-                    
+
+
                 end % while
+                
+                if ~has_responded
+                    BR.AddEvent({trial condition tetris -1 '' ''})
+                end
                 
                 
             otherwise % ---------------------------------------------------

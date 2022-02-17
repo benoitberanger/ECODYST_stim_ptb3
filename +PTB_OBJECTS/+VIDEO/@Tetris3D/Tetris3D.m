@@ -6,8 +6,8 @@ classdef Tetris3D < PTB_OBJECTS.VIDEO.Base
     properties
         
         % Parameters
-        segment_length               % vector integer : 1, 2 , 3, 4 ...
-        camera_pos      = zeros(0,3) % [X Y Z] position in OpenGL
+        segment_length  (1,:) double {mustBeInteger,mustBePositive}
+        camera_pos      (1,1) PTB_OBJECTS.GEOMETRY.Point
         
         % Internal variables
         tex_cubeface                 % vector containing pointer to OpenGL texture

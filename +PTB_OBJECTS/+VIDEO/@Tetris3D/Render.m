@@ -15,13 +15,13 @@ cam_center = self.getBarycenter(tetris_axis);
 % cam_center = [0 0 0];
 
 gluLookAt(...
-    cam_center(1)+self.camera_pos(1), cam_center(2)+self.camera_pos(2), cam_center(3)+self.camera_pos(3), ...
-    cam_center(1)                   , cam_center(2)                   , cam_center(3)                   , ...
+    cam_center.x+self.camera_pos.x, cam_center.y+self.camera_pos.y, cam_center.z+self.camera_pos.z, ...
+    cam_center.x                   , cam_center.y                   , cam_center.z                , ...
     0,1,0); % axis Y is the "up" axis
 
-glTranslatef( cam_center(1),  cam_center(2),  cam_center(3));
+glTranslatef( cam_center.x,  cam_center.y,  cam_center.z);
 glRotatef(theta,rotatev(1),rotatev(2),rotatev(3));
-glTranslatef(-cam_center(1), -cam_center(2), -cam_center(3));
+glTranslatef(-cam_center.x, -cam_center.y, -cam_center.z);
 
 glPushMatrix();
 glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.5 0.5 0.5  1.0 ]);

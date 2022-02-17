@@ -28,4 +28,6 @@ end
 weights = self.segment_length; % the weigth is the length of each segment
 coords = sum( middles.*weights' ) / sum(weights); % weigted sum
 
+coords = PTB_OBJECTS.GEOMETRY.Point(coords);
+
 end % function

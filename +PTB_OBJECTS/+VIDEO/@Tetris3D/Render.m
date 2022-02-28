@@ -1,4 +1,5 @@
 function Render( self, tetris_axis, theta, rotatev )
+% tetris_axis = [+1 +3 -2 -1] means +X +Z -Y -X
 global GL
 Screen('BeginOpenGL', self.wPtr);
 

@@ -65,6 +65,21 @@ classdef Point < handle
             xyz = [self.x ; self.y ; self.z];
         end
         
+        
+        % -----------------------------------------------------------------
+        %                           operators
+        % -----------------------------------------------------------------
+        
+        function new = plus(obj1, obj2)
+            class_name = class(obj1);
+            new = feval(class_name, obj1.xyz + obj2.xyz);
+        end
+        
+        function new = minus(obj1, obj2)
+            class_name = class(obj1);
+            new = feval(class_name, obj1.xyz - obj2.xyz);
+        end
+        
     end % methods
     
     

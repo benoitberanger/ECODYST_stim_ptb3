@@ -1,4 +1,5 @@
 function drawCubeTextured( self, tetris_axis )
+% tetris_axis = [+1 +3 -2 -1] means +X +Z -Y -X
 global GL
 
 % Enable 2D texture mapping, so the faces of the cube will show some nice

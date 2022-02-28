@@ -1,4 +1,5 @@
 function coords = getBarycenter( self, tetris_axis )
+% tetris_axis = [+1 +3 -2 -1] means +X +Z -Y -X
 
 % empty array that will contain the middle point of each segement
 middles = NaN(length(tetris_axis),3);

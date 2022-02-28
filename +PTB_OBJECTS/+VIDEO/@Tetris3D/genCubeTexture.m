@@ -12,7 +12,7 @@ for i = 1 : 6
     % Enable i'th texture by binding it:
     glBindTexture(GL.TEXTURE_2D,self.tex_cubeface(i));
     
-    img = max(-5,min(randn(px,px),5)); % [-5 +5]
+    img = max(-5,min(randn(px,px),+5)); % [-5 +5]
     img = 127 * img / 5 + 127;         % [0 255]
     img = repmat (img, [1 1 3]);       % standard [h, w, rgb]
     img = permute(img, [3 2 1]);       % opengl : [rgb, h, w]

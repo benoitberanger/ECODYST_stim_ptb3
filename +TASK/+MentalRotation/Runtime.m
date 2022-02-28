@@ -156,6 +156,7 @@ try
     
     EXIT = false;
     secs = GetSecs();
+    n_resp_ok = 0;
     
     % Loop over the EventPlanning
     nEvents = size( EP.Data , 1 );
@@ -256,7 +257,7 @@ try
                 real_onset = Screen('Flip', wPtr, desired_onset);
                 prev_onset = real_onset;
                 
-                fprintf('#trial=%2d   angle=%2d   condition=%6s   tetris=%s \n',...
+                fprintf('#trial=%2d   angle=%2d   condition=%6s   tetris=%s   ',...
                     trial,...
                     angle,...
                     condition,...
@@ -292,7 +293,16 @@ try
                         if has_responded
                             RT = secs - real_onset;
                             resp_ok = strcmp(subj_resp, condition);
+                            n_resp_ok = n_resp_ok + resp_ok;
                             BR.AddEvent({trial condition tetris RT subj_resp resp_ok})
+                            
+                            fprintf('RT=%5.fms   subj_resp=%6s   resp_ok=%2d (%3d%%)\n',...
+                                round(RT * 1000),...
+                                subj_resp,...
+                                resp_ok,...
+                                round(100*n_resp_ok / trial) ...
+                                )
+                            
                             break
                         end
                         
@@ -305,12 +315,18 @@ try
                     %                     TETRIS3D.Render(tetris, theta, rotatev)
                     %                     flip_onset = Screen('Flip', wPtr);
                     
-
-
+                    
+                    
                 end % while
                 
                 if ~has_responded
                     BR.AddEvent({trial condition tetris -1 '' ''})
+                    fprintf('RT=%5.fms   subj_resp=%6s   resp_ok=%2d (%3d%%)\n',...
+                        -1,...
+                        '',...
+                        -1,...
+                        round(100*n_resp_ok / trial) ...
+                        )
                 end
                 
                 

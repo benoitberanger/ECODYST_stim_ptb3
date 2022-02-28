@@ -230,21 +230,19 @@ try
                 % image, render R at center of screen, save image, re-draw
                 % both on Left and Right side of the screen
                 
-                rotatev = [0 1 1];
-                theta = angle;
-                
-                TETRIS3D.Render(+tetris, theta, rotatev)
+                TETRIS3D.    Render(+tetris, p.Tetris3D.InitialRotAngle        , p.Tetris3D.InitialRotVect)
                 TETRIS3D.Capture('L')
                 if     strcmp(condition,'same'  )
-                    TETRIS3D.Render(+tetris, theta, rotatev)
+                    TETRIS3D.Render(+tetris, p.Tetris3D.InitialRotAngle + angle, p.Tetris3D.InitialRotVect)
                 elseif strcmp(condition,'mirror')
-                    TETRIS3D.Render(-tetris, theta, rotatev)
+                    TETRIS3D.Render(-tetris, p.Tetris3D.InitialRotAngle + angle, p.Tetris3D.InitialRotVect)
                 else
                     error('???')
                 end
                 TETRIS3D.Capture('R')
                 
                 glClear();
+                FIXATIONCROSS.Draw();
                 Screen('DrawTexture', wPtr, TETRIS3D.texture_L, [], CenterRectOnPoint(TETRIS3D.img_L_rect, wRect(3)*1/4, wRect(4)/2))
                 Screen('DrawTexture', wPtr, TETRIS3D.texture_R, [], CenterRectOnPoint(TETRIS3D.img_R_rect, wRect(3)*3/4, wRect(4)/2))
                 Screen('Close', TETRIS3D.texture_L);

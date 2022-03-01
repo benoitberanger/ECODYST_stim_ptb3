@@ -20,8 +20,6 @@ p.nBlock     = 3;     % repetition of each x-back block
 p.catchRatio = 0.20;  % percentage of catch
 p.nCatch     = 5;     % catch items per block
 
-nStim = round(p.nCatch * 1/p.catchRatio);
-
 p.availLetter{1} = { 'B' 'N' 'D' 'Q' 'G' 'S' 'J' 'V' };
 p.availLetter{2} = { 'C' 'P' 'F' 'R' 'H' 'T' 'L'  };
 % this is seperated into 2 lists, to help psedo-random setup
@@ -40,7 +38,12 @@ p.durRest        = [8 8]; % [min max] for the jitter
 
 switch OperationMode
     case 'FastDebug'
-        
+        p.nBlock     = 1;
+        p.nCatch     = 3;
+        p.durInstruction = 1.0;
+        p.durStim        = 0.2;
+        p.durDelay       = 0.5;
+        p.durRest        = [0.5 0.5];
     case 'RealisticDebug'
         
     case 'Acquisition'
@@ -63,7 +66,9 @@ p = TASK.Graphics( p );
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Define a planning <--- paradigme
 
+nStim = round(p.nCatch * 1/p.catchRatio);
 block_order = repmat(p.nBack, [1 p.nBlock]);
+p.nTrials = length(block_order) * nStim;
 
 blocks(length(block_order)) = struct;
 

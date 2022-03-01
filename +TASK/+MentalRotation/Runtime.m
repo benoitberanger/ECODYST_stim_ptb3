@@ -14,7 +14,7 @@ try
     
     %% Initialize stim objects
     
-    FIXATIONCROSS = TASK.MentalRotation.PREPARE.FixationCross();
+    FIXATIONCROSS = TASK.               PREPARE.FixationCross();
     TETRIS3D      = TASK.MentalRotation.PREPARE.Tetris3D     ();
     
     

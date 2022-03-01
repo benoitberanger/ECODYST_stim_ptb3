@@ -15,7 +15,13 @@ S.ER.AddStartTime( 'StartTime' , 0 );
 
 %% Behaviour recorder
 
-S.BR = EventRecorder({'trial#' 'condition' 'tetris[4]' 'RT(s)' 'subj_resp' 'resp_ok'}, S.TaskParam.nTrials);
+switch S.Task
+    
+    case 'MentalRotation'
+        S.BR = EventRecorder({'trial#' 'condition' 'tetris[4]' 'RT(s)' 'subj_resp' 'resp_ok'}, S.TaskParam.nTrials);
+    case 'NBack'
+        S.BR = EventRecorder({'trial#' 'block#' 'stim#' 'content' 'iscatch' 'RT(s)'}, S.TaskParam.nTrials);
+end
 
 
 %% Prepare the keylogger, including MRI triggers

@@ -17,6 +17,13 @@ try
                 'Trial'
                 };
             
+        case 'NBack'
+            names = {
+                'Rest'
+                'B0'
+                'B2'
+                };
+            
         case 'EyelinkCalibration'
             names = {};
             

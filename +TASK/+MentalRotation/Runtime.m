@@ -230,18 +230,21 @@ try
                 % image, render R at center of screen, save image, re-draw
                 % both on Left and Right side of the screen
                 
-                TETRIS3D.    Render(       tetris, p.Tetris3D.InitialRotAngle        , p.Tetris3D.InitialRotVect)
-                TETRIS3D.Capture('L')
-                if     strcmp(condition,'same'  )
-                    TETRIS3D.Render(       tetris, p.Tetris3D.InitialRotAngle + angle, p.Tetris3D.InitialRotVect)
-                elseif strcmp(condition,'mirror')
-                    mirror_tetris = tetris;
-                    x_idx = abs(mirror_tetris) == 1; % in OpenGL, 'left right' axis is X
-                    mirror_tetris(x_idx) = -mirror_tetris(x_idx);
-                    TETRIS3D.Render(mirror_tetris, p.Tetris3D.InitialRotAngle + angle, p.Tetris3D.InitialRotVect)
-                else
-                    error('???')
+                switch condition
+                    case 'same'
+                        is_mirror = 0;
+                    case 'mirror'
+                        is_mirror = 1;
+                    otherwise
+                        error('???')
                 end
+                                
+                % LEFT
+                TETRIS3D.Render (tetris,     0,         0)
+                TETRIS3D.Capture('L')
+                                
+                % RIGHT
+                TETRIS3D.Render (tetris, angle, is_mirror)
                 TETRIS3D.Capture('R')
                 
                 glClear();

@@ -14,8 +14,8 @@ p.Tetris3D.Camera_pos    = [10 10 10];  % [X Y Z] OpenGL coordinates
 % IMPORTANT NOTE : material (the cube) color & lighting paramters are
 % stored directly in @Tetris3D.Render() method, they are too many
 % paramters...
-p.Tetris3D.InitialRotAngle = 30;      % degree
 p.Tetris3D.InitialRotVect  = [0 1 1]; % [X Y Z] OpenGL coordinates
+p.Tetris3D.InitialRotAngle = 30;      % degree
 
 p.Text.SizeInstruction = 0.10;              % TextSize = ScreenY_px * Size
 p.Text.SizeStim        = 0.20;              % TextSize = ScreenY_px * Size

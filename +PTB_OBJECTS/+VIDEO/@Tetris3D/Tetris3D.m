@@ -6,11 +6,13 @@ classdef Tetris3D < PTB_OBJECTS.VIDEO.Base
     properties
         
         % Parameters
-        segment_length  (1,:) double {mustBeInteger,mustBePositive}
-        camera_pos      (1,1) PTB_OBJECTS.GEOMETRY.Point
+        segment_length       (1,:) double {mustBeInteger,mustBePositive}
+        camera_pos           (1,1) PTB_OBJECTS.GEOMETRY.Point
+        init_rotation_vector (1,1) PTB_OBJECTS.GEOMETRY.Point % yeah I know, its vector, not a point, but for the moment, the object behaviour works...
+        init_rotation_angle  (1,1) double
         
         % Internal variables
-        tex_cubeface                 % vector containing pointer to OpenGL texture
+        tex_cubeface  % vector containing pointer to OpenGL texture
         cube_vertex
         cube_face
         cube_normal
@@ -21,7 +23,7 @@ classdef Tetris3D < PTB_OBJECTS.VIDEO.Base
         img_L_rect (1,4) double
         img_R_rect (1,4) double
         
-        texture_L
+        texture_L % PTB texture pointer
         texture_R
         
     end % properties

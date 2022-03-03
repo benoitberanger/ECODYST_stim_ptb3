@@ -1,4 +1,4 @@
-function Render( self, tetris_axis, theta, rotatev )
+function Render( self, tetris_axis, angle, is_mirror )
 % tetris_axis = [+1 +3 -2 -1] means +X +Z -Y -X
 global GL
 Screen('BeginOpenGL', self.wPtr);
@@ -12,16 +12,36 @@ glClear();
 glMatrixMode(GL.MODELVIEW);
 glLoadIdentity();
 
+% mirror is on X axis, which is Left-Right 
+tetris_axis = self.applyMirror(tetris_axis,is_mirror);
+
 cam_center = self.getBarycenter(tetris_axis);
 % cam_center = [0 0 0];
 
+% continue mirrorize
+camera_pos = PTB_OBJECTS.GEOMETRY.Point(self.camera_pos.xyz);
+init_rotation_angle = self.init_rotation_angle;
+switch is_mirror
+    case 0
+        % pass
+    case 1
+        camera_pos.x        = -camera_pos.x;
+        init_rotation_angle = -init_rotation_angle;
+    otherwise
+        error('???')
+end
+
 gluLookAt(...
-    cam_center.x+self.camera_pos.x, cam_center.y+self.camera_pos.y, cam_center.z+self.camera_pos.z, ...
-    cam_center.x                  , cam_center.y                  , cam_center.z                , ...
+    cam_center.x+camera_pos.x, cam_center.y+camera_pos.y, cam_center.z+camera_pos.z, ...
+    cam_center.x             , cam_center.y             , cam_center.z             , ...
     0,1,0); % axis Y is the "up" axis
 
 glTranslatef( cam_center.x,  cam_center.y,  cam_center.z);
-glRotatef(theta,rotatev(1),rotatev(2),rotatev(3));
+glRotatef(init_rotation_angle + angle,...
+    self.init_rotation_vector.x,...
+    self.init_rotation_vector.y,...
+    self.init_rotation_vector.z ...
+    );
 glTranslatef(-cam_center.x, -cam_center.y, -cam_center.z);
 
 glPushMatrix();

@@ -356,7 +356,7 @@ try
     
     %% End of task execution stuff
     
-    TETRIS3D.deleteTextures();
+    if ~EXIT, TETRIS3D.deleteTextures(); end
     
     % Save some values
     S.StartTime = StartTime;

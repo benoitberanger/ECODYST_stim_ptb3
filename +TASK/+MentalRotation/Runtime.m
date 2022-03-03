@@ -167,7 +167,7 @@ try
         evt_onset     = EP.Data{evt,columns.onset_s_};
         evt_duration  = EP.Data{evt,columns.duration_s_};
         trial         = EP.Data{evt,columns.iTrial};
-        angle         = EP.Data{evt,columns.angle____};
+        angle         = EP.Data{evt,columns.angle_deg_};
         condition     = EP.Data{evt,columns.condition};
         tetris        = EP.Data{evt,columns.tetris};
         

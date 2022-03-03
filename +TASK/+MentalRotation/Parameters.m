@@ -137,7 +137,7 @@ event_list(:,3) = num2cell(tetris_list,2);
 %% Build planning
 
 % Create and prepare
-header = { 'event_name', 'onset(s)', 'duration(s)', 'iTrial', 'angle(°)', 'condition', 'tetris'};
+header = { 'event_name', 'onset(s)', 'duration(s)', 'iTrial', 'angle(deg)', 'condition', 'tetris'};
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration

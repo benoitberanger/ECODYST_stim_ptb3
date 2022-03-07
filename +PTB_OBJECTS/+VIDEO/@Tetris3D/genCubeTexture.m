@@ -3,7 +3,7 @@ global GL
 Screen('BeginOpenGL', self.wPtr);
 
 
-px = 32;
+px = self.nPixel_cubeface;
 
 self.tex_cubeface = glGenTextures(6);
 

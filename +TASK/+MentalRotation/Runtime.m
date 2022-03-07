@@ -126,22 +126,22 @@ try
     
     glEnable(GL.LIGHT0);
     
-    glLightfv(GL.LIGHT0, GL.AMBIENT , [0.1 0.1 0.1  1.0]);
-    glLightfv(GL.LIGHT0, GL.DIFFUSE , [1.0 1.0 1.0  1.0]);
-    glLightfv(GL.LIGHT0, GL.SPECULAR, [1.0 1.0 1.0  1.0]);
+    glLightfv(GL.LIGHT0, GL.AMBIENT , p.Tetris3D.LIGHT0.AMBIANT);
+    glLightfv(GL.LIGHT0, GL.DIFFUSE , p.Tetris3D.LIGHT0.DIFFUSE);
+    glLightfv(GL.LIGHT0, GL.SPECULAR, p.Tetris3D.LIGHT0.SPECULAR);
     
-    glLightfv(GL.LIGHT0,GL.POSITION,[ p.Tetris3D.LIGHT0_pos p.Tetris3D.LIGHT0_is_pt ]);
+    glLightfv(GL.LIGHT0,GL.POSITION,[ p.Tetris3D.LIGHT0.pos p.Tetris3D.LIGHT0.is_pt ]);
     
     
     % LIGHT1 --------------------------------------------------------------
     
     glEnable(GL.LIGHT1);
     
-    glLightfv(GL.LIGHT1, GL.AMBIENT , [0.0 0.0 0.0  1.0]);
-    glLightfv(GL.LIGHT1, GL.DIFFUSE , [0.2 0.2 0.2  1.0]);
-    glLightfv(GL.LIGHT1, GL.SPECULAR, [0.0 0.0 0.0  1.0]);
+    glLightfv(GL.LIGHT1, GL.AMBIENT , p.Tetris3D.LIGHT1.AMBIANT);
+    glLightfv(GL.LIGHT1, GL.DIFFUSE , p.Tetris3D.LIGHT1.DIFFUSE);
+    glLightfv(GL.LIGHT1, GL.SPECULAR, p.Tetris3D.LIGHT1.SPECULAR);
     
-    glLightfv(GL.LIGHT1, GL.POSITION, [ p.Tetris3D.LIGHT1_pos p.Tetris3D.LIGHT1_is_pt ]);
+    glLightfv(GL.LIGHT1, GL.POSITION, [ p.Tetris3D.LIGHT1.pos p.Tetris3D.LIGHT1.is_pt ]);
     
     
     % Finish OpenGL rendering into PTB window. This will switch back to the
@@ -218,7 +218,7 @@ try
                     FIXATIONCROSS.Draw();
                     if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                     
-                    flip_onset = Screen('Flip', wPtr);
+                    % flip_onset = Screen('Flip', wPtr);
                     
                     
                 end % while

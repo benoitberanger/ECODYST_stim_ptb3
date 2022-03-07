@@ -45,22 +45,22 @@ glRotatef(init_rotation_angle + angle,...
 glTranslatef(-cam_center.x, -cam_center.y, -cam_center.z);
 
 glPushMatrix();
-glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.5 0.5 0.5  1.0 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 1.0 1.0 1.0  1.0 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, 30);
-glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 1.0 1.0 1.0  1.0 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT  , self.TexturedCube_AMBIENT  );
+glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE  , self.TexturedCube_DIFFUSE  );
+glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, self.TexturedCube_SHININESS);
+glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR , self.TexturedCube_SPECULAR );
 % glutSolidSphere(1.1,100,100)
 self.drawCubeTextured(tetris_axis); % cube size is 1.000
 glPopMatrix();
 
 glPushMatrix();
-glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT, [ 0.0 0.0 0.0  1.0 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE, [ 0.0 0.0 0.0  1.0 ]);
-glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, 30);
-glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR,[ 0.0 0.0 0.0  1.0 ]);
+glMaterialfv(GL.FRONT_AND_BACK,GL.AMBIENT  , self.WiredCube_AMBIENT  );
+glMaterialfv(GL.FRONT_AND_BACK,GL.DIFFUSE  , self.WiredCube_DIFFUSE  );
+glMaterialfv(GL.FRONT_AND_BACK,GL.SHININESS, self.WiredCube_SHININESS);
+glMaterialfv(GL.FRONT_AND_BACK,GL.SPECULAR , self.WiredCube_SPECULAR );
 % Set thickness of reference lines:
-glLineWidth(2.0);
-self.drawCubeWired(tetris_axis, 1.01)
+glLineWidth(self.WiredCube_LineWidth);
+self.drawCubeWired(tetris_axis, self.WiredCube_Size)
 % glutSolidSphere(1.1,100,100)
 glPopMatrix();
 

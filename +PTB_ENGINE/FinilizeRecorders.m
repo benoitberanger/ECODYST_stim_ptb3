@@ -8,6 +8,8 @@ S.ER.BuildGraph();
 S.ER.MakeBlocks();
 S.ER.BuildGraph('block');
 
+S.BR.ClearEmptyEvents();
+
 % KeyLogger => passive recording of key inputs (including MRI triggers)
 S.KL.GetQueue();
 S.KL.Stop();

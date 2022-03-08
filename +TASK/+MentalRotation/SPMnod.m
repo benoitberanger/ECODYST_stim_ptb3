@@ -56,7 +56,7 @@ try
     
     
     %% Add Clicks to SPM model input
-        
+    
     keys = KbName(struct2array(S.Keybinds.TaskSpecific));
     
     for f = 1:length(keys)
@@ -71,7 +71,7 @@ try
     for f = 1:length(keys)
         
         count = count + 1 ;
-                
+        
         if ~isempty(S.KL.KbEvents{click_spot.(keys{f}),2})
             click_idx = cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(:,2)) == 1;
             click_idx = find(click_idx);
@@ -95,6 +95,16 @@ try
     durations{num.Click} = click_duration;
     
     
+    %% data correction
+    
+    BehaviorData.subj_resp_num = double(strcmp(BehaviorData.subj_resp,'mirror'));
+    
+    trial_to_correct = BehaviorData.RT_s_ < 0;
+    BehaviorData.RT_s_        (trial_to_correct) = mean(BehaviorData.RT_s_        (~trial_to_correct));
+    BehaviorData.subj_resp_num(trial_to_correct) = mean(BehaviorData.subj_resp_num(~trial_to_correct));
+    BehaviorData.resp_ok      (trial_to_correct) = mean(BehaviorData.resp_ok      (~trial_to_correct));
+    
+    
     %% Parmetric modulation
     
     % time modulation : none
@@ -105,29 +115,32 @@ try
     
     pmod = struct('name',{''},'param',{},'poly',{});
     
-    % Trial is the second onset
-    
     % condition = same vs mirror
     pmod(2).name {1} = 'condition__same0_mirror1';
     pmod(2).param{1} = strcmp(BehaviorData.condition,'mirror');
+    pmod(2).param{1} = pmod(2).param{1} - mean(pmod(2).param{1});
     pmod(2).poly {1} = 1;
     
     % angle
     pmod(2).name {2} = 'angle';
     pmod(2).param{2} = BehaviorData.angle_deg_;
+    pmod(2).param{2} = pmod(2).param{2} - mean(pmod(2).param{2});
     pmod(2).poly {2} = 1;
     
     % RT
     pmod(2).name {3} = 'RT';
     pmod(2).param{3} = BehaviorData.RT_s_;
+    pmod(2).param{3} = pmod(2).param{3} - mean(pmod(2).param{3});
     pmod(2).poly {3} = 1;
     
     pmod(2).name {4} = 'subjresp__same0_mirror1';
-    pmod(2).param{4} = strcmp(BehaviorData.subj_resp,'mirror');
+    pmod(2).param{4} = BehaviorData.subj_resp_num;
+    pmod(2).param{4} = pmod(2).param{4} - mean(pmod(2).param{4});
     pmod(2).poly {4} = 1;
     
     pmod(2).name {5} = 'respok';
     pmod(2).param{5} = double(BehaviorData.resp_ok);
+    pmod(2).param{5} = pmod(2).param{5} - mean(pmod(2).param{5});
     pmod(2).poly {5} = 1;
     
     

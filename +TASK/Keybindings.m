@@ -4,11 +4,11 @@ global S
 switch S.Task
     
     case 'MentalRotation'
-        S.Keybinds.Same     = KbName('RightArrow');
-        S.Keybinds.Mirror   = KbName('LeftArrow');
+        S.Keybinds.TaskSpecific.Same     = KbName('RightArrow');
+        S.Keybinds.TaskSpecific.Mirror   = KbName('LeftArrow');
         
     case 'NBack'
-        S.Keybinds.Catch    = KbName('RightArrow');
+        S.Keybinds.TaskSpecific.Catch    = KbName('RightArrow');
         
 end
 

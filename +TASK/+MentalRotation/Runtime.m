@@ -27,9 +27,9 @@ try
     wPtr        = S.PTB.Video.wPtr;
     wRect       = S.PTB.Video.wRect;
     slack       = S.PTB.Video.slack;
-    KEY_ESCAPE  = S.Keybinds.Stop_Escape;
-    KEY_Same    = S.Keybinds.Same;
-    KEY_Mirror  = S.Keybinds.Mirror;
+    KEY_ESCAPE  = S.Keybinds.Common.Stop_Escape;
+    KEY_Same    = S.Keybinds.TaskSpecific.Same;
+    KEY_Mirror  = S.Keybinds.TaskSpecific.Mirror;
     if S.MovieMode, moviePtr = S.moviePtr; end
     
     

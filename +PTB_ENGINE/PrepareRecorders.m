@@ -24,8 +24,8 @@ S.ER.AddStartTime( 'StartTime' , 0 );
 KbName('UnifyKeyNames');
 
 S.KL = KbLogger( ...
-    struct2array(S.Keybinds)         ,...
-    KbName(struct2array(S.Keybinds)) );
+    [       struct2array(S.Keybinds.Common) struct2array(S.Keybinds.TaskSpecific)]   ,...
+    KbName([struct2array(S.Keybinds.Common) struct2array(S.Keybinds.TaskSpecific)]) );
 
 % Start recording events
 S.KL.Start();

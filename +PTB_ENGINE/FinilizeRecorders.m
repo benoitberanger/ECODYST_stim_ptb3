@@ -21,7 +21,7 @@ switch S.OperationMode
         S.KL.GenerateMRITrigger( TR , nbVolumes + 2, S.StartTime );
     otherwise
 end
-S.KL.ScaleTime();
+S.KL.ScaleTime(S.StartTime);
 S.KL.ComputeDurations();
 S.KL.BuildGraph();
 

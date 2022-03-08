@@ -11,7 +11,7 @@ try
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
-    S.BR = EventRecorder({'trial#' 'condition' 'tetris[4]' 'RT(s)' 'subj_resp' 'resp_ok'}, S.TaskParam.nTrials);
+    S.BR = EventRecorder({'trial#' 'condition' 'angle(deg)' 'tetris[4]' 'RT(s)' 'subj_resp' 'resp_ok'}, S.TaskParam.nTrials);
     
     
     %% Initialize stim objects
@@ -303,7 +303,7 @@ try
                             RT = secs - real_onset;
                             resp_ok = strcmp(subj_resp, condition);
                             n_resp_ok = n_resp_ok + resp_ok;
-                            BR.AddEvent({trial condition tetris RT subj_resp resp_ok})
+                            BR.AddEvent({trial condition angle tetris RT subj_resp resp_ok})
                             
                             fprintf('RT=%5.fms   subj_resp=%6s   resp_ok=%2d (%3d%%)\n',...
                                 round(RT * 1000),...
@@ -329,7 +329,7 @@ try
                 end % while
                 
                 if ~has_responded
-                    BR.AddEvent({trial condition tetris -1 '' ''})
+                    BR.AddEvent({trial condition angle tetris -1 '' ''})
                     fprintf('RT=%5.fms   subj_resp=%6s   resp_ok=%2d (%3d%%)\n',...
                         -1,...
                         '',...

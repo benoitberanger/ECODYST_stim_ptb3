@@ -1,4 +1,4 @@
-function [ names , onsets , durations ] = SPMnod
+function [ names , onsets , durations, pmod, orth, tmod ] = SPMnod
 global S
 
 %SPMNOD Build 'names', 'onsets', 'durations' for SPM
@@ -19,7 +19,8 @@ try
     durations = cell(size(names));
     
     % Shortcut
-    EventData = S.ER.BlockData;
+    EventData    = S.ER.BlockData;
+    BehaviorData = S.BR.data2table;
     
     num = [];
     for n = 1 : length(names)
@@ -92,6 +93,42 @@ try
     
     onsets   {num.Click} = click_onset;
     durations{num.Click} = click_duration;
+    
+    
+    %% Parmetric modulation
+    
+    % time modulation : none
+    tmod = num2cell(zeros(size(names)));
+    
+    % orthogonalization : none
+    orth = num2cell(zeros(size(names)));
+    
+    pmod = struct('name',{''},'param',{},'poly',{});
+    
+    % Trial is the second onset
+    
+    % condition = same vs mirror
+    pmod(2).name {1} = 'condition__same0_mirror1';
+    pmod(2).param{1} = strcmp(BehaviorData.condition,'mirror');
+    pmod(2).poly {1} = 1;
+    
+    % angle
+    pmod(2).name {2} = 'angle';
+    pmod(2).param{2} = BehaviorData.angle_deg_;
+    pmod(2).poly {2} = 1;
+    
+    % RT
+    pmod(2).name {3} = 'RT';
+    pmod(2).param{3} = BehaviorData.RT_s_;
+    pmod(2).poly {3} = 1;
+    
+    pmod(2).name {4} = 'subjresp__same0_mirror1';
+    pmod(2).param{4} = strcmp(BehaviorData.subj_resp,'mirror');
+    pmod(2).poly {4} = 1;
+    
+    pmod(2).name {5} = 'respok';
+    pmod(2).param{5} = double(BehaviorData.resp_ok);
+    pmod(2).poly {5} = 1;
     
     
 catch err

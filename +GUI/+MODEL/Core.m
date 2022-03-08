@@ -161,15 +161,15 @@ Priority(0);
 
 %% Generate SPM names onset durations
 
-[ names , onsets , durations ] = TASK.(S.Task).SPMnod();
+[ names , onsets , durations, pmod, orth, tmod ] = TASK.(S.Task).SPMnod();
 
 
 %% Save
 
 if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
     
-    save( S.DataFileFPath        , 'S', 'names', 'onsets', 'durations'); % complet file
-    save([S.DataFileFPath '_SPM']     , 'names', 'onsets', 'durations'); % light weight file with only the onsets for SPM
+    save( S.DataFileFPath        , 'S', 'names', 'onsets', 'durations', 'pmod', 'orth', 'tmod'); % complet file
+    save([S.DataFileFPath '_SPM']     , 'names', 'onsets', 'durations', 'pmod', 'orth', 'tmod'); % light weight file with only the onsets for SPM
     
 end
 
@@ -180,6 +180,9 @@ assignin('base', 'S'        , S        );
 assignin('base', 'names'    , names    );
 assignin('base', 'onsets'   , onsets   );
 assignin('base', 'durations', durations);
+assignin('base', 'pmod'     , pmod     );
+assignin('base', 'orth'     , orth     );
+assignin('base', 'tmod'     , tmod     );
 
 
 %% MAIN : End recording of Eyelink

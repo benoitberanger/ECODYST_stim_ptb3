@@ -4,12 +4,14 @@ global S GL
 try
     %% Tuning of the task
     
+    TASK.Keybindings();
     [ EP, p ] = TASK.MentalRotation.Parameters( S.OperationMode );
     
     
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
+    S.BR = EventRecorder({'trial#' 'condition' 'tetris[4]' 'RT(s)' 'subj_resp' 'resp_ok'}, S.TaskParam.nTrials);
     
     
     %% Initialize stim objects
@@ -187,7 +189,10 @@ try
                 
             case 'StopTime' % ---------------------------------------------
                 
-                StopTime = PTB_ENGINE.StopTimeEvent( StartTime, evt );
+                StopTime = GetSecs;
+                
+                % Record StopTime
+                S.ER.AddStopTime( 'StopTime' , StopTime - StartTime );
                 
                 
             case 'Rest' % -------------------------------------------------

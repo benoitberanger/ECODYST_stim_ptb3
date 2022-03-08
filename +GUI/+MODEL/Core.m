@@ -126,7 +126,7 @@ PTB_ENGINE.VIDEO.OpenWindow(); % this opens the windows and setup the drawings a
 % PTB_ENGINE.AUDIO.RECORD  .Parameters(); % <= here is all paramters
 % PTB_ENGINE.AUDIO.RECORD  .OpenDevice(); % this opens the record device (microphone) and setup according the the paramters above
 
-PTB_ENGINE.KEYBOARD.Parameters(); % <= here is all paramters
+PTB_ENGINE.KEYBOARD.Parameters(); % <= here is paramters non Task specific
 
 
 %% Everything is read, start Task

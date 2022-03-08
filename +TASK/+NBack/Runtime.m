@@ -4,12 +4,14 @@ global S
 try
     %% Tuning of the task
     
+    TASK.Keybindings();
     [ EP, p ] = TASK.NBack.Parameters( S.OperationMode );
     
     
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
+    S.BR = EventRecorder({'trial#' 'block#' 'stim#' 'content' 'iscatch' 'RT(s)'}, S.TaskParam.nTrials);
     
     
     %% Initialize stim objects
@@ -78,7 +80,10 @@ try
                 
             case 'StopTime' % ---------------------------------------------
                 
-                StopTime = PTB_ENGINE.StopTimeEvent( StartTime, evt );
+                StopTime = WaitSecs('UntilTime', StartTime + S.ER.Data{S.ER.EventCount,2} + S.EP.Data{evt-1,3} );
+                
+                % Record StopTime
+                S.ER.AddStopTime( 'StopTime' , StopTime - StartTime );
                 
                 
             case 'Rest' % -------------------------------------------------

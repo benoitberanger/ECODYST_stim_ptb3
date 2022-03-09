@@ -54,7 +54,7 @@ if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
 end
 
 DataFile_noRun  = sprintf('%s_%s', S.SubjectID, S.Task );
-S.RunNumber     = GUI.MODEL.getRunNumber( DataFile_noRun );
+S.RunNumber     = GUI.MODEL.getRunNumber( S.dirpath_SubjectID, DataFile_noRun );
 S.DataFileFPath = sprintf('%s%s_%s_%s_run%0.2d', S.dirpath_SubjectID, S.TimeStampFile, S.SubjectID, S.Task, S.RunNumber );
 S.DataFileName  = sprintf(  '%s_%s_%s_run%0.2d',                      S.TimeStampFile, S.SubjectID, S.Task, S.RunNumber );
 

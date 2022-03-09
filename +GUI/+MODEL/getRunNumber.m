@@ -1,9 +1,9 @@
-function [ RunNumber ] = getRunNumber( DataFile_noRun )
+function [ RunNumber ] = getRunNumber( dirpath_SubjectID, DataFile_noRun )
 
 % Auto-incrementation of run number
 % -------------------------------------------------------------------------
 % Fetch content of the directory
-dirContent = dir(DataFile_noRun);
+dirContent = dir(dirpath_SubjectID);
 
 % Is there file of the previous run ?
 previousRun = nan(length(dirContent)-2,1);

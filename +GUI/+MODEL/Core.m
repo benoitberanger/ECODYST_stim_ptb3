@@ -33,7 +33,7 @@ S.TimeStampFile   = datestr(now, 30                ); % yyyymmddTHHMMSS : to sor
 
 S.Task            = GUI.CONTROLLER.getTask         ( hObject );
 S.SaveMode        = GUI.CONTROLLER.getSaveMode     ( handles );
-S.Environement = GUI.CONTROLLER.getEnvironement ( handles );
+S.Environement    = GUI.CONTROLLER.getEnvironement ( handles );
 S.OperationMode   = GUI.CONTROLLER.getOperationMode( handles );
 S.MovieMode       = GUI.CONTROLLER.getMovieMode    ( handles );
 S.ScreenID        = GUI.CONTROLLER.getScreenID     ( handles );

@@ -3,7 +3,7 @@ global S
 
 switch S.Environement
     
-    case 'MRI'
+    case 'MRI' %-----------------------------------------------------------
         
         switch S.Task
             
@@ -16,7 +16,7 @@ switch S.Environement
                 
         end
         
-    case 'Keyboard'
+    case 'Keyboard' %------------------------------------------------------
         
         switch S.Task
             

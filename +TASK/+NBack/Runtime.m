@@ -248,7 +248,7 @@ try
     
     
     %% End of task execution stuff
-        
+    
     % Save some values
     S.StartTime = StartTime;
     S.StopTime  = StopTime;

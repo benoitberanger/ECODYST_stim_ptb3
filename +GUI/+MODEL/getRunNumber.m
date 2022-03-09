@@ -1,7 +1,6 @@
 function [ RunNumber ] = getRunNumber( dirpath_SubjectID, DataFile_noRun )
-
 % Auto-incrementation of run number
-% -------------------------------------------------------------------------
+
 % Fetch content of the directory
 dirContent = dir(dirpath_SubjectID);
 
@@ -24,7 +23,5 @@ if isempty(LastRunNumber)
 end
 
 RunNumber = LastRunNumber + 1;
-% -------------------------------------------------------------------------
 
 end % function
-

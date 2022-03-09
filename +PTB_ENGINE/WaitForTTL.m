@@ -26,12 +26,12 @@ if strcmp(S.OperationMode,'Acquisition')
             %
             %                 case 'MRI'
             
-            if keyCode(S.Keybinds.TTL_t) || keyCode(S.Keybinds.emulTTL_s)
+            if keyCode(S.Keybinds.Common.TTL_t) || keyCode(S.Keybinds.Common.emulTTL_s)
                 
                 disp('==> Trigger received <==')
                 break
                 
-            elseif keyCode(S.Keybinds.Stop_Escape)
+            elseif keyCode(S.Keybinds.Common.Stop_Escape)
                 
                 % Eyelink mode 'On' ?
                 if S.EyelinkMode

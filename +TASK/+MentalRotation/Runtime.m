@@ -172,6 +172,10 @@ try
         angle         = EP.Data{evt,columns.angle_deg_};
         condition     = EP.Data{evt,columns.condition};
         tetris        = EP.Data{evt,columns.tetris};
+        if evt > 1
+            prev_duration = EP.Data{evt-1,columns.duration_s_};
+        end
+        
         
         switch evt_name
             
@@ -180,12 +184,11 @@ try
                 % Draw
                 FIXATIONCROSS.Draw();
                 Screen('DrawingFinished', wPtr);
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 Screen('Flip',wPtr);
                 
                 StartTime     = PTB_ENGINE.StartTimeEvent(); % a wrapper, deals with hidemouse, eyelink, mri sync, ...
                 prev_onset    = StartTime;
-                prev_duration = 0;
                 
                 
             case 'StopTime' % ---------------------------------------------
@@ -201,18 +204,17 @@ try
                 % Draw
                 FIXATIONCROSS.Draw();
                 Screen('DrawingFinished', wPtr);
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr,round(evt_duration/S.PTB.Video.IFI)); end
                 
                 % Flip at the right moment
-                desired_onset =  prev_onset + prev_duration - slack;
-                real_onset = Screen('Flip', wPtr, desired_onset);
+                real_onset = Screen('Flip', wPtr);
                 prev_onset = real_onset;
                 
                 % Save onset
                 ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
-                next_onset = prev_onset + evt_duration - slack;
+                next_onset = prev_onset + evt_duration - slack - p.durMaxRenderTime;
                 while secs < next_onset
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
@@ -220,14 +222,6 @@ try
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
                     end
-                    
-                    % Draw
-                    FIXATIONCROSS.Draw();
-                    Screen('DrawingFinished', wPtr);
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
-                    
-                    flip_onset = Screen('Flip', wPtr);
-                    
                     
                 end % while
                 
@@ -246,11 +240,11 @@ try
                     otherwise
                         error('???')
                 end
-                                
+                
                 % LEFT
                 TETRIS3D.Render (tetris,     0,         0)
                 TETRIS3D.Capture('L')
-                                
+                
                 % RIGHT
                 TETRIS3D.Render (tetris, angle, is_mirror)
                 TETRIS3D.Capture('R')
@@ -263,7 +257,6 @@ try
                 Screen('Close', TETRIS3D.texture_R);
                 
                 Screen('DrawingFinished', wPtr);
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                 
                 % Flip at the right moment
                 desired_onset =  prev_onset + prev_duration - slack;
@@ -283,9 +276,6 @@ try
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = prev_onset + evt_duration - slack;
                 
-                %                 % Initialize amount and direction of rotation
-                %                 theta=0;
-                %                 rotatev=[ 0 0 1 ];
                 has_responded = 0;
                 while secs < next_onset
                     
@@ -321,15 +311,6 @@ try
                         
                     end
                     
-                    %                     % Calculate rotation angle for next frame:
-                    %                     theta=mod(theta+0.2,360);
-                    %                     rotatev=rotatev+0.1*[ sin((pi/180)*theta) sin((pi/180)*2*theta) sin((pi/180)*theta/5) ];
-                    %                     rotatev=rotatev/sqrt(sum(rotatev.^2));
-                    %                     TETRIS3D.Render(tetris, theta, rotatev)
-                    %                     flip_onset = Screen('Flip', wPtr);
-                    
-                    
-                    
                 end % while
                 
                 if ~has_responded
@@ -340,6 +321,9 @@ try
                         -1,...
                         round(100*n_resp_ok / trial) ...
                         )
+                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr,round(evt_duration/S.PTB.Video.IFI)); end
+                else
+                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr,round(          RT/S.PTB.Video.IFI)); end
                 end
                 
                 
@@ -356,7 +340,6 @@ try
             % Record StopTime
             ER.AddStopTime( 'StopTime', StopTime - StartTime );
             
-            sca;
             Priority(0);
             
             fprintf('ESCAPE key pressed \n');

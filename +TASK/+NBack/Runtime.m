@@ -70,7 +70,8 @@ try
                 
                 % Draw
                 FIXATIONCROSS.Draw();
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                Screen('DrawingFinished', wPtr);
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 Screen('Flip',wPtr);
                 
                 StartTime     = PTB_ENGINE.StartTimeEvent(); % a wrapper, deals with hidemouse, eyelink, mri sync, ...
@@ -90,7 +91,8 @@ try
                 
                 % Draw
                 FIXATIONCROSS.Draw();
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                Screen('DrawingFinished', wPtr);
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
@@ -112,7 +114,7 @@ try
                     
                     % Draw
                     FIXATIONCROSS.Draw();
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                     
                     flip_onset = Screen('Flip', wPtr);
                     
@@ -123,7 +125,8 @@ try
                 
                 % Draw
                 TEXT.Draw(content, 'Instruction');
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                Screen('DrawingFinished', wPtr);
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
@@ -145,7 +148,7 @@ try
                     
                     % Draw
                     TEXT.Draw(content, 'Instruction');
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                     
                     flip_onset = Screen('Flip', wPtr);
                     
@@ -156,7 +159,8 @@ try
             case 'Delay' % -------------------------------------------------
                 
                 % Draw
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                Screen('DrawingFinished', wPtr);
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
@@ -177,8 +181,8 @@ try
                     end
                     
                     % Draw
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
-                    
+                    Screen('DrawingFinished', wPtr);
+                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                     flip_onset = Screen('Flip', wPtr);
                     
                     
@@ -189,7 +193,8 @@ try
                 
                 % Draw
                 TEXT.Draw(content, 'Stim');
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
+                Screen('DrawingFinished', wPtr);
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
@@ -211,8 +216,9 @@ try
                     
                     % Draw
                     TEXT.Draw(content, 'Stim');
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                     
+                    Screen('DrawingFinished', wPtr);
+                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                     flip_onset = Screen('Flip', wPtr);
                     
                     
@@ -232,7 +238,6 @@ try
             % Record StopTime
             ER.AddStopTime( 'StopTime', StopTime - StartTime );
             
-            sca;
             Priority(0);
             
             fprintf('ESCAPE key pressed \n');

@@ -25,6 +25,12 @@ p.num_tetris   = 10;
 p.durTetris   = 10;    %           seconds
 p.durFixation = [5 6]; % [min max] seconds
 
+% In this task the 3D rendering VERY fast, but capturing the image to
+% perform the hack is VERY slow. This parameter is used to help having
+% better timings for the "Rest" event. On my dev computer, the whole
+% render+drawing time is ~80ms.
+p.durMaxRenderTime = 0.100; % seconds
+
 
 %% Debugging
 
@@ -33,7 +39,8 @@ switch OperationMode
         p.num_tetris  = 2;
         p.durFixation = [0.1 0.1];
     case 'RealisticDebug'
-        p.durFixation = [0.2 0.3];
+        p.num_tetris  = 4;
+        p.durFixation = [1.0 2.0];
     case 'Acquisition'
         % pass
     otherwise

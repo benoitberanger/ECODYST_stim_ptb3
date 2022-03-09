@@ -31,14 +31,15 @@ S.TimeStampFile   = datestr(now, 30                ); % yyyymmddTHHMMSS : to sor
 
 %% Lots of get*
 
-S.Task          = GUI.CONTROLLER.getTask         ( hObject );
-S.SaveMode      = GUI.CONTROLLER.getSaveMode     ( handles );
-S.OperationMode = GUI.CONTROLLER.getOperationMode( handles );
-S.MovieMode     = GUI.CONTROLLER.getMovieMode    ( handles );
-S.ScreenID      = GUI.CONTROLLER.getScreenID     ( handles );
-S.WindowedMode  = GUI.CONTROLLER.getWindowedMode ( handles );
-S.EyelinkMode   = GUI.CONTROLLER.getEyelinkMode  ( handles );
-S.ParPort       = GUI.CONTROLLER.getParPort      ( handles );
+S.Task            = GUI.CONTROLLER.getTask         ( hObject );
+S.SaveMode        = GUI.CONTROLLER.getSaveMode     ( handles );
+S.Environement = GUI.CONTROLLER.getEnvironement ( handles );
+S.OperationMode   = GUI.CONTROLLER.getOperationMode( handles );
+S.MovieMode       = GUI.CONTROLLER.getMovieMode    ( handles );
+S.ScreenID        = GUI.CONTROLLER.getScreenID     ( handles );
+S.WindowedMode    = GUI.CONTROLLER.getWindowedMode ( handles );
+S.EyelinkMode     = GUI.CONTROLLER.getEyelinkMode  ( handles );
+S.ParPort         = GUI.CONTROLLER.getParPort      ( handles );
 
 
 %% Subject ID & Run number
@@ -53,10 +54,10 @@ if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
     
 end
 
-DataFile_noRun  = sprintf('%s_%s', S.SubjectID, S.Task );
+DataFile_noRun  = sprintf('%s_%s_%s', S.SubjectID, S.Environement, S.Task );
 S.RunNumber     = GUI.MODEL.getRunNumber( S.dirpath_SubjectID, DataFile_noRun );
-S.DataFileFPath = sprintf('%s%s_%s_%s_run%0.2d', S.dirpath_SubjectID, S.TimeStampFile, S.SubjectID, S.Task, S.RunNumber );
-S.DataFileName  = sprintf(  '%s_%s_%s_run%0.2d',                      S.TimeStampFile, S.SubjectID, S.Task, S.RunNumber );
+S.DataFileFPath = sprintf('%s%s_%s_%s_%s_run%0.2d', S.dirpath_SubjectID, S.TimeStampFile, S.SubjectID, S.Environement, S.Task, S.RunNumber );
+S.DataFileName  = sprintf(  '%s_%s_%s_%s_run%0.2d',                      S.TimeStampFile, S.SubjectID, S.Environement, S.Task, S.RunNumber );
 
 
 %% Quick warning

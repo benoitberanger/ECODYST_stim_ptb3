@@ -58,7 +58,7 @@ else % Create the figure
     %% Panel proportions
     
     % relative proportions of each panel, from bottom to top
-    PANEL = GUI.VIEW.PanelDispatcher( [0.5 0.75 1.5 1 0.75 1.5 ] );
+    PANEL = GUI.VIEW.PanelDispatcher( [0.5 0.75 1.5 1 0.75 0.75 1.5 ] );
     
     
     %% Panel : Subject & Run
@@ -220,6 +220,61 @@ else % Create the figure
         'TooltipString','In Acquisition mode, Save mode must be engaged',...
         'HorizontalAlignment','Center',...
         'Tag',r_ns.tag,...
+        'BackgroundColor',figureBGcolor);
+    
+    
+    %% Panel : Environement
+    
+    p_env.x = PANEL.x_pos;
+    p_env.w = PANEL.x_width;
+    
+    PANEL.next();
+    p_env.y = PANEL.y_pos;
+    p_env.h = PANEL.y_height;
+    
+    handles.uipanel_Environement = uibuttongroup(handles.(gui_name),...
+        'Title','Enveironement',...
+        'Units', 'Normalized',...
+        'Position',[p_env.x p_env.y p_env.w p_env.h],...
+        'BackgroundColor',figureBGcolor);
+    
+    o_env = GUI.VIEW.ObjectDispatcher( [1 1] , 0.20 );
+    
+    % ---------------------------------------------------------------------
+    % RadioButton : MRI (fROP)
+    
+    o_env.next();
+    r_mri.x   = o_env.xpos;
+    r_mri.y   = 0.1 ;
+    r_mri.w   = o_env.xwidth;
+    r_mri.h   = 0.8;
+    r_mri.tag = 'radiobutton_Env_MRI';
+    handles.(r_mri.tag) = uicontrol(handles.uipanel_Environement,...
+        'Style','radiobutton',...
+        'Units', 'Normalized',...
+        'Position',[r_mri.x r_mri.y r_mri.w r_mri.h],...
+        'String','MRI (fORP)',...
+        'HorizontalAlignment','Center',...
+        'Tag',r_mri.tag,...
+        'BackgroundColor',figureBGcolor);
+    
+    
+    % ---------------------------------------------------------------------
+    % RadioButton : Keyboard
+    
+    o_env.next();
+    r_kb.x   = o_env.xpos;
+    r_kb.y   = 0.1 ;
+    r_kb.w   = o_env.xwidth;
+    r_kb.h   = 0.8;
+    r_kb.tag = 'radiobutton_Env_Keyboard';
+    handles.(r_kb.tag) = uicontrol(handles.uipanel_Environement,...
+        'Style','radiobutton',...
+        'Units', 'Normalized',...
+        'Position',[r_kb.x r_kb.y r_kb.w r_kb.h],...
+        'String','Keyboard',...
+        'HorizontalAlignment','Center',...
+        'Tag',r_kb.tag,...
         'BackgroundColor',figureBGcolor);
     
     

@@ -46,20 +46,18 @@ try
     EXIT = false;
     secs = GetSecs();
     n_resp_ok = 0;
+    n_catch = 0;
     
     % Loop over the EventPlanning
     nEvents = size( EP.Data , 1 );
     for evt = 1 : nEvents
         
         % Shortcuts
-        evt_name      = EP.Data{evt,columns.event_name};
-        evt_onset     = EP.Data{evt,columns.onset_s_};
-        evt_duration  = EP.Data{evt,columns.duration_s_};
-        itrial        = EP.Data{evt,columns.x_trial};
-        iblock        = EP.Data{evt,columns.x_block};
-        istim         = EP.Data{evt,columns.x_stim};
-        content       = EP.Data{evt,columns.content};
-        iscatch       = EP.Data{evt,columns.iscatch};
+        evt_name     = EP.Data{evt,columns.event_name};
+        evt_onset    = EP.Data{evt,columns.onset_s_};
+        evt_duration = EP.Data{evt,columns.duration_s_};
+        content      = EP.Data{evt,columns.content};
+        
         if evt < nEvents
             next_evt_onset = EP.Data{evt+1,columns.onset_s_};
         end
@@ -126,6 +124,8 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
+                fprintf('Instructions = %s \n', content )
+                
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
                 while secs < next_onset
@@ -137,7 +137,8 @@ try
                     end
                     
                 end % while
-                
+                clear has_responded_stim
+                clear has_responded
                 
             case 'Delay' % -------------------------------------------------
                 
@@ -156,18 +157,67 @@ try
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
+                
                 while secs < next_onset
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
                     if keyIsDown
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
+                        
+                        if exist('has_responded_stim', 'var')
+                            if has_responded_stim
+                                has_responded = 1;
+                                break
+                            elseif keyCode(KEY_Catch)
+                                has_responded = 1;
+                                RT = secs - real_onset;
+                                resp_ok = iscatch;
+                                n_resp_ok = n_resp_ok + resp_ok;
+                                break
+                            end
+                        end
+                        
                     end
                     
                 end % while
                 
+                if exist('has_responded','var')
+                    if has_responded
+                        
+                        % BR.AddEvent({trial condition angle tetris RT subj_resp resp_ok})
+                        
+                        if ~iscatch
+                            n_resp_ok = n_resp_ok - 1;
+                        end
+                        
+                        fprintf('RT=%5.fms   resp_ok=%1d (%3d%%)\n',...
+                            round(RT * 1000),...
+                            resp_ok,...
+                            round(100*n_resp_ok / n_catch) ...
+                            )
+                    else
+                        if iscatch
+                            iscatch_str = '0';
+                        else
+                            iscatch_str = '';
+                        end
+                        fprintf('RT=%5sms   resp_ok=%1s (%3d%%)\n',...
+                            '',...
+                            iscatch_str,...
+                            round(100*n_resp_ok / n_catch) ...
+                            )
+                    end
+                    clear has_responded
+                end
+                
                 
             case 'Stim' % -------------------------------------------------
+                
+                itrial  = EP.Data{evt,columns.x_trial};
+                iblock  = EP.Data{evt,columns.x_block};
+                istim   = EP.Data{evt,columns.x_stim};
+                iscatch = EP.Data{evt,columns.iscatch};
                 
                 % Draw
                 TEXT.Draw(content, 'Stim');
@@ -183,18 +233,47 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
+                if iscatch
+                    iscatch_str = '1';
+                else
+                    iscatch_str = '';
+                end
+                n_catch = n_catch + iscatch;
+                
+                fprintf('#trial=%3d   #block=%2d   #stim=%2d   content=%1s   iscatch=%1s   ',...
+                    itrial,...
+                    iblock,...
+                    istim,...
+                    content,...
+                    iscatch_str ...
+                    )
+                
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
+                
+                has_responded_stim = 0;
+                has_responded      = 0;
                 while secs < next_onset
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
                     if keyIsDown
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
+                        
+                        if keyCode(KEY_Catch)
+                            has_responded_stim = 1;
+                            break
+                        end
+                        
                     end
                     
                 end % while
                 
+                if has_responded_stim
+                    RT = secs - real_onset;
+                    resp_ok = iscatch;
+                    n_resp_ok = n_resp_ok + resp_ok;
+                end
                 
             otherwise % ---------------------------------------------------
                 
@@ -233,9 +312,9 @@ try
     switch S.OperationMode
         case 'Acquisition'
         case 'FastDebug'
-            plotDelay(EP,ER);
+            % plotDelay(EP,ER);
         case 'RealisticDebug'
-            plotDelay(EP,ER);
+            % plotDelay(EP,ER);
     end
     
     try % I really don't want to this feature to screw a standard task execution

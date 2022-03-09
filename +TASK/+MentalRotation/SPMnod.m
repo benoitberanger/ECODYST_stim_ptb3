@@ -75,6 +75,10 @@ try
         if ~isempty(S.KL.KbEvents{click_spot.(keys{f}),2})
             click_idx = cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(:,2)) == 1;
             click_idx = find(click_idx);
+            % if only 1 keypres and never released (wtf ?), need to deal with this unprobable case
+            if size(S.KL.KbEvents{click_spot.(keys{f}),2}) < 3
+                S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),3} = [];
+            end
             % the last click can be be unfinished : button down + end of stim = no button up
             if isempty(S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),3})
                 S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),3} =  S.ER.Data{end,2} - S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),1};

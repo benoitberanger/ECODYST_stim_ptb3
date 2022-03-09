@@ -179,6 +179,7 @@ try
                 
                 % Draw
                 FIXATIONCROSS.Draw();
+                Screen('DrawingFinished', wPtr);
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                 Screen('Flip',wPtr);
                 
@@ -199,6 +200,7 @@ try
                 
                 % Draw
                 FIXATIONCROSS.Draw();
+                Screen('DrawingFinished', wPtr);
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                 
                 % Flip at the right moment
@@ -221,9 +223,10 @@ try
                     
                     % Draw
                     FIXATIONCROSS.Draw();
+                    Screen('DrawingFinished', wPtr);
                     if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                     
-                    % flip_onset = Screen('Flip', wPtr);
+                    flip_onset = Screen('Flip', wPtr);
                     
                     
                 end % while
@@ -259,6 +262,7 @@ try
                 Screen('Close', TETRIS3D.texture_L);
                 Screen('Close', TETRIS3D.texture_R);
                 
+                Screen('DrawingFinished', wPtr);
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrame(wPtr,moviePtr); end
                 
                 % Flip at the right moment

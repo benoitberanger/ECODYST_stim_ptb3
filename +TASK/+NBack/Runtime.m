@@ -71,12 +71,9 @@ try
                 % Draw
                 FIXATIONCROSS.Draw();
                 Screen('DrawingFinished', wPtr);
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 Screen('Flip',wPtr);
                 
                 StartTime     = PTB_ENGINE.StartTimeEvent(); % a wrapper, deals with hidemouse, eyelink, mri sync, ...
-                prev_onset    = StartTime;
-                prev_duration = 0;
                 
                 
             case 'StopTime' % ---------------------------------------------
@@ -92,15 +89,15 @@ try
                 % Draw
                 FIXATIONCROSS.Draw();
                 Screen('DrawingFinished', wPtr);
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
                 real_onset = Screen('Flip', wPtr, desired_onset);
-                prev_onset = real_onset;
                 
                 % Save onset
                 ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
+                
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -111,13 +108,6 @@ try
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
                     end
-                    
-                    % Draw
-                    FIXATIONCROSS.Draw();
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
-                    
-                    flip_onset = Screen('Flip', wPtr);
-                    
                     
                 end % while
                 
@@ -126,15 +116,15 @@ try
                 % Draw
                 TEXT.Draw(content, 'Instruction');
                 Screen('DrawingFinished', wPtr);
-                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
                 real_onset = Screen('Flip', wPtr, desired_onset);
-                prev_onset = real_onset;
                 
                 % Save onset
                 ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
+                
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -145,13 +135,6 @@ try
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
                     end
-                    
-                    % Draw
-                    TEXT.Draw(content, 'Instruction');
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
-                    
-                    flip_onset = Screen('Flip', wPtr);
-                    
                     
                 end % while
                 
@@ -165,10 +148,11 @@ try
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
                 real_onset = Screen('Flip', wPtr, desired_onset);
-                prev_onset = real_onset;
                 
                 % Save onset
                 ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
+                
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -179,12 +163,6 @@ try
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
                     end
-                    
-                    % Draw
-                    Screen('DrawingFinished', wPtr);
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
-                    flip_onset = Screen('Flip', wPtr);
-                    
                     
                 end % while
                 
@@ -199,10 +177,11 @@ try
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
                 real_onset = Screen('Flip', wPtr, desired_onset);
-                prev_onset = real_onset;
                 
                 % Save onset
                 ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
+                
+                if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -213,14 +192,6 @@ try
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
                     end
-                    
-                    % Draw
-                    TEXT.Draw(content, 'Stim');
-                    
-                    Screen('DrawingFinished', wPtr);
-                    if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
-                    flip_onset = Screen('Flip', wPtr);
-                    
                     
                 end % while
                 

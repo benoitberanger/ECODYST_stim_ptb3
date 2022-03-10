@@ -723,8 +723,8 @@ else % Create the figure
     fprintf('\n')
     fprintf('Response buttons (fORRP 932) : \n')
     fprintf('USB \n')
-    fprintf('??? \n')
-    fprintf('HID ??? \n')
+    fprintf('HHSC - 2x1 CYL \n')
+    fprintf('HID BYGRT \n')
     fprintf('\n')
     
     

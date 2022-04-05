@@ -15,8 +15,8 @@ p = struct; % This structure will contain all task specific parameters, such as 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% 3D Tetris
 
-p.cube_segment = [4 3 4 3];
-p.angle        = [0 60]; % degees == difficulty level
+p.cube_segment = [4 3 4 3]; % IMPORTANT : keep an asymatric tetris, so there is no ambiguity
+p.angle        = [0 60 120]; % degees == difficulty level
 p.num_tetris   = 10;
 
 

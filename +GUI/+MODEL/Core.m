@@ -162,7 +162,7 @@ Priority(0);
 
 %% Generate SPM names onset durations
 
-[ names , onsets , durations, pmod, orth, tmod ] = TASK.(S.Task).SPMnod();
+[ names , onsets , durations, pmod, orth, tmod ] = TASK.(S.Task).SPMnod_parametric();
 
 
 %% Save

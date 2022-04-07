@@ -11,10 +11,12 @@ try
     names = {
         'Rest'
         'Instruction'
-        'B0'
-        'B2'
         'Click'
         };
+    
+    for nback = S.TaskParam.nBack
+        names{end+1} = sprintf('B%d', nback);
+    end
     
     % 'onsets' & 'durations' for SPM
     onsets    = cell(size(names));
@@ -43,10 +45,12 @@ try
         elseif strcmp(EventData{event,1},'Stim')
             if strfind(EventData{event-1,7}, 'X') > 0
                 onsets{num.B0} = [onsets{num.B0} ; EventData{event,2}];
-            elseif strfind(EventData{event-1,7}, '2') > 0
-                onsets{num.B2} = [onsets{num.B2} ; EventData{event,2}];
             else
-                warning('???')
+                for nback = S.TaskParam.nBack
+                    if strfind(EventData{event-1,7}, num2str(nback)) > 0
+                        onsets{num.(sprintf('B%d',nback))} = [onsets{num.(sprintf('B%d',nback))} ; EventData{event,2}];
+                    end
+                end
             end
         else
             onsets{num.(EventData{event,1})} = [onsets{num.(EventData{event,1})} ; EventData{event,2}];
@@ -65,10 +69,12 @@ try
         elseif strcmp(EventData{event,1},'Stim')
             if strfind(EventData{event-1,7}, 'X') > 0
                 durations{num.B0} = [ durations{num.B0} ; EventData{event+1,2}-EventData{event,2}];
-            elseif strfind(EventData{event-1,7}, '2') > 0
-                durations{num.B2} = [ durations{num.B2} ; EventData{event+1,2}-EventData{event,2}];
             else
-                warning('???')
+                for nback = S.TaskParam.nBack
+                    if strfind(EventData{event-1,7}, num2str(nback)) > 0
+                        durations{num.(sprintf('B%d',nback))} = [ durations{num.(sprintf('B%d',nback))} ; EventData{event+1,2}-EventData{event,2}];
+                    end
+                end
             end
         else
             durations{num.(EventData{event,1})} = [ durations{num.(EventData{event,1})} ; EventData{event+1,2}-EventData{event,2}];
@@ -77,7 +83,7 @@ try
     end
     
     
-     %% Add Clicks to SPM model input
+    %% Add Clicks to SPM model input
     
     keys = {KbName(struct2array(S.Keybinds.TaskSpecific))};
     
@@ -118,7 +124,7 @@ try
     click_duration = click_duration(i);
     
     onsets   {num.Click} = click_onset;
-    durations{num.Click} = click_duration;    
+    durations{num.Click} = click_duration;
     
     
 catch err

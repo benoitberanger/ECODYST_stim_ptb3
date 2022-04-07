@@ -11,7 +11,7 @@ try
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
-    S.BR = EventRecorder({'trial#' 'block#' 'stim#' 'content' 'iscatch' 'RT(s)'}, S.TaskParam.nTrials);
+    S.BR = EventRecorder({'trial#' 'block#' 'stim#' 'content' 'iscatch' 'RT(s)' 'resp_ok'}, S.TaskParam.nTrials);
     
     
     %% Initialize stim objects
@@ -184,9 +184,7 @@ try
                 
                 if exist('has_responded','var')
                     if has_responded
-                        
-                        % BR.AddEvent({trial condition angle tetris RT subj_resp resp_ok})
-                        
+                                                
                         if ~iscatch
                             n_resp_ok = n_resp_ok - 1;
                         end
@@ -196,6 +194,9 @@ try
                             resp_ok,...
                             round(100*n_resp_ok / n_catch) ...
                             )
+                        
+                        BR.AddEvent({itrial iblock istim stim_content iscatch RT resp_ok})
+                        
                     else
                         if iscatch
                             iscatch_str = '0';
@@ -207,7 +208,9 @@ try
                             iscatch_str,...
                             round(100*n_resp_ok / n_catch) ...
                             )
+                        BR.AddEvent({itrial iblock istim stim_content iscatch -1 ~iscatch})
                     end
+                    
                     clear has_responded
                 end
                 
@@ -218,6 +221,7 @@ try
                 iblock  = EP.Data{evt,columns.x_block};
                 istim   = EP.Data{evt,columns.x_stim};
                 iscatch = EP.Data{evt,columns.iscatch};
+                stim_content = content;
                 
                 % Draw
                 TEXT.Draw(content, 'Stim');

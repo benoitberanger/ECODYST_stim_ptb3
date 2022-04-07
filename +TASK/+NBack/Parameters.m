@@ -95,8 +95,9 @@ for iBlock = 1 : length(block_order)
         blk(position) = {'X'}; % replace the catch trials
         blocks(iBlock).instruction = 'REPONDRE A "X"';
     else
-        assert(any(diff(position) > block_order(iBlock)), 'randomization problem')
-        blk(position) = blk(position-block_order(iBlock)); % replace the catch trials
+        for pos_idx = 1:length(position)
+            blk(position(pos_idx)) = blk(position(pos_idx)-block_order(iBlock)); % replace the catch trials
+        end
         blocks(iBlock).instruction = sprintf('BLOC %d-BACK', block_order(iBlock));
     end
     

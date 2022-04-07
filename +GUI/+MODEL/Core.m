@@ -160,30 +160,60 @@ Priority(0);
 % PsychPortAudio('Close');
 
 
-%% Generate SPM names onset durations
-
-[ names , onsets , durations, pmod, orth, tmod ] = TASK.(S.Task).SPMnod_parametric();
-
-
-%% Save
-
-if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
+if exist(fullfile('+TASK',['+' S.Task],'SPMnod_parametric.m'),'file') > 0
+    %% Generate SPM names onset durations
     
-    save( S.DataFileFPath        , 'S', 'names', 'onsets', 'durations', 'pmod', 'orth', 'tmod'); % complet file
-    save([S.DataFileFPath '_SPM']     , 'names', 'onsets', 'durations', 'pmod', 'orth', 'tmod'); % light weight file with only the onsets for SPM
+    [ names , onsets , durations, pmod, orth, tmod ] = TASK.(S.Task).SPMnod_parametric();
+    
+    
+    %% Save
+    
+    if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
+        
+        save( S.DataFileFPath                   , 'S', 'names', 'onsets', 'durations', 'pmod', 'orth', 'tmod'); % complet file
+        save([S.DataFileFPath '_SPM_parametric']     , 'names', 'onsets', 'durations', 'pmod', 'orth', 'tmod'); % light weight file with only the onsets for SPM
+        
+    end
+    
+    
+    %% Send S and SPM n.o.d. to workspace
+    
+    assignin('base', 'S'        , S        );
+    assignin('base', 'names'    , names    );
+    assignin('base', 'onsets'   , onsets   );
+    assignin('base', 'durations', durations);
+    assignin('base', 'pmod'     , pmod     );
+    assignin('base', 'orth'     , orth     );
+    assignin('base', 'tmod'     , tmod     );
+    
     
 end
 
-
-%% Send S and SPM n.o.d. to workspace
-
-assignin('base', 'S'        , S        );
-assignin('base', 'names'    , names    );
-assignin('base', 'onsets'   , onsets   );
-assignin('base', 'durations', durations);
-assignin('base', 'pmod'     , pmod     );
-assignin('base', 'orth'     , orth     );
-assignin('base', 'tmod'     , tmod     );
+if exist(fullfile('+TASK',['+' S.Task],'SPMnod_block.m'),'file') > 0
+    %% Generate SPM names onset durations
+    
+    [ names , onsets , durations ] = TASK.(S.Task).SPMnod_block();
+    
+    
+    %% Save
+    
+    if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
+        
+        save( S.DataFileFPath              , 'S', 'names', 'onsets', 'durations'); % complet file
+        save([S.DataFileFPath '_SPM_block']     , 'names', 'onsets', 'durations'); % light weight file with only the onsets for SPM
+        
+    end
+    
+    
+    %% Send S and SPM n.o.d. to workspace
+    
+    assignin('base', 'S'        , S        );
+    assignin('base', 'names'    , names    );
+    assignin('base', 'onsets'   , onsets   );
+    assignin('base', 'durations', durations);
+    
+    
+end
 
 
 %% MAIN : End recording of Eyelink

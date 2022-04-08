@@ -40,7 +40,7 @@ switch OperationMode
         p.durFixation = [0.2 0.2];
     case 'RealisticDebug'
         p.num_tetris  = 4;
-        p.durFixation = [0.5 0.1];
+        p.durFixation = [0.5 0.8];
     case 'Acquisition'
         % pass
     otherwise

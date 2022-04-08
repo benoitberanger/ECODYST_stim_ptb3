@@ -45,7 +45,9 @@ switch OperationMode
         p.durDelay       = 0.5;
         p.durRest        = [0.5 0.5];
     case 'RealisticDebug'
-        
+        p.nBlock     = 1;
+        p.nCatch     = 3;
+        p.durRest        = [1.0 1.0];
     case 'Acquisition'
         % pass
     otherwise

@@ -42,7 +42,6 @@ try
             trial_count = trial_count + 1;
             if trial_to_delete(trial_count)
                 % pass
-                0
             else
                 onsets{num.(EventData{event,1})} = [onsets{num.(EventData{event,1})} ; EventData{event,2}];
             end

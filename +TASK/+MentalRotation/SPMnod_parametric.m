@@ -120,7 +120,6 @@ try
     %% data correction
     
     % Delete trial when subject did not respond
-    trial_to_delete = BehaviorData.RT_s_ < 0;
     BehaviorData(trial_to_delete,:) = [];
     
     BehaviorData.subj_resp_num = double(strcmp(BehaviorData.subj_resp,'mirror'));
@@ -137,8 +136,8 @@ try
     pmod = struct('name',{''},'param',{},'poly',{});
     
     % condition = same vs mirror
-    pmod(2).name {1} = 'condition__same0_mirror1';
-    pmod(2).param{1} = strcmp(BehaviorData.condition,'mirror');
+    pmod(2).name {1} = 'condition__same-1_mirror+1';
+    pmod(2).param{1} = strcmp(BehaviorData.condition,'mirror')*2-1;
     pmod(2).poly {1} = 1;
     
     % angle
@@ -151,12 +150,12 @@ try
     pmod(2).param{3} = BehaviorData.RT_s_;
     pmod(2).poly {3} = 1;
     
-    pmod(2).name {4} = 'subjresp__same0_mirror1';
-    pmod(2).param{4} = BehaviorData.subj_resp_num;
+    pmod(2).name {4} = 'subjresp__same-1_mirror+1';
+    pmod(2).param{4} = BehaviorData.subj_resp_num*2-1;
     pmod(2).poly {4} = 1;
     
     pmod(2).name {5} = 'respok';
-    pmod(2).param{5} = double(BehaviorData.resp_ok);
+    pmod(2).param{5} = BehaviorData.resp_ok*2-1;
     pmod(2).poly {5} = 1;
     
     

@@ -140,16 +140,16 @@ EP.AddStartTime('StartTime',0);
 count = 0;
 for iBlock = 1 : length(block_order)
     
-    EP.AddPlanning({     'Rest'        NextOnset(EP) all_jitters(iBlock) []    []     []    []                          []                               })
-    EP.AddPlanning({     'Instruction' NextOnset(EP) p.durInstruction    []    []     []    blocks(iBlock).instruction  []                               })
-    EP.AddPlanning({     'Delay'       NextOnset(EP) p.durDelay          []    []     []    []                          []                               })
+    EP.AddPlanning({     'Rest'        NextOnset(EP) all_jitters(iBlock)   []    []     []    []                          []                               })
+    EP.AddPlanning({     'Instruction' NextOnset(EP) p.durInstruction      []    []     []    blocks(iBlock).instruction  []                               })
+    EP.AddPlanning({     'Delay'       NextOnset(EP) p.durDelay            []    []     []    []                          []                               })
     for iStim = 1 : nStim
         count = count + 1;
-        EP.AddPlanning({ 'Stim'        NextOnset(EP) p.durStim           count iBlock iStim blocks(iBlock).Trials{iStim} blocks(iBlock).CatchVect(iStim) })
-        EP.AddPlanning({ 'Delay'       NextOnset(EP) p.durDelay          []    []     []    []                          []                               })
+        EP.AddPlanning({ 'Stim'        NextOnset(EP) p.durStim             count iBlock iStim blocks(iBlock).Trials{iStim} blocks(iBlock).CatchVect(iStim) })
+        EP.AddPlanning({ 'Delay'       NextOnset(EP) p.durDelay            []    []     []    []                          []                               })
     end
 end
-EP.AddPlanning({         'Rest'        NextOnset(EP) all_jitters(iBlock) []    []     []    []                          []                               })
+EP.AddPlanning({         'Rest'        NextOnset(EP) all_jitters(iBlock+1) []    []     []    []                          []                               })
 
 
 % --- Stop ----------------------------------------------------------------

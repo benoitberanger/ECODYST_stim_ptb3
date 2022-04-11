@@ -105,7 +105,7 @@ all_tetris = Shuffle(all_tetris,2);
 
 %% Generate Fixation jitter
 
-all_jitters = linspace(p.durFixation(1), p.durFixation(2), nTrials);
+all_jitters = linspace(p.durFixation(1), p.durFixation(2), nTrials + 1);
 all_jitters = Shuffle(all_jitters);
 
 
@@ -158,10 +158,12 @@ EP.AddStartTime('StartTime',0);
 
 for iTrial = 1 : nTrials
     
-    EP.AddPlanning({ 'Rest'  NextOnset(EP) all_jitters(iTrial) iTrial [] [] []})
-    EP.AddPlanning({ 'Trial' NextOnset(EP) p.durTetris         iTrial event_list{iTrial,:}})
+    EP.AddPlanning({ 'Rest'  NextOnset(EP) all_jitters(iTrial) iTrial   [] [] []             })
+    EP.AddPlanning({ 'Trial' NextOnset(EP) p.durTetris         iTrial   event_list{iTrial,:} })
     
 end
+
+EP.AddPlanning({ 'Rest'  NextOnset(EP) all_jitters(iTrial+1)   iTrial+1 [] [] []             })
 
 
 % --- Stop ----------------------------------------------------------------

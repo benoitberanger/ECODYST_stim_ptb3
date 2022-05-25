@@ -51,15 +51,17 @@ p.Tetris3D.WiredCube.Size      = 1.01;
 
 %% NBack
 
-p.NBack.Text.SizeInstruction = 0.10;              % TextSize = ScreenY_px * Size
-p.NBack.Text.SizeStim        = 0.20;              % TextSize = ScreenY_px * Size
+p.NBack.Text.SizeInstruction = 0.10;              % TextSize = round(ScreenY_px * Size)
+p.NBack.Text.SizeStim        = 0.20;              % TextSize = round(ScreenY_px * Size)
 p.NBack.Text.Color           = [127 127 127 255]; % [R G B a], from 0 to 255
 p.NBack.Text.Center          = [0.5 0.5];         % Position_px = [ScreenX_px ScreenY_px] .* Position
 
 
 %% SocialCognition
 
-
+p.SocialCognition.Text.SizeInstruction = 0.08;              % TextSize = round(ScreenY_px * Size)
+p.SocialCognition.Text.Color           = [255 255 255 255]; % [R G B a], from 0 to 255
+p.SocialCognition.Text.Center          = [0.5 0.5];         % Position_px = [ScreenX_px ScreenY_px] .* Position
 
 
 end % function

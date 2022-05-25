@@ -17,10 +17,34 @@ p = struct; % This structure will contain all task specific parameters, such as 
 
 p.nBlock = 2; % repetitions of each condition
 
+
+%% Timings
+
 % all dur* are in seconds
-p.durInstruction  = 6;
-p.durPresentation = 6;
-p.durAnswerMax    = 4;
+p.durInstruction  = 6.0;
+p.durPresentation = 6.0;
+p.durAnswerMax    = 4.0;
+
+%% Debugging
+
+switch OperationMode
+    case 'FastDebug'
+        p.nBlock          = 1;
+        p.durInstruction  = 1.0;
+        p.durPresentation = 0.5;
+        p.durAnswerMax    = 0.2;
+    case 'RealisticDebug'
+        p.nBlock          = 1;
+        p.durInstruction  = 6.0;
+        p.durPresentation = 6.0;
+        p.durAnswerMax    = 4.0;
+    case 'Acquisition'
+        % pass
+    otherwise
+        error('mode ?')
+end
+
+%% Image location
 
 p.imgDir = fullfile( fileparts(pwd), 'img_SocialCognition' );
 
@@ -112,7 +136,7 @@ end
 %% Build planning
 
 % Create and prepare
-header = { 'event_name', 'onset(s)', 'duration(s)', 'iBlock', 'iTrial', 'content' };
+header = { 'event_name', 'onset(s)', 'duration(s)', '#block', '#trial', 'content' };
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration
@@ -135,6 +159,7 @@ for iBlock = 1 : length(p.block)
     end
     
 end
+p.nTrials = iTrial;
 
 
 % --- Stop ----------------------------------------------------------------

@@ -18,9 +18,9 @@ p.Tetris3D.LIGHT0.AMBIANT  = [0.1 0.1 0.1  1.0]; % [R G B a] OpenGL style
 p.Tetris3D.LIGHT0.DIFFUSE  = [1.0 1.0 1.0  1.0]; % [R G B a] OpenGL style
 p.Tetris3D.LIGHT0.SPECULAR = [1.0 1.0 1.0  1.0]; % [R G B a] OpenGL style
 
-% LIGHT0
+% LIGHT1
 p.Tetris3D.LIGHT1.pos      = [0 -10 0];   % [X Y Z] OpenGL coordinates
-p.Tetris3D.LIGHT1.is_pt    = 0;           % 0 == infinit distance (direction) // 1 == finit distance (point)
+p.Tetris3D.LIGHT1.is_pt    = 0;           % 0 == infinite distance (direction) // 1 == finite distance (point)
 p.Tetris3D.LIGHT1.AMBIANT  = [0.0 0.0 0.0  1.0]; % [R G B a] OpenGL style
 p.Tetris3D.LIGHT1.DIFFUSE  = [0.2 0.2 0.2  1.0]; % [R G B a] OpenGL style
 p.Tetris3D.LIGHT1.SPECULAR = [0.0 0.0 0.0  1.0]; % [R G B a] OpenGL style
@@ -51,10 +51,15 @@ p.Tetris3D.WiredCube.Size      = 1.01;
 
 %% NBack
 
-p.Text.SizeInstruction = 0.10;              % TextSize = ScreenY_px * Size
-p.Text.SizeStim        = 0.20;              % TextSize = ScreenY_px * Size
-p.Text.Color           = [127 127 127 255]; % [R G B a], from 0 to 255
-p.Text.Center          = [0.5 0.5];         % Position_px = [ScreenX_px ScreenY_px] .* Position
+p.NBack.Text.SizeInstruction = 0.10;              % TextSize = ScreenY_px * Size
+p.NBack.Text.SizeStim        = 0.20;              % TextSize = ScreenY_px * Size
+p.NBack.Text.Color           = [127 127 127 255]; % [R G B a], from 0 to 255
+p.NBack.Text.Center          = [0.5 0.5];         % Position_px = [ScreenX_px ScreenY_px] .* Position
+
+
+%% SocialCognition
+
+
 
 
 end % function

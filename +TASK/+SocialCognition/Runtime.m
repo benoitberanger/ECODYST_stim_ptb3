@@ -11,12 +11,13 @@ try
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
-    S.BR = EventRecorder({'trial#' 'block#' 'stim#' 'content' 'iscatch' 'RT(s)' 'resp_ok'}, S.TaskParam.nTrials);
+    S.BR = EventRecorder({'block#' 'trial#' 'content' 'RT(s)' 'side(L/R)'}, S.TaskParam.nTrials);
     
     %% Initialize stim objects
     
     FIXATIONCROSS = TASK.                PREPARE.FixationCross();
     TEXT          = TASK.SocialCognition.PREPARE.Text         ();
+    IMAGE         = TASK.SocialCognition.PREPARE.Image        ();
     
     
     %% Shortcuts
@@ -57,6 +58,9 @@ try
         evt_onset    = EP.Data{evt,columns.onset_s_};
         evt_duration = EP.Data{evt,columns.duration_s_};
         content      = EP.Data{evt,columns.content};
+        iblock       = EP.Data{evt,columns.x_block};
+        itrial       = EP.Data{evt,columns.x_trial};
+        
         
         if evt < nEvents
             next_evt_onset = EP.Data{evt+1,columns.onset_s_};
@@ -97,7 +101,9 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('Instructions = %s \n', content )
+                fprintf('block#=%2d // Instructions = %s \n', iblock, content)
+                
+                IMG_prepareInstruction = PrepareTrial(IMAGE,itrial);
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -114,16 +120,20 @@ try
                 
             case 'Presentation' % -----------------------------------------
                 
-                iblock  = EP.Data{evt,columns.x_block};
-                itrial  = EP.Data{evt,columns.x_trial};
-                
                 % Draw
-                TEXT.Draw(content, 'Instruction');
+                if strcmp(EP.Data{evt-1,columns.event_name}, 'Instruction')
+                    IMG_trial = IMG_prepareInstruction;
+                    desired_onset =  StartTime + evt_onset - slack;
+                else
+                    IMG_trial = IMG_preparePresentation;
+                    desired_onset =  0; % now
+                end
+                IMG_trial.Draw();
+                Screen('FillRect',wPtr,[0 0 0 255],[0 wRect(4)/2 wRect(3) wRect(4)]); % mask the lower part of the image
                 Screen('DrawingFinished', wPtr);
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 
                 % Flip at the right moment
-                desired_onset =  StartTime + evt_onset - slack;
                 real_onset = Screen('Flip', wPtr, desired_onset);
                 
                 % Save onset
@@ -131,14 +141,15 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
+                fprintf('block#=%2d  trial#=%3d  content=%20s  ',...
+                    iblock,...
+                    itrial,...
+                    content...
+                    )
                 
-                %                 fprintf('#trial=%3d   #block=%2d   #stim=%2d   content=%1s   iscatch=%1s   ',...
-                %                     itrial,...
-                %                     iblock,...
-                %                     istim,...
-                %                     content,...
-                %                     iscatch_str ...
-                %                     )
+                if itrial < p.nTrials
+                    IMG_preparePresentation = PrepareTrial(IMAGE,itrial+1);
+                end
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -156,7 +167,8 @@ try
             case 'Answer' % -------------------------------------------
                 
                 % Draw
-                TEXT.Draw(content, 'Instruction');
+                IMG_trial.Draw();
+                IMG_trial.CloseTexture();
                 Screen('DrawingFinished', wPtr);
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameBackBuffer(wPtr,moviePtr); end
                 
@@ -172,16 +184,35 @@ try
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
                 
-                while secs < next_onset
+                RT = 0;
+                side = 'x';
+                while (secs < next_onset)
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
                     if keyIsDown
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
+                        
+                        if keyCode(KEY_Right)
+                            side = 'R';
+                            RT = secs - real_onset;
+                            break;
+                        elseif keyCode(KEY_Left)
+                            side = 'L';
+                            RT = secs - real_onset;
+                            break;
+                        end
+                        
                     end
                     
                 end % while
                 
+                fprintf('RT(ms)=%4d  side(L/R)=%1s \n',...
+                    round(RT*1000),...
+                    side...
+                    )
+                
+                S.BR.AddEvent({iblock, itrial content, RT, side})
                 
             otherwise % ---------------------------------------------------
                 
@@ -245,5 +276,15 @@ catch err
     end
     
 end % try
+
+end % function
+
+function IMG = PrepareTrial(IMAGE,trial)
+
+IMAGE(trial).Load();
+IMAGE(trial).MakeTexture();
+IMAGE(trial).Maximize();
+
+IMG = IMAGE(trial);
 
 end % function

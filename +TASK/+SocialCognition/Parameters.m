@@ -64,7 +64,7 @@ p.condition(1).img = {
     };
 
 p.condition(2).name = 'emotion';
-p.condition(2).instruction = 'Qu''est ce qui va permettre au personnage de se sentir mieux ?';
+p.condition(2).instruction = 'Qu''est ce qui va permettre au personnage\n de se sentir mieux ?';
 p.condition(2).img = {
     'Diapositive13.png'
     'Diapositive14.png'
@@ -151,11 +151,11 @@ EP.AddStartTime('StartTime',0);
 iTrial = 0;
 for iBlock = 1 : length(p.block)
     
-    EP.AddPlanning    ({ 'Instruction'  NextOnset(EP) p.durInstruction  iBlock     [] p.block(iBlock).instruction })
+    EP.AddPlanning    ({ 'Instruction'  NextOnset(EP) p.durInstruction  iBlock iTrial+1 p.block(iBlock).instruction })
     for trial = 1 : length(p.block(iBlock).img)
         iTrial = iTrial + 1;
-        EP.AddPlanning({'Presentation'  NextOnset(EP) p.durPresentation iBlock iTrial p.block(iBlock).img{trial}  })
-        EP.AddPlanning({      'Answer'  NextOnset(EP) p.durAnswerMax    iBlock iTrial p.block(iBlock).img{trial}  })
+        EP.AddPlanning({'Presentation'  NextOnset(EP) p.durPresentation iBlock iTrial   p.block(iBlock).img{trial}  })
+        EP.AddPlanning({      'Answer'  NextOnset(EP) p.durAnswerMax    iBlock iTrial   p.block(iBlock).img{trial}  })
     end
     
 end

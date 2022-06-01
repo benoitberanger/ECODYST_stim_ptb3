@@ -216,6 +216,33 @@ if exist(fullfile('+TASK',['+' S.Task],'SPMnod_block.m'),'file') > 0
 end
 
 
+if exist(fullfile('+TASK',['+' S.Task],'SPMnod_event.m'),'file') > 0
+    %% Generate SPM names onset durations
+    
+    [ names , onsets , durations ] = TASK.(S.Task).SPMnod_event();
+    
+    
+    %% Save
+    
+    if S.SaveMode && strcmp(S.OperationMode,'Acquisition')
+        
+        save( S.DataFileFPath              , 'S', 'names', 'onsets', 'durations'); % complet file
+        save([S.DataFileFPath '_SPM_event']     , 'names', 'onsets', 'durations'); % light weight file with only the onsets for SPM
+        
+    end
+    
+    
+    %% Send S and SPM n.o.d. to workspace
+    
+    assignin('base', 'S'        , S        );
+    assignin('base', 'names'    , names    );
+    assignin('base', 'onsets'   , onsets   );
+    assignin('base', 'durations', durations);
+    
+    
+end
+
+
 %% MAIN : End recording of Eyelink
 
 % Eyelink mode 'On' ?

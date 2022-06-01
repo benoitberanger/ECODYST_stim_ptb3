@@ -101,7 +101,7 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('block#=%2d // Instructions = %s \n', iblock, content)
+                fprintf('block#=%4d // Instructions = %s \n', iblock, content)
                 
                 IMG_prepareInstruction = PrepareTrial(IMAGE,itrial);
                 
@@ -141,7 +141,7 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('block#=%2d  trial#=%3d  content=%20s  ',...
+                fprintf('block#=%1d  trial#=%2d  content=%17s  ',...
                     iblock,...
                     itrial,...
                     content...
@@ -184,8 +184,8 @@ try
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
                 
-                RT = 0;
-                side = 'x';
+                
+                has_responded = false;
                 while (secs < next_onset)
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
@@ -196,16 +196,25 @@ try
                         if keyCode(KEY_Right)
                             side = 'R';
                             RT = secs - real_onset;
+                            has_responded = true;
                             break;
                         elseif keyCode(KEY_Left)
                             side = 'L';
-                            RT = secs - real_onset;
+                            
+                            has_responded = true;
                             break;
                         end
                         
                     end
                     
                 end % while
+                
+                if has_responded
+                    RT = secs - real_onset;
+                else
+                    RT = -inf;
+                    side = '';
+                end
                 
                 fprintf('RT(ms)=%4d  side(L/R)=%1s \n',...
                     round(RT*1000),...

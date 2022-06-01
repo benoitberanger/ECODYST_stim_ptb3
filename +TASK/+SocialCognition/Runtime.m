@@ -11,7 +11,7 @@ try
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
-    S.BR = EventRecorder({'block#' 'trial#' 'content' 'RT(s)' 'side(L/R)'}, S.TaskParam.nTrials);
+    S.BR = EventRecorder({'block#' 'block_name' 'trial#' 'content' 'RT(s)' 'side(L/R)'}, S.TaskParam.nTrials);
     
     %% Initialize stim objects
     
@@ -59,6 +59,7 @@ try
         evt_duration = EP.Data{evt,columns.duration_s_};
         content      = EP.Data{evt,columns.content};
         iblock       = EP.Data{evt,columns.x_block};
+        block_name   = EP.Data{evt,columns.block_name};
         itrial       = EP.Data{evt,columns.x_trial};
         
         
@@ -101,7 +102,7 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('block#=%4d // Instructions = %s \n', iblock, content)
+                fprintf('block#=%4d // block_name=%10s // Instructions = %s \n', iblock, block_name, content)
                 
                 IMG_prepareInstruction = PrepareTrial(IMAGE,itrial);
                 
@@ -141,8 +142,9 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('block#=%1d  trial#=%2d  content=%17s  ',...
+                fprintf('block#=%1d  block_name=%10s  trial#=%2d  content=%17s  ',...
                     iblock,...
+                    block_name,...
                     itrial,...
                     content...
                     )
@@ -221,7 +223,7 @@ try
                     side...
                     )
                 
-                S.BR.AddEvent({iblock, itrial content, RT, side})
+                S.BR.AddEvent({iblock, block_name, itrial content, RT, side})
                 
             otherwise % ---------------------------------------------------
                 

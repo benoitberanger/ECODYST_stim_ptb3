@@ -136,7 +136,7 @@ end
 %% Build planning
 
 % Create and prepare
-header = { 'event_name', 'onset(s)', 'duration(s)', '#block', '#trial', 'content' };
+header = { 'event_name', 'onset(s)', 'duration(s)', '#block', 'block_name', '#trial', 'content' };
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration
@@ -151,11 +151,11 @@ EP.AddStartTime('StartTime',0);
 iTrial = 0;
 for iBlock = 1 : length(p.block)
     
-    EP.AddPlanning    ({ 'Instruction'  NextOnset(EP) p.durInstruction  iBlock iTrial+1 p.block(iBlock).instruction })
+    EP.AddPlanning    ({ 'Instruction'  NextOnset(EP) p.durInstruction  iBlock p.block(iBlock).name iTrial+1 p.block(iBlock).instruction })
     for trial = 1 : length(p.block(iBlock).img)
         iTrial = iTrial + 1;
-        EP.AddPlanning({'Presentation'  NextOnset(EP) p.durPresentation iBlock iTrial   p.block(iBlock).img{trial}  })
-        EP.AddPlanning({      'Answer'  NextOnset(EP) p.durAnswerMax    iBlock iTrial   p.block(iBlock).img{trial}  })
+        EP.AddPlanning({'Presentation'  NextOnset(EP) p.durPresentation iBlock p.block(iBlock).name iTrial   p.block(iBlock).img{trial}  })
+        EP.AddPlanning({      'Answer'  NextOnset(EP) p.durAnswerMax    iBlock p.block(iBlock).name iTrial   p.block(iBlock).img{trial}  })
     end
     
 end

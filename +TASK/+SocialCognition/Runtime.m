@@ -11,7 +11,8 @@ try
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
-    S.BR = EventRecorder({'block#' 'block_name' 'trial#' 'content' 'RT(s)' 'side(L/R)'}, S.TaskParam.nTrials);
+    S.BR = EventRecorder({'block#' 'block_name' 'trial#' 'content' 'target(L/R)' 'RT(s)' 'side(L/R)' 'ok'}, S.TaskParam.nTrials);
+    
     
     %% Initialize stim objects
     
@@ -47,7 +48,6 @@ try
     EXIT = false;
     secs = GetSecs();
     n_resp_ok = 0;
-    n_catch = 0;
     
     % Loop over the EventPlanning
     nEvents = size( EP.Data , 1 );
@@ -61,7 +61,7 @@ try
         iblock       = EP.Data{evt,columns.x_block};
         block_name   = EP.Data{evt,columns.block_name};
         itrial       = EP.Data{evt,columns.x_trial};
-        
+        target_LR    = EP.Data{evt,columns.target_L_R_};
         
         if evt < nEvents
             next_evt_onset = EP.Data{evt+1,columns.onset_s_};
@@ -142,11 +142,12 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('block#=%1d  block_name=%10s  trial#=%2d  content=%17s  ',...
+                fprintf('block#=%1d  block_name=%10s  trial#=%2d  content=%17s  target(L/R)=%1s   ',...
                     iblock,...
                     block_name,...
                     itrial,...
-                    content...
+                    content,...
+                    target_LR...
                     )
                 
                 if itrial < p.nTrials
@@ -197,12 +198,10 @@ try
                         
                         if keyCode(KEY_Right)
                             side = 'R';
-                            RT = secs - real_onset;
                             has_responded = true;
                             break;
                         elseif keyCode(KEY_Left)
                             side = 'L';
-                            
                             has_responded = true;
                             break;
                         end
@@ -213,17 +212,23 @@ try
                 
                 if has_responded
                     RT = secs - real_onset;
+                    ok = target_LR == side;
+                    n_resp_ok = n_resp_ok + ok;
                 else
                     RT = -inf;
                     side = '';
+                    ok = [];
                 end
                 
-                fprintf('RT(ms)=%4d  side(L/R)=%1s \n',...
+                fprintf('RT(ms)=%4d  side(L/R)=%1s  ok=%1d  n_resp_ok=%2d (%3d%%) \n',...
                     round(RT*1000),...
-                    side...
+                    side,...
+                    ok,...
+                    n_resp_ok,...
+                    round(100*n_resp_ok/itrial)...
                     )
                 
-                S.BR.AddEvent({iblock, block_name, itrial content, RT, side})
+                S.BR.AddEvent({iblock, block_name, itrial content, target_LR, RT, side, ok})
                 
             otherwise % ---------------------------------------------------
                 

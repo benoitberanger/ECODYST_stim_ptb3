@@ -25,6 +25,7 @@ p.durInstruction  = 6.0;
 p.durPresentation = 6.0;
 p.durAnswerMax    = 4.0;
 
+
 %% Debugging
 
 switch OperationMode
@@ -48,65 +49,33 @@ end
 
 p.imgDir = fullfile( fileparts(pwd), 'img_SocialCognition' );
 
-p.condition(1).name = 'intention';
-p.condition(1).instruction = 'Qu''est-ce que le personnage va faire ensuite ?';
-p.condition(1).img = {
-    'Diapositive2.png'
-    'Diapositive3.png'
-    'Diapositive4.png'
-    'Diapositive5.png'
-    'Diapositive6.png'
-    'Diapositive7.png'
-    'Diapositive8.png'
-    'Diapositive9.png'
-    'Diapositive10.png'
-    'Diapositive11.png'
-    };
+c = 1;
+p.condition(c).name        = 'intention';
+p.condition(c).instruction = 'Qu''est-ce que le personnage va faire ensuite ?';
+p.condition(c).png         = dir( fullfile(p.imgDir, p.condition(c).name,'*png') );
+p.condition(c).img         = {p.condition(c).png.name}';
+p.condition(c).side        = cellfun(@(x) x{1}, regexp(p.condition(c).img,'_(\w).png','tokens') );
 
-p.condition(2).name = 'emotion';
-p.condition(2).instruction = 'Qu''est ce qui va permettre au personnage\n de se sentir mieux ?';
-p.condition(2).img = {
-    'Diapositive13.png'
-    'Diapositive14.png'
-    'Diapositive15.png'
-    'Diapositive16.png'
-    'Diapositive17.png'
-    'Diapositive18.png'
-    'Diapositive19.png'
-    'Diapositive20.png'
-    'Diapositive21.png'
-    'Diapositive22.png'
-    };
+c = 2;
+p.condition(c).name        = 'emotion';
+p.condition(c).instruction = 'Qu''est ce qui va permettre au personnage\n de se sentir mieux ?';
+p.condition(c).png         = dir( fullfile(p.imgDir, p.condition(c).name,'*png') );
+p.condition(c).img         = {p.condition(c).png.name}';
+p.condition(c).side        = cellfun(@(x) x{1}, regexp(p.condition(c).img,'_(\w).png','tokens') );
 
-p.condition(3).name = 'physical_1';
-p.condition(3).instruction = 'Quelle suite est la plus probable ?';
-p.condition(3).img = {
-    'Diapositive24.png'
-    'Diapositive25.png'
-    'Diapositive26.png'
-    'Diapositive27.png'
-    'Diapositive28.png'
-    'Diapositive29.png'
-    'Diapositive30.png'
-    'Diapositive31.png'
-    'Diapositive32.png'
-    'Diapositive33.png'
-    };
+c = 3;
+p.condition(c).name        = 'physical_1';
+p.condition(c).instruction = 'Quelle suite est la plus probable ?';
+p.condition(c).png         = dir( fullfile(p.imgDir, p.condition(c).name,'*png') );
+p.condition(c).img         = {p.condition(c).png.name}';
+p.condition(c).side        = cellfun(@(x) x{1}, regexp(p.condition(c).img,'_(\w).png','tokens') );
 
-p.condition(4).name = 'physical_2';
-p.condition(4).instruction = 'Quelle suite est la plus probable ?';
-p.condition(4).img = {
-    'Diapositive35.png'
-    'Diapositive36.png'
-    'Diapositive37.png'
-    'Diapositive38.png'
-    'Diapositive39.png'
-    'Diapositive40.png'
-    'Diapositive41.png'
-    'Diapositive42.png'
-    'Diapositive43.png'
-    'Diapositive44.png'
-    };
+c= 4;
+p.condition(c).name        = 'physical_2';
+p.condition(c).instruction = 'Quelle suite est la plus probable ?';
+p.condition(c).png         = dir( fullfile(p.imgDir, p.condition(c).name,'*png') );
+p.condition(c).img         = {p.condition(c).png.name}';
+p.condition(c).side        = cellfun(@(x) x{1}, regexp(p.condition(c).img,'_(\w).png','tokens') );
 
 
 %% Graphics
@@ -129,14 +98,16 @@ end
 
 for cond = 1 : length(block_order)
     p.block(cond) = p.condition(block_order(cond));
-    p.block(cond).img = Shuffle( p.block(cond).img );
+    [~, index] = Shuffle( p.block(cond).img );
+    p.block(cond).img = p.block(cond).img(index);
+    p.block(cond).side = p.block(cond).side(index);
 end
 
 
 %% Build planning
 
 % Create and prepare
-header = { 'event_name', 'onset(s)', 'duration(s)', '#block', 'block_name', '#trial', 'content' };
+header = { 'event_name', 'onset(s)', 'duration(s)', '#block', 'block_name', '#trial', 'content' 'target(L/R)'};
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration
@@ -151,11 +122,11 @@ EP.AddStartTime('StartTime',0);
 iTrial = 0;
 for iBlock = 1 : length(p.block)
     
-    EP.AddPlanning    ({ 'Instruction'  NextOnset(EP) p.durInstruction  iBlock p.block(iBlock).name iTrial+1 p.block(iBlock).instruction })
+    EP.AddPlanning    ({ 'Instruction'  NextOnset(EP) p.durInstruction  iBlock p.block(iBlock).name iTrial+1 p.block(iBlock).instruction ''})
     for trial = 1 : length(p.block(iBlock).img)
         iTrial = iTrial + 1;
-        EP.AddPlanning({'Presentation'  NextOnset(EP) p.durPresentation iBlock p.block(iBlock).name iTrial   p.block(iBlock).img{trial}  })
-        EP.AddPlanning({      'Answer'  NextOnset(EP) p.durAnswerMax    iBlock p.block(iBlock).name iTrial   p.block(iBlock).img{trial}  })
+        EP.AddPlanning({'Presentation'  NextOnset(EP) p.durPresentation iBlock p.block(iBlock).name iTrial   p.block(iBlock).img{trial}  p.block(iBlock).side{trial} })
+        EP.AddPlanning({      'Answer'  NextOnset(EP) p.durAnswerMax    iBlock p.block(iBlock).name iTrial   p.block(iBlock).img{trial}  p.block(iBlock).side{trial} })
     end
     
 end

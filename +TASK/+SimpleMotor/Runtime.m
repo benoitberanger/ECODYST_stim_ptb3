@@ -168,7 +168,8 @@ try
                 
                 n_frames = round(evt_duration * S.PTB.Video.FPS)-1;
                 time = linspace(0,evt_duration-S.PTB.Video.IFI,n_frames);
-                intensity = cos(2*pi*freq * time)/4 + 0.75;
+                % intensity = sin(2*pi*freq * time)/4 + 0.75;
+                intensity = square(2*pi*freq * time);
                 
                 orig_color = FIXATIONCROSS.color;
                 i_frame = 0;
@@ -191,7 +192,9 @@ try
                     Screen('Flip', wPtr);
                     
                 end % while
-%                 
+                
+                FIXATIONCROSS.color = orig_color;
+                
 %                 if has_responded
 %                     RT = secs - real_onset;
 %                     ok = target_LR == side;

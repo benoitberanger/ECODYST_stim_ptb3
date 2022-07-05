@@ -66,7 +66,7 @@ p = TASK.Graphics( p );
 %% Build planning
 
 % Create and prepare
-header = { 'event_name', 'onset(s)', 'duration(s)', 'instruction', 'frequence(Hz)'};
+header = { 'event_name', 'onset(s)', 'duration(s)', 'block#', 'instruction', 'frequence(Hz)'};
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration
@@ -80,14 +80,14 @@ EP.AddStartTime('StartTime',0);
 
 for iBlock = 1 : p.nBlock
     
-    EP.AddPlanning({ 'Instruction'  NextOnset(EP) p.durInstruction p.instrRest   0              })
-    EP.AddPlanning({ 'Rest'         NextOnset(EP) p.durRest        ''            0              })
-    EP.AddPlanning({ 'Instruction'  NextOnset(EP) p.durInstruction p.instrAction 0              })
-    EP.AddPlanning({ 'Action'       NextOnset(EP) p.durAction      ''            p.freqActionCue})
+    EP.AddPlanning({ 'Instruction'  NextOnset(EP) p.durInstruction iBlock p.instrRest   0              })
+    EP.AddPlanning({ 'Rest'         NextOnset(EP) p.durRest        iBlock ''            0              })
+    EP.AddPlanning({ 'Instruction'  NextOnset(EP) p.durInstruction iBlock p.instrAction 0              })
+    EP.AddPlanning({ 'Action'       NextOnset(EP) p.durAction      iBlock ''            p.freqActionCue})
     
 end
-EP.AddPlanning({ 'Instruction'  NextOnset(EP) p.durInstruction p.instrRest   0              })
-EP.AddPlanning({ 'Rest'         NextOnset(EP) p.durRest        ''            0              })
+EP.AddPlanning(    { 'Instruction'  NextOnset(EP) p.durInstruction iBlock p.instrRest   0              })
+EP.AddPlanning(    { 'Rest'         NextOnset(EP) p.durRest        iBlock ''            0              })
 
 % --- Stop ----------------------------------------------------------------
 

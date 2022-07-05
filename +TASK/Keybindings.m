@@ -18,6 +18,12 @@ switch S.Environement
                 S.Keybinds.TaskSpecific.Right    = KbName('b'); % blue   in right hand
                 S.Keybinds.TaskSpecific.Left     = KbName('y'); % yellow in left  hand
                 
+            case 'SimpleMotor'
+                S.Keybinds.TaskSpecific.K1       = KbName('b');
+                S.Keybinds.TaskSpecific.K2       = KbName('y');
+                S.Keybinds.TaskSpecific.K3       = KbName('g');
+                S.Keybinds.TaskSpecific.K4       = KbName('r');
+                
         end
         
     case 'Keyboard' %------------------------------------------------------
@@ -34,6 +40,12 @@ switch S.Environement
             case 'SocialCognition'
                 S.Keybinds.TaskSpecific.Right    = KbName('RightArrow');
                 S.Keybinds.TaskSpecific.Left     = KbName('LeftArrow');
+           
+            case 'SimpleMotor'
+                 S.Keybinds.TaskSpecific.K1      = KbName('h');
+                 S.Keybinds.TaskSpecific.K2      = KbName('j');
+                 S.Keybinds.TaskSpecific.K3      = KbName('k');
+                 S.Keybinds.TaskSpecific.K4      = KbName('l');
                 
         end
         

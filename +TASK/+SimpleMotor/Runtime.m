@@ -101,7 +101,7 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('block#=%4d // block_name=%10s // Instructions = %s \n', iblock, evt_name, instruction)
+                fprintf('block#=%1d // block_name=%10s // Instructions = %s \n', iblock, evt_name, instruction)
                                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -131,13 +131,7 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-%                 fprintf('block#=%1d  block_name=%10s  trial#=%2d  content=%17s  target(L/R)=%1s   ',...
-%                     iblock,...
-%                     block_name,...
-%                     itrial,...
-%                     content,...
-%                     target_LR...
-%                     )
+                fprintf('block#=%1d // block_name=%11s \n', iblock, evt_name)
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -167,16 +161,34 @@ try
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
+                fprintf('block#=%1d // block_name=%11s \n', iblock, evt_name)
+                
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
                 
+                n_frames = round(evt_duration * S.PTB.Video.FPS)-1;
+                time = linspace(0,evt_duration-S.PTB.Video.IFI,n_frames);
+                intensity = cos(2*pi*freq * time)/4 + 0.75;
+                
+                orig_color = FIXATIONCROSS.color;
+                i_frame = 0;
                 while (secs < next_onset)
+                    i_frame = i_frame + 1;
+                    
+                    if i_frame > n_frames
+                        break
+                    end
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
                     if keyIsDown
                         EXIT = keyCode(KEY_ESCAPE);
                         if EXIT, break, end
                     end
+                    
+                    FIXATIONCROSS.color(1:3) = orig_color(1:3) * intensity(i_frame);
+                    FIXATIONCROSS.Draw();
+                    Screen('DrawingFinished', wPtr);
+                    Screen('Flip', wPtr);
                     
                 end % while
 %                 

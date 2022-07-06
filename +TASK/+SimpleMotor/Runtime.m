@@ -166,19 +166,19 @@ try
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
                 
-                n_frames = round(evt_duration * S.PTB.Video.FPS)-1;
-                time = linspace(0,evt_duration-S.PTB.Video.IFI,n_frames);
-                % intensity = sin(2*pi*freq * time)/4 + 0.75;
-                intensity = square(2*pi*freq * time);
+%                 n_frames = round(evt_duration * S.PTB.Video.FPS)-1;
+%                 time = linspace(0,evt_duration-S.PTB.Video.IFI,n_frames);
+%                 intensity = sin(2*pi*freq * time)/4 + 0.75;
+%                 intensity = square(2*pi*freq * time);
                 
-                orig_color = FIXATIONCROSS.color;
-                i_frame = 0;
+%                 orig_color = FIXATIONCROSS.color;
+%                 i_frame = 0;
                 while (secs < next_onset)
-                    i_frame = i_frame + 1;
-                    
-                    if i_frame > n_frames
-                        break
-                    end
+%                     i_frame = i_frame + 1;
+%                     
+%                     if i_frame > n_frames
+%                         break
+%                     end
                     
                     [keyIsDown, secs, keyCode] = KbCheck();
                     if keyIsDown
@@ -186,14 +186,16 @@ try
                         if EXIT, break, end
                     end
                     
-                    FIXATIONCROSS.color(1:3) = orig_color(1:3) * intensity(i_frame);
-                    FIXATIONCROSS.Draw();
-                    Screen('DrawingFinished', wPtr);
-                    Screen('Flip', wPtr);
+%                     FIXATIONCROSS.color(1:3) = orig_color(1:3) * intensity(i_frame);
+%                     FIXATIONCROSS.Draw();
+%                     Screen('DrawingFinished', wPtr);
+%                     Screen('Flip', wPtr);
+%                     
+%                     if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr); end
                     
                 end % while
                 
-                FIXATIONCROSS.color = orig_color;
+%                 FIXATIONCROSS.color = orig_color;
                 
 %                 if has_responded
 %                     RT = secs - real_onset;

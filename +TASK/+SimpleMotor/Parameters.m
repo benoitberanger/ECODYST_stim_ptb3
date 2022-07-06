@@ -18,7 +18,7 @@ p = struct; % This structure will contain all task specific parameters, such as 
 p.nBlock = 6;
 
 % visual cue frequency, in Hertz (Hz)
-p.freqActionCue = 2.0;
+p.freqActionCue = 1.0;
 
 % instructions
 p.instrAction = 'pianotez';

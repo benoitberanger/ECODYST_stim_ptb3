@@ -86,7 +86,7 @@ try
                 S.ER.AddStopTime( 'StopTime' , StopTime - StartTime );
                 
                 
-            case 'Instruction' % -------------------------------------------------
+            case {'instr_rest', 'instr_action'} % -------------------------------------------------
                 
                 % Draw
                 TEXT.Draw(instruction, 'Instruction');
@@ -116,7 +116,7 @@ try
                 end % while
                 
                 
-            case 'Rest' % -----------------------------------------
+            case 'block_rest' % -----------------------------------------
                 
                 % Draw
                 FIXATIONCROSS.Draw();
@@ -146,7 +146,7 @@ try
                     
                 end % while
                 
-            case 'Action' % -------------------------------------------
+            case 'block_action' % -------------------------------------------
                 
                 % Draw
                 FIXATIONCROSS.Draw();

@@ -97,9 +97,9 @@ for blk = 1 : p.nBlock
 end
 
 for cond = 1 : length(block_order)
-    p.block(cond) = p.condition(block_order(cond));
-    [~, index] = Shuffle( p.block(cond).img );
-    p.block(cond).img = p.block(cond).img(index);
+    p.block(cond)      = p.condition(block_order(cond));
+    [~, index]         = Shuffle( p.block(cond).img );
+    p.block(cond).img  = p.block(cond).img (index);
     p.block(cond).side = p.block(cond).side(index);
 end
 
@@ -107,7 +107,7 @@ end
 %% Build planning
 
 % Create and prepare
-header = { 'event_name', 'onset(s)', 'duration(s)', '#block', 'block_name', '#trial', 'content' 'target(L/R)'};
+header = { 'event_name', 'onset(s)', 'duration(s)', '#block', 'block_name', '#trial', 'content', 'target(L/R)' };
 EP     = EventPlanning(header);
 
 % NextOnset = PreviousOnset + PreviousDuration

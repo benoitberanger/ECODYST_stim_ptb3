@@ -80,14 +80,14 @@ EP.AddStartTime('StartTime',0);
 
 for iBlock = 1 : p.nBlock
     
-    EP.AddPlanning({ 'Instruction'  NextOnset(EP) p.durInstruction iBlock p.instrRest   0              })
-    EP.AddPlanning({ 'Rest'         NextOnset(EP) p.durRest        iBlock ''            0              })
-    EP.AddPlanning({ 'Instruction'  NextOnset(EP) p.durInstruction iBlock p.instrAction 0              })
-    EP.AddPlanning({ 'Action'       NextOnset(EP) p.durAction      iBlock ''            p.freqActionCue})
+    EP.AddPlanning({ 'instr_rest'   NextOnset(EP) p.durInstruction iBlock p.instrRest   0              })
+    EP.AddPlanning({ 'block_rest'   NextOnset(EP) p.durRest        iBlock ''            0              })
+    EP.AddPlanning({ 'instr_action' NextOnset(EP) p.durInstruction iBlock p.instrAction 0              })
+    EP.AddPlanning({ 'block_action' NextOnset(EP) p.durAction      iBlock ''            p.freqActionCue})
     
 end
-EP.AddPlanning(    { 'Instruction'  NextOnset(EP) p.durInstruction iBlock p.instrRest   0              })
-EP.AddPlanning(    { 'Rest'         NextOnset(EP) p.durRest        iBlock ''            0              })
+EP.AddPlanning(    { 'instr_rest'  NextOnset(EP) p.durInstruction iBlock p.instrRest   0              })
+EP.AddPlanning(    { 'block_rest'  NextOnset(EP) p.durRest        iBlock ''            0              })
 
 % --- Stop ----------------------------------------------------------------
 

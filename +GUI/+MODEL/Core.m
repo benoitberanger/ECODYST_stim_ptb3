@@ -121,9 +121,11 @@ if strcmp(S.Task, 'MentalRotation')
 end
 PTB_ENGINE.VIDEO.OpenWindow(); % this opens the windows and setup the drawings according the the paramters above
 
-% PTB_ENGINE.AUDIO.         Initialize(); % !!! This must be done once before !!!
-% PTB_ENGINE.AUDIO.PLAYBACK.Parameters(); % <= here is all paramters
-% PTB_ENGINE.AUDIO.PLAYBACK.OpenDevice(); % this opens the playback device (speakers/headphones) and setup according the the paramters above
+if strcmp(S.Task, 'Emotion')
+    PTB_ENGINE.AUDIO.         Initialize(); % !!! This must be done once before !!!
+    PTB_ENGINE.AUDIO.PLAYBACK.Parameters(); % <= here is all paramters
+    PTB_ENGINE.AUDIO.PLAYBACK.OpenDevice(); % this opens the playback device (speakers/headphones) and setup according the the paramters above
+end
 % PTB_ENGINE.AUDIO.RECORD  .Parameters(); % <= here is all paramters
 % PTB_ENGINE.AUDIO.RECORD  .OpenDevice(); % this opens the record device (microphone) and setup according the the paramters above
 
@@ -138,7 +140,7 @@ if strcmp(S.Task, 'EyelinkCalibration')
     Eyelink.Calibration(S.PTB.Video.wPtr);
     S.TaskData.ER.Data = {};
 else
-    % TASK.TASK_1.Parameters <= here is all paramters
+    % TASK.(S.Task).Parameters <= here is all paramters
     TASK.(S.Task).Runtime() % execution of the task
 end
 
@@ -157,7 +159,9 @@ sca;
 Priority(0);
 
 % Audio : comment/uncomment
-% PsychPortAudio('Close');
+if strcmp(S.Task, 'Emotion')
+    PsychPortAudio('Close');
+end
 
 
 if exist(fullfile('+TASK',['+' S.Task],'SPMnod_parametric.m'),'file') > 0

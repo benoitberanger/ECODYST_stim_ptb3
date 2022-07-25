@@ -24,6 +24,11 @@ switch S.Environement
                 S.Keybinds.TaskSpecific.K3       = KbName('g');
                 S.Keybinds.TaskSpecific.K4       = KbName('r');
                 
+            case 'Emotion'
+                S.Keybinds.TaskSpecific.Left     = KbName('b');
+                S.Keybinds.TaskSpecific.Validate = KbName('y');
+                S.Keybinds.TaskSpecific.Right    = KbName('g');
+                
         end
         
     case 'Keyboard' %------------------------------------------------------
@@ -40,12 +45,17 @@ switch S.Environement
             case 'SocialCognition'
                 S.Keybinds.TaskSpecific.Right    = KbName('RightArrow');
                 S.Keybinds.TaskSpecific.Left     = KbName('LeftArrow');
-           
+                
             case 'SimpleMotor'
-                 S.Keybinds.TaskSpecific.K1      = KbName('h');
-                 S.Keybinds.TaskSpecific.K2      = KbName('j');
-                 S.Keybinds.TaskSpecific.K3      = KbName('k');
-                 S.Keybinds.TaskSpecific.K4      = KbName('l');
+                S.Keybinds.TaskSpecific.K1      = KbName('h');
+                S.Keybinds.TaskSpecific.K2      = KbName('j');
+                S.Keybinds.TaskSpecific.K3      = KbName('k');
+                S.Keybinds.TaskSpecific.K4      = KbName('l');
+                
+            case 'Emotion'
+                S.Keybinds.TaskSpecific.Left     = KbName('LeftArrow');
+                S.Keybinds.TaskSpecific.Validate = KbName('DownArrow');
+                S.Keybinds.TaskSpecific.Right    = KbName('RightArrow');
                 
         end
         

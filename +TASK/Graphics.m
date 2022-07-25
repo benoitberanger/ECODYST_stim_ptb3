@@ -71,4 +71,11 @@ p.SimpleMotor.Text.Color           = [127 127 127 255]; % [R G B a], from 0 to 2
 p.SimpleMotor.Text.Center          = [0.5 0.5];         % Position_px = [ScreenX_px ScreenY_px] .* Position
 
 
+%% Emotion
+
+p.Emotion.Text.SizeInstruction = 0.10;              % TextSize = round(ScreenY_px * Size)
+p.Emotion.Text.Color           = [127 127 127 255]; % [R G B a], from 0 to 255
+p.Emotion.Text.Center          = [0.5 0.5];         % Position_px = [ScreenX_px ScreenY_px] .* Position
+
+
 end % function

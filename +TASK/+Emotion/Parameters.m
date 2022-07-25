@@ -42,7 +42,13 @@ p.txt_likert_stress    = 'stress ?';
 
 switch OperationMode
     case 'FastDebug'
-        
+        p.dur_baseline_instruction = 1;
+        p.dur_baseline_rest        = 1;
+        p.dur_script_instruction   = 1;
+        p.dur_script_playback      = 1;
+        p.dur_recovery_instruction = 1;
+        p.dur_recovery_rest        = 1;
+        p.dur_likert = 5;
     case 'RealisticDebug'
         
     case 'Acquisition'

@@ -23,6 +23,7 @@ try
     
     FIXATIONCROSS = TASK.        PREPARE.FixationCross();
     TEXT          = TASK.Emotion.PREPARE.Text         ();
+    AUDIOFILE     = TASK.Emotion.PREPARE.AudioFile    ();
     
     
     %% Shortcuts
@@ -89,14 +90,10 @@ try
             
         elseif strcmp(type, 'instruction') % ------------------------------
             
-            % Draw
-            FIXATIONCROSS.Draw();
-            % TEXT.Draw(content, 'Instruction');
-            Screen('DrawingFinished', wPtr);
-            
-            % Flip at the right moment
-            desired_onset =  StartTime + evt_onset - slack;
-            real_onset = Screen('Flip', wPtr, desired_onset);
+            % Playback at the right moment
+            idx = find(contains({AUDIOFILE.filename},content));
+            desired_onset =  StartTime + evt_onset - S.PTB.Audio.Playback.anticipation;
+            real_onset = AUDIOFILE(idx).Playback(desired_onset);
             
             % Save onset
             ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
@@ -120,14 +117,9 @@ try
             
         elseif strcmp(type, 'rest') % -------------------------------------
             
-            % Draw
-            FIXATIONCROSS.Draw();
-            % TEXT.Draw(content, 'Instruction');
-            Screen('DrawingFinished', wPtr);
-            
             % Flip at the right moment
             desired_onset =  StartTime + evt_onset - slack;
-            real_onset = Screen('Flip', wPtr, desired_onset);
+            real_onset = WaitSecs('UntilTime', desired_onset);
             
             % Save onset
             ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
@@ -150,14 +142,10 @@ try
             
         elseif strcmp(type, 'playback') % -------------------------------------
             
-            % Draw
-            FIXATIONCROSS.Draw();
-            % TEXT.Draw(content, 'Instruction');
-            Screen('DrawingFinished', wPtr);
-            
-            % Flip at the right moment
-            desired_onset =  StartTime + evt_onset - slack;
-            real_onset = Screen('Flip', wPtr, desired_onset);
+            % Playback at the right moment
+            idx = find(contains({AUDIOFILE.filename},content));
+            desired_onset =  StartTime + evt_onset - S.PTB.Audio.Playback.anticipation;
+            real_onset = AUDIOFILE(idx).Playback(desired_onset);
             
             % Save onset
             ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});

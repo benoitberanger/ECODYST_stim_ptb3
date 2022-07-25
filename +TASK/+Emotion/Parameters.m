@@ -48,9 +48,11 @@ switch OperationMode
         p.dur_script_playback      = 1;
         p.dur_recovery_instruction = 1;
         p.dur_recovery_rest        = 1;
-        p.dur_likert = 5;
+        p.dur_likert               = 3;
     case 'RealisticDebug'
-        
+        p.dur_baseline_rest        = 3;
+        p.dur_recovery_rest        = 3;
+        p.dur_likert               = 5;
     case 'Acquisition'
         % pass
     otherwise

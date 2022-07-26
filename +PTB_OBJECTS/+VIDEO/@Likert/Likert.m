@@ -21,12 +21,24 @@ classdef Likert < PTB_OBJECTS.VIDEO.Base
         
         center           (1,2) double  % [ CenterX CenterY ] of the main line, in pixels
         
-        tick_label       (7,1) cell    % all labels 
+        tick_N           (1,1) double  % number of ticks
+        tick_label_bot_txt         cell    % usually : 1           2             3
+        tick_label_top_txt         cell    % usually : not at all, indifferent , a lot
+        tick_label_bot_size
+        tick_label_top_size
         
         % Internal variables
         
         line_rect        (1,4) double  % coordinates of the main line for PTB, in pixels
-        tick_rect        (4,7) double  % coordinates of all ticks for PTB, in pixels
+        tick_rect              double  % coordinates of all ticks for PTB, in pixels
+        tick_pos               double  % position of the tick X (center) in pixel
+        tick_label_bot_pos     double  % position of the bottom label Y in pixel
+        tick_label_top_pos     double  % position of the top    label Y in pixel
+        
+        tick_label_bot_offcet_x
+        tick_label_bot_offcet_y
+        tick_label_top_offcet_x
+        tick_label_top_offcet_y
         
         cursor_rect      (1,4) double  % coordinates of the cursor for PTB, in pixels
         

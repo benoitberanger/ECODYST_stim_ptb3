@@ -20,22 +20,37 @@ p = struct; % This structure will contain all task specific parameters, such as 
 
 % all dur* are in seconds
 
-p.dur_baseline_instruction = 15.125; % also called "baseline"
+p.dur_baseline_instruction = 15.0; % also called "baseline"
 p.dur_baseline_rest        = 1.5*60 - p.dur_baseline_instruction;
+% total = 1m30s
 
-p.dur_script_instruction   = 10.553;
-p.dur_script_playback      = 2*60 + 20.200;
+p.dur_script_instruction   = 10.0;
+p.dur_script_playback      = 2.5*60 - p.dur_script_instruction;
+% total = 2m30s
 
-p.dur_recovery_instruction = 5.064;
+p.dur_recovery_instruction = 5.0;
 p.dur_recovery_rest        = 1*60 - p.dur_recovery_instruction;
+% total = 1m00s
+
+% stotal = 5m00s
 
 p.dur_likert = 10;
 
 
 %% Text
 
-p.txt_likert_immersion = 'immersion ?';
-p.txt_likert_stress    = 'stress ?';
+p.txt_likert_immersion = 'A quel point vous êtes-vous projeté ?';
+p.txt_likert_stress    = 'Quel niveau de stress/anxiété/tension ?';
+
+p.likert_N         =  5;
+p.likert_label_bot = {'1' '2' '3' '4' '5'};
+p.likert_label_top = {
+    'pas du tout'
+    ''
+    ''
+    ''
+    'énormément'
+    };
 
 
 %% Debugging

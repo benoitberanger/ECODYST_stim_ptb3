@@ -21,6 +21,8 @@ classdef Likert < PTB_OBJECTS.VIDEO.Base
         
         center                  (1,2) double  % [ CenterX CenterY ] of the main line, in pixels
         
+        question_pos            (1,1) double
+        
         tick_N                  (1,1) double  % number of ticks
         tick_label_bot_txt            cell    % usually : 1           2             3
         tick_label_top_txt            cell    % usually : not at all, indifferent , a lot

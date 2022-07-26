@@ -88,7 +88,9 @@ p.Emotion.Likert.tick_color                 = [127 127 127 255]; % [R G B a], fr
 p.Emotion.Likert.cursor_color_select        = [120 106 255 255]; % [R G B a], from 0 to 255
 p.Emotion.Likert.cursor_color_valid         = [200 200 200 255]; % [R G B a], from 0 to 255
 
-p.Emotion.Likert.center                     = [0.50 0.60];       % center_px = [ScreenX_px ScreenY_px] .* center
+p.Emotion.Likert.center                     = [0.50 0.70];       % center_px = [ScreenX_px ScreenY_px] .* center
+p.Emotion.Likert.question_pos_ratio         = 0.3;               % pos_y_px  = ScreenY_px * ratio
+
 p.Emotion.Likert.tick_label_bot_size_ratio  = 0.10;              % Size = ScreenY_px * ratio
 p.Emotion.Likert.tick_label_top_size_ratio  = 0.05;              % Size = ScreenY_px * ratio
 

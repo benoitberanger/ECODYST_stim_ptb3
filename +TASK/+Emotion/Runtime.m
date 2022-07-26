@@ -178,7 +178,7 @@ try
             
             % Draw
             LIKERT.MoveMiddle();
-            LIKERT.Draw();
+            LIKERT.Draw(content);
             Screen('DrawingFinished', wPtr);
             
             % Flip at the right moment
@@ -214,15 +214,17 @@ try
                         
                         if keyCode(KEY_LEFT)
                             LIKERT.MoveLeft();
-                            LIKERT.Draw();
+                            LIKERT.Draw(content);
                             Screen('DrawingFinished', wPtr);
                             Screen('Flip', wPtr);
+                            WaitSecs(0.200);
                         end
                         if keyCode(KEY_RIGHT)
                             LIKERT.MoveRight();
-                            LIKERT.Draw();
+                            LIKERT.Draw(content);
                             Screen('DrawingFinished', wPtr);
                             Screen('Flip', wPtr);
+                            WaitSecs(0.200);
                         end
                         
                     end

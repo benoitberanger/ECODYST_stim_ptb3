@@ -19,6 +19,8 @@ LIKERT.cursor_color_select = S.TaskParam.Emotion.Likert.cursor_color_select; LIK
 LIKERT.cursor_color_valid  = S.TaskParam.Emotion.Likert.cursor_color_valid;
 
 LIKERT.center              = S.TaskParam.Emotion.Likert.center.*[ScreenX_px ScreenY_px];
+LIKERT.question_pos        = S.TaskParam.Emotion.Likert.question_pos_ratio        * ScreenY_px;
+
 LIKERT.tick_label_bot_size = S.TaskParam.Emotion.Likert.tick_label_bot_size_ratio * ScreenY_px; LIKERT.tick_label_bot_size = round(LIKERT.tick_label_bot_size);
 LIKERT.tick_label_top_size = S.TaskParam.Emotion.Likert.tick_label_top_size_ratio * ScreenY_px; LIKERT.tick_label_top_size = round(LIKERT.tick_label_top_size);
 

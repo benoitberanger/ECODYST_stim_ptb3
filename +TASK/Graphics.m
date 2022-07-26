@@ -85,9 +85,9 @@ p.Emotion.Likert.tick_width_ratio           = 0.10;              % tick_width   
 p.Emotion.Likert.tick_thickness_ratio       = 0.01;              % tick_thickness   = screen_width * ratio
 p.Emotion.Likert.tick_color                 = [127 127 127 255]; % [R G B a], from 0 to 255
 
-p.Emotion.Likert.cursor_width_ratio         = 0.15;              % cursor_width     = screen_width * ratio
-p.Emotion.Likert.cursor_thickness_ratio     = 0.01;              % cursor_thickness = screen_width * ratio
-p.Emotion.Likert.cursor_color               = [127 000 000 255]; % [R G B a], from 0 to 255
+% p.Emotion.Likert.cursor_width_ratio         = 0.15;              % cursor_width     = screen_width * ratio
+% p.Emotion.Likert.cursor_thickness_ratio     = 0.01;              % cursor_thickness = screen_width * ratio
+p.Emotion.Likert.cursor_color               = [125 111 133 255]; % [R G B a], from 0 to 255
 
 p.Emotion.Likert.center                     = [0.50 0.75];       % center_px = [ScreenX_px ScreenY_px] .* center
 p.Emotion.Likert.tick_label_bot_size_ratio  = 0.10;              % Size = ScreenY_px * ratio

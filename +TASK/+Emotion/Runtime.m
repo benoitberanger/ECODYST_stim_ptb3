@@ -118,9 +118,13 @@ try
             
         elseif strcmp(type, 'rest') % -------------------------------------
             
+             % Draw
+            FIXATIONCROSS.Draw();
+            Screen('DrawingFinished', wPtr);
+            
             % Flip at the right moment
             desired_onset =  StartTime + evt_onset - slack;
-            real_onset = WaitSecs('UntilTime', desired_onset);
+            real_onset = Screen('Flip', wPtr, desired_onset);
             
             % Save onset
             ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
@@ -170,8 +174,7 @@ try
         elseif strcmp(part, 'lickert') % ----------------------------------
             
             % Draw
-            FIXATIONCROSS.Draw();
-            % TEXT.Draw(content, 'Instruction');
+            LIKERT.Draw();
             Screen('DrawingFinished', wPtr);
             
             % Flip at the right moment

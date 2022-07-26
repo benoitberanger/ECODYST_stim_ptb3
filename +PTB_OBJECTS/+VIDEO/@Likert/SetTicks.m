@@ -20,9 +20,9 @@ self.tick_label_bot_offcet_x = (tick_label_bot_rect(3) - tick_label_bot_rect(1))
 self.tick_label_top_offcet_x = (tick_label_top_rect(3) - tick_label_top_rect(1))/2;
 
 self.tick_label_bot_offcet_y = (tick_label_bot_rect(4) - tick_label_bot_rect(2)) + ...
-    self.cursor_height/2 * 1.1;
+    self.tick_height/2 * 1.1;
 self.tick_label_top_offcet_y = (tick_label_top_rect(4) - tick_label_top_rect(2)) + ...
-    self.tick_label_bot_offcet_y*1.1;
+    self.tick_label_bot_offcet_y * 1.2;
 
 end % function
 

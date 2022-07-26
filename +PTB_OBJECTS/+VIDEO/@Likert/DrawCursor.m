@@ -1,5 +1,5 @@
 function DrawCursor( self )
 
-Screen('FillRect', self.wPtr, self.cursor_color, self.cursor_rect)
+Screen('FrameRect', self.wPtr, self.cursor_color, self.cursor_rect, 5)
 
 end % function

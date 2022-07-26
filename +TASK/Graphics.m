@@ -77,5 +77,28 @@ p.Emotion.Text.SizeInstruction = 0.10;              % TextSize = round(ScreenY_p
 p.Emotion.Text.Color           = [127 127 127 255]; % [R G B a], from 0 to 255
 p.Emotion.Text.Center          = [0.5 0.5];         % Position_px = [ScreenX_px ScreenY_px] .* Position
 
+p.Emotion.Likert.line_width_ratio       = 0.90;              % line_width       = screen_width * ratio
+p.Emotion.Likert.line_thickness_ratio   = 0.01;              % line_thickness   = screen_width * ratio
+p.Emotion.Likert.line_color             = [127 127 127 255]; % [R G B a], from 0 to 255
+
+p.Emotion.Likert.tick_width_ratio       = 0.10;              % tick_width       = screen_width * ratio
+p.Emotion.Likert.tick_thickness_ratio   = 0.01;              % tick_thickness   = screen_width * ratio
+p.Emotion.Likert.tick_color             = [127 127 127 255]; % [R G B a], from 0 to 255
+
+p.Emotion.Likert.cursor_width_ratio     = 0.15;              % cursor_width     = screen_width * ratio
+p.Emotion.Likert.cursor_thickness_ratio = 0.01;              % cursor_thickness = screen_width * ratio
+p.Emotion.Likert.cursor_color           = [127 000 000 255]; % [R G B a], from 0 to 255
+
+p.Emotion.Likert.center                 = [0.5 0.5];         % center_px = [ScreenX_px ScreenY_px] .* center
+
+p.Emotion.Likert.tick_label = {
+    'pas du tout d''accord'
+    'pas d''accord'
+    'plutôt pas d''accord'
+    'indifférent'
+    'plutôt d''accord'
+    'd''accord'
+    'tout à fait d''accord'
+    };
 
 end % function

@@ -24,6 +24,7 @@ try
     FIXATIONCROSS = TASK.        PREPARE.FixationCross();
     TEXT          = TASK.Emotion.PREPARE.Text         ();
     AUDIOFILE     = TASK.Emotion.PREPARE.AudioFile    ();
+    LIKERT        = TASK.Emotion.PREPARE.Likert       ();
     
     
     %% Shortcuts

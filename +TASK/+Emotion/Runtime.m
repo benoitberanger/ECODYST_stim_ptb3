@@ -29,12 +29,15 @@ try
     
     %% Shortcuts
     
-    ER          = S.ER; % EventRecorder
-    BR          = S.BR; % BehaviourRecorder (EventRecorder)
-    wPtr        = S.PTB.Video.wPtr;
-    wRect       = S.PTB.Video.wRect;
-    slack       = S.PTB.Video.slack;
-    KEY_ESCAPE  = S.Keybinds.Common.Stop_Escape;
+    ER           = S.ER; % EventRecorder
+    BR           = S.BR; % BehaviourRecorder (EventRecorder)
+    wPtr         = S.PTB.Video.wPtr;
+    wRect        = S.PTB.Video.wRect;
+    slack        = S.PTB.Video.slack;
+    KEY_ESCAPE   = S.Keybinds.Common.Stop_Escape;
+    KEY_LEFT     = S.Keybinds.TaskSpecific.Left;
+    KEY_RIGHT    = S.Keybinds.TaskSpecific.Right;
+    KEY_VALIDATE = S.Keybinds.TaskSpecific.Validate;
     
     if S.MovieMode, moviePtr = S.moviePtr; end
     
@@ -174,6 +177,7 @@ try
         elseif strcmp(part, 'lickert') % ----------------------------------
             
             % Draw
+            LIKERT.MoveMiddle();
             LIKERT.Draw();
             Screen('DrawingFinished', wPtr);
             
@@ -190,13 +194,42 @@ try
             
             % While loop for most of the duration of the event, so we can press ESCAPE
             next_onset = StartTime + next_evt_onset - slack;
+            has_responded = false;
             while secs < next_onset
                 
                 [keyIsDown, secs, keyCode] = KbCheck();
                 if keyIsDown
                     EXIT = keyCode(KEY_ESCAPE);
                     if EXIT, break, end
+                    
+                    if keyCode(KEY_VALIDATE)
+                        LIKERT.cursor_color = LIKERT.cursor_color_valid;
+                        LIKERT.Draw();
+                        Screen('DrawingFinished', wPtr);
+                        Screen('Flip', wPtr);
+                        has_responded = true;
+                    end
+                    
+                    if ~has_responded
+                        
+                        if keyCode(KEY_LEFT)
+                            LIKERT.MoveLeft();
+                            LIKERT.Draw();
+                            Screen('DrawingFinished', wPtr);
+                            Screen('Flip', wPtr);
+                        end
+                        if keyCode(KEY_RIGHT)
+                            LIKERT.MoveRight();
+                            LIKERT.Draw();
+                            Screen('DrawingFinished', wPtr);
+                            Screen('Flip', wPtr);
+                        end
+                        
+                    end
+                    
                 end
+                
+                val = LIKERT.cursor_pos;
                 
             end % while
             

@@ -1,8 +1,10 @@
 function SetTicks( self, N, label_bot, label_top )
 
-self.tick_N         = N;
+self.tick_N             = N;
 self.tick_label_bot_txt = label_bot;
 self.tick_label_top_txt = label_top;
+self.cursor_pos_middle  = round(N/2);
+self.cursor_pos         = self.cursor_pos_middle;
 
 % tick
 tick_rect = [0 0 self.tick_thickness self.tick_height];

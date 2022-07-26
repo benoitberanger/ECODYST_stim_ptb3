@@ -16,6 +16,8 @@ classdef Likert < PTB_OBJECTS.VIDEO.Base
         tick_color              (1,4) uint8   % [R G B a] from 0 to 255
         
         cursor_color            (1,4) uint8   % [R G B a] from 0 to 255
+        cursor_color_select     (1,4) uint8   % [R G B a] from 0 to 255
+        cursor_color_valid      (1,4) uint8   % [R G B a] from 0 to 255
         
         center                  (1,2) double  % [ CenterX CenterY ] of the main line, in pixels
         
@@ -39,8 +41,10 @@ classdef Likert < PTB_OBJECTS.VIDEO.Base
         tick_label_top_offcet_y (1,1) double
         
         cursor_rect             (1,4) double  % coordinates of the cursor for PTB, in pixels
+        cursor_rect_middle      (1,4) double  % coordinates of the cursor for PTB, in pixels
         
         cursor_pos              (1,1) double  % cursor position in relative unit, from 1 to 7
+        cursor_pos_middle       (1,1) double  % cursor position in relative unit, from 1 to 7
         
     end % properties
     

@@ -1,7 +1,7 @@
 function Runtime()
 global S
 
-    % nested function (cannot be in the try/catch part)
+% nested function (cannot be in the try/catch part)
     function printlog()
         fprintf('block#=%1d  -  block_name=%29s  -  condition=%6s  -  part=%8s  -  type=%11s  -  content=%s \n', iblock, evt_name, condition, part, type ,content)
     end
@@ -94,10 +94,15 @@ try
             
         elseif strcmp(type, 'instruction') % ------------------------------
             
+            % Draw
+            FIXATIONCROSS.Draw();
+            Screen('DrawingFinished', wPtr);
+            
             % Playback at the right moment
             idx = find(contains({AUDIOFILE.filename},content));
             desired_onset =  StartTime + evt_onset - S.PTB.Audio.Playback.anticipation;
             real_onset = AUDIOFILE(idx).Playback(desired_onset);
+            Screen('Flip', wPtr, desired_onset);
             
             % Save onset
             ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
@@ -121,7 +126,7 @@ try
             
         elseif strcmp(type, 'rest') % -------------------------------------
             
-             % Draw
+            % Draw
             FIXATIONCROSS.Draw();
             Screen('DrawingFinished', wPtr);
             
@@ -212,8 +217,7 @@ try
                             has_responded = true;
                             
                             RT = secs-real_onset;
-                            fprintf('RT=%5dms   -   value=%d\n',...
-                                round(RT*1000), LIKERT.cursor_pos)
+                            fprintf('RT=%5dms   -   value=%d\n', round(RT*1000), LIKERT.cursor_pos)
                         end
                         
                         if keyCode(KEY_LEFT)
@@ -240,8 +244,7 @@ try
             
             if ~has_responded
                 RT = -1;
-                fprintf('RT=           -   value=%d\n',...
-                LIKERT.cursor_pos)
+                fprintf('RT=           -   value=%d\n', LIKERT.cursor_pos)
             end
             BR.AddEvent({iblock evt_name condition part type content RT LIKERT.cursor_pos})
             

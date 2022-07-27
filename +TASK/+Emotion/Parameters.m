@@ -39,8 +39,8 @@ p.dur_likert = 10;
 
 %% Text
 
-p.txt_likert_immersion = 'A quel point vous Ãªtes-vous projetÃ© ?';
-p.txt_likert_stress    = 'Quel niveau de stress/anxiÃ©tÃ©/tension ?';
+p.txt_likert_immersion = 'A quel point vous êtes-vous projeté ?';
+p.txt_likert_stress    = 'Quel niveau de stress/anxiété/tension ?';
 
 p.likert_N         =  5;
 p.likert_label_bot = {'1' '2' '3' '4' '5'};
@@ -49,7 +49,7 @@ p.likert_label_top = {
     ''
     ''
     ''
-    'Ã©normÃ©ment'
+    'énormément'
     };
 
 

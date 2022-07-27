@@ -37,8 +37,7 @@ woff = Screen('OpenOffscreenWindow',self.wPtr,[],[0 0 2*sz*textLength 2*sz]);
 Screen(woff,'TextFont',Screen('TextFont', self.wPtr));
 Screen(woff,'TextSize',sz);
 yPositionIsBaseline = 1;
-centerTheText = 1;
-bounds=TextBounds(woff,txt_char,yPositionIsBaseline,centerTheText);
+bounds=TextBounds(woff,txt_char,yPositionIsBaseline);
 Screen('Close',woff);
 
 end % function

@@ -3,7 +3,7 @@ global S
 
     % nested function (cannot be in the try/catch part)
     function printlog()
-        fprintf('block#=%1d // block_name=%29s // condition=%6s // part=%8s // type=%11s // content=%s \n', iblock, evt_name, condition, part, type ,content)
+        fprintf('block#=%1d  -  block_name=%29s  -  condition=%6s  -  part=%8s  -  type=%11s  -  content=%s \n', iblock, evt_name, condition, part, type ,content)
     end
 
 try
@@ -16,7 +16,7 @@ try
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
-    S.BR = EventRecorder({''}, 1);
+    S.BR = EventRecorder({'block#' 'block_name' 'condition' 'part' 'type' 'content' 'RT(s)' 'value'}, 4*2);
     
     
     %% Initialize stim objects
@@ -202,15 +202,19 @@ try
                     EXIT = keyCode(KEY_ESCAPE);
                     if EXIT, break, end
                     
-                    if keyCode(KEY_VALIDATE)
-                        LIKERT.cursor_color = LIKERT.cursor_color_valid;
-                        LIKERT.Draw();
-                        Screen('DrawingFinished', wPtr);
-                        Screen('Flip', wPtr);
-                        has_responded = true;
-                    end
-                    
                     if ~has_responded
+                        
+                        if keyCode(KEY_VALIDATE)
+                            LIKERT.cursor_color = LIKERT.cursor_color_valid;
+                            LIKERT.Draw();
+                            Screen('DrawingFinished', wPtr);
+                            Screen('Flip', wPtr);
+                            has_responded = true;
+                            
+                            RT = secs-real_onset;
+                            fprintf('RT=%5dms   -   value=%d\n',...
+                                round(RT*1000), LIKERT.cursor_pos)
+                        end
                         
                         if keyCode(KEY_LEFT)
                             LIKERT.MoveLeft();
@@ -219,6 +223,7 @@ try
                             Screen('Flip', wPtr);
                             WaitSecs(0.200);
                         end
+                        
                         if keyCode(KEY_RIGHT)
                             LIKERT.MoveRight();
                             LIKERT.Draw(content);
@@ -231,9 +236,15 @@ try
                     
                 end
                 
-                val = LIKERT.cursor_pos;
-                
             end % while
+            
+            if ~has_responded
+                RT = -1;
+                fprintf('RT=           -   value=%d\n',...
+                LIKERT.cursor_pos)
+            end
+            BR.AddEvent({iblock evt_name condition part type content RT LIKERT.cursor_pos})
+            
             
         else % ------------------------------------------------------------
             

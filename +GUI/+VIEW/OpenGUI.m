@@ -5,7 +5,7 @@ function varargout = OpenGUI()
 
 % debug=1 closes previous figure and reopens it, and send the gui handles
 % to base workspace.
-debug = 1;
+debug = 0;
 
 gui_name = [ 'GUI_' project_name() ];
 

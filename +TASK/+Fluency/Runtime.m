@@ -11,7 +11,7 @@ try
     %% Prepare recorders
     
     PTB_ENGINE.PrepareRecorders( S.EP );
-    S.BR = EventRecorder({'#block', 'type', 'name', 'instruction' 'mic'}, p.nTrials);
+    S.BR = EventRecorder({'event_name' '#block', 'type', 'name', 'instruction', 'mic_data', 'nsample', 'dur', 'expected_dur', 'delta'}, p.nTrials);
     
     
     %% Initialize stim objects
@@ -27,6 +27,8 @@ try
     wPtr        = S.PTB.Video.wPtr;
     wRect       = S.PTB.Video.wRect;
     slack       = S.PTB.Video.slack;
+    pahandle    = S.PTB.Audio.Record.pahandle;
+    fs          = S.PTB.Audio.Record.SamplingFrequency;
     KEY_ESCAPE  = S.Keybinds.Common.Stop_Escape;
     if S.MovieMode, moviePtr = S.moviePtr; end
     
@@ -44,22 +46,33 @@ try
     
     EXIT = false;
     secs = GetSecs();
+    audiodata = [];
+    prev = struct;
     
     % Loop over the EventPlanning
     nEvents = size( EP.Data , 1 );
     for evt = 1 : nEvents
         
         % Shortcuts
-        evt_name     = EP.Data{evt,columns.event_name};
-        evt_onset    = EP.Data{evt,columns.onset_s_};
+        evt_name     = EP.Data{evt,columns.event_name };
+        evt_onset    = EP.Data{evt,columns.onset_s_   };
         evt_duration = EP.Data{evt,columns.duration_s_};
-        iblock       = EP.Data{evt,columns.x_block};
-        type         = EP.Data{evt,columns.type};
-        name         = EP.Data{evt,columns.name};
+        iblock       = EP.Data{evt,columns.x_block    };
+        type         = EP.Data{evt,columns.type       };
+        name         = EP.Data{evt,columns.name       };
         instruction  = EP.Data{evt,columns.instruction};
         
         if evt < nEvents
             next_evt_onset = EP.Data{evt+1,columns.onset_s_};
+        end
+        
+        if evt > 1
+           prev.evt_name    = EP.Data{evt-1,columns.event_name };
+           prev.evt_duration= EP.Data{evt-1,columns.duration_s_};
+           prev.iblock      = EP.Data{evt-1,columns.x_block    };
+           prev.type        = EP.Data{evt-1,columns.type       };
+           prev.name        = EP.Data{evt-1,columns.name       };
+           prev.instruction = EP.Data{evt-1,columns.instruction};
         end
         
         switch evt_name
@@ -71,8 +84,12 @@ try
                 Screen('DrawingFinished', wPtr);
                 Screen('Flip',wPtr);
                 
+                % Start audio capture immediately and wait for the capture to start.
+                % We set the number of 'repetitions' to zero,
+                % i.e. record until recording is manually stopped.
+                PsychPortAudio('Start', pahandle, 0, 0, 1);
                 StartTime = PTB_ENGINE.StartTimeEvent(); % a wrapper, deals with hidemouse, eyelink, mri sync, ...
-                
+                GetAudioData(pahandle, fs); % empy buffer
                 
             case 'StopTime' % ---------------------------------------------
                 
@@ -91,13 +108,17 @@ try
                 % Flip at the right moment
                 desired_onset =  StartTime + evt_onset - slack;
                 real_onset = Screen('Flip', wPtr, desired_onset);
+                [audiodata, nsample, dur] = GetAudioData(pahandle, fs); % get audio data
+                if evt > 2 % meaningful data start after the 1st 'instr_rest' block (which is 2nd event)
+                    BR.AddEvent({prev.evt_name prev.iblock prev.type prev.name prev.instruction audiodata nsample dur prev.evt_duration dur-prev.evt_duration});
+                end
                 
                 % Save onset
                 ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('block#=%1d // block_name=%10s // Instructions = %s \n', iblock, evt_name, instruction)
+                fprintf('block#=%1d // block_name=%30s // instructions = %s \n', iblock, evt_name, instruction)
                                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -121,13 +142,15 @@ try
                 
                 % Flip at the right moment
                 real_onset = Screen('Flip', wPtr, desired_onset);
+                [audiodata, nsample, dur] = GetAudioData(pahandle, fs); % get audio data
+                BR.AddEvent({prev.evt_name prev.iblock prev.type prev.name prev.instruction audiodata nsample dur prev.evt_duration dur-prev.evt_duration});
                 
                 % Save onset
                 ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
                 
                 if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
                 
-                fprintf('block#=%1d // block_name=%11s \n', iblock, evt_name)
+                fprintf('block#=%1d // block_name=%30s \n', iblock, evt_name)
                 
                 % While loop for most of the duration of the event, so we can press ESCAPE
                 next_onset = StartTime + next_evt_onset - slack;
@@ -162,6 +185,13 @@ try
         end
         
     end % for
+    
+    
+    %% last audio data
+    
+    PsychPortAudio('Stop', pahandle);
+    [audiodata, nsample, dur] = GetAudioData(pahandle, fs); % get audio data
+    BR.AddEvent({prev.evt_name prev.iblock prev.type prev.name prev.instruction audiodata nsample dur prev.evt_duration dur-prev.evt_duration});
     
     
     %% End of task execution stuff
@@ -203,8 +233,21 @@ catch err
         PTB_ENGINE.VIDEO.MOVIE.Finalize(moviePtr);
     end
     
-    PsychPortAudio('Close');
+    try
+        PsychPortAudio('Stop', pahandle);
+        PsychPortAudio('Close');
+    catch
+    end
     
 end % try
+
+end % function
+
+
+function [audiodata, nsample, dur] = GetAudioData(pahandle, fs)
+
+audiodata = PsychPortAudio('GetAudioData', pahandle);
+nsample = length(audiodata);
+dur = nsample/fs;
 
 end % function

@@ -98,6 +98,11 @@ try
                 % Record StopTime
                 S.ER.AddStopTime( 'StopTime' , StopTime - StartTime );
                 
+                % last audio data
+                PsychPortAudio('Stop', pahandle);
+                [audiodata, nsample, dur] = GetAudioData(pahandle, fs); % get audio data
+                BR.AddEvent({prev.evt_name prev.iblock prev.type prev.name prev.instruction audiodata nsample dur prev.evt_duration dur-prev.evt_duration});
+    
                 
             case {'instr_rest', 'instr_action'} % -------------------------------------------------
                 
@@ -185,13 +190,6 @@ try
         end
         
     end % for
-    
-    
-    %% last audio data
-    
-    PsychPortAudio('Stop', pahandle);
-    [audiodata, nsample, dur] = GetAudioData(pahandle, fs); % get audio data
-    BR.AddEvent({prev.evt_name prev.iblock prev.type prev.name prev.instruction audiodata nsample dur prev.evt_duration dur-prev.evt_duration});
     
     
     %% End of task execution stuff

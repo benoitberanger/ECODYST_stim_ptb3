@@ -42,6 +42,8 @@ end
 
 %% Fluency blocks
 
+instruction_rest = 'repos';
+
 c = 1;
 p.condition(c).type = 'semantic';
 p.condition(c).name = 'animals';
@@ -101,18 +103,17 @@ EP.AddStartTime('StartTime',0);
 for iBlock = 1 : length(p.block)
 
     name = ['block_action_' p.block(iBlock).type '_' p.block(iBlock).name];
-    metadata = {iBlock p.block(iBlock).type p.block(iBlock).name p.block(iBlock).instruction};
     
-    EP.AddPlanning([{'instr_rest'    NextOnset(EP) p.durInstruction} metadata{:} ])
-    EP.AddPlanning([{'block_rest'    NextOnset(EP) p.durBlockRest  } metadata{:} ])
+    EP.AddPlanning({'instr_rest'    NextOnset(EP) p.durInstruction iBlock ''                   ''                   instruction_rest})
+    EP.AddPlanning({'block_rest'    NextOnset(EP) p.durBlockRest   iBlock ''                   ''                   ''})
     
-    EP.AddPlanning([{'instr_action'  NextOnset(EP) p.durInstruction} metadata{:} ])
-    EP.AddPlanning([{name            NextOnset(EP) p.durBlockAction} metadata{:} ])
-    
+    EP.AddPlanning({'instr_action'  NextOnset(EP) p.durInstruction iBlock ''                   ''                   p.block(iBlock).instruction})
+    EP.AddPlanning({name            NextOnset(EP) p.durBlockAction iBlock p.block(iBlock).type p.block(iBlock).name ''})
+     
 end
 
-EP.AddPlanning(    [{'instr_rest'    NextOnset(EP) p.durInstruction} metadata{:} ])
-EP.AddPlanning(    [{'block_rest'    NextOnset(EP) p.durBlockRest  } metadata{:} ])
+EP.AddPlanning(    {'instr_rest'    NextOnset(EP) p.durInstruction iBlock ''                   ''                   instruction_rest})
+EP.AddPlanning(    {'block_rest'    NextOnset(EP) p.durBlockRest   iBlock ''                   ''                   ''})
 
 p.nTrials = iBlock*4 + 2;
 

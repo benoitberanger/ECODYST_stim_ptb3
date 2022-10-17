@@ -17,6 +17,9 @@ S.PTB.Audio.Record.pahandle = PsychPortAudio('Open', [],... % open first device 
     S.PTB.Audio.Record.Channels                        );
 
 
+s = PsychPortAudio('GetStatus', S.PTB.Audio.Record.pahandle);
+S.PTB.Audio.Record.SamplingFrequency = s.SampleRate;
+
 % Preallocate an internal audio recording  buffer with a capacity of 60 seconds:
 PsychPortAudio('GetAudioData', S.PTB.Audio.Record.pahandle, S.PTB.Audio.Record.BufferSizeSec);
 

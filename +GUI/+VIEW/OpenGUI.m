@@ -5,7 +5,7 @@ function varargout = OpenGUI()
 
 % debug=1 closes previous figure and reopens it, and send the gui handles
 % to base workspace.
-debug = 0;
+debug = 1;
 
 gui_name = [ 'GUI_' project_name() ];
 
@@ -542,7 +542,7 @@ else % Create the figure
     TaskList = GUI.MODEL.getTaskList();
     TaskVect = ones([1 length(TaskList)]);
     
-    o_task = GUI.VIEW.ObjectDispatcher( TaskVect );
+    o_task = GUI.VIEW.ObjectDispatcher( TaskVect, [], 3);
     
     for i = 1 : length(TaskList)
         
@@ -550,8 +550,8 @@ else % Create the figure
         
         b_task.x   = o_task.xpos;
         b_task.w   = o_task.xwidth;
-        b_task.y   = 0.10;
-        b_task.h   = 0.80;
+        b_task.y   = o_task.ypos;
+        b_task.h   = o_task.ywidth;
         b_task.tag = sprintf('pushbutton_%s', TaskList{i});
         handles.(b_task.tag) = uicontrol(handles.uipanel_Task       ,...
             'Style'          , 'pushbutton'                         ,...

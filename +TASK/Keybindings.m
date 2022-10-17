@@ -29,6 +29,9 @@ switch S.Environement
                 S.Keybinds.TaskSpecific.Validate = KbName('y');
                 S.Keybinds.TaskSpecific.Right    = KbName('g');
                 
+            case 'Fluency'
+                S.Keybinds.TaskSpecific.NONE     = KbName('b');
+                
         end
         
     case 'Keyboard' %------------------------------------------------------
@@ -56,6 +59,9 @@ switch S.Environement
                 S.Keybinds.TaskSpecific.Left     = KbName('LeftArrow');
                 S.Keybinds.TaskSpecific.Validate = KbName('DownArrow');
                 S.Keybinds.TaskSpecific.Right    = KbName('RightArrow');
+                
+            case 'Fluency'
+                S.Keybinds.TaskSpecific.NONE     = KbName('b');
                 
         end
         

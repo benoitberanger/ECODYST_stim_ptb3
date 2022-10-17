@@ -126,8 +126,10 @@ if strcmp(S.Task, 'Emotion')
     PTB_ENGINE.AUDIO.PLAYBACK.Parameters(); % <= here is all paramters
     PTB_ENGINE.AUDIO.PLAYBACK.OpenDevice(); % this opens the playback device (speakers/headphones) and setup according the the paramters above
 end
-% PTB_ENGINE.AUDIO.RECORD  .Parameters(); % <= here is all paramters
-% PTB_ENGINE.AUDIO.RECORD  .OpenDevice(); % this opens the record device (microphone) and setup according the the paramters above
+if strcmp(S.Task, 'Fluency')
+    PTB_ENGINE.AUDIO.RECORD.Parameters(); % <= here is all paramters
+    PTB_ENGINE.AUDIO.RECORD.OpenDevice(); % this opens the record device (microphone) and setup according the the paramters above
+end
 
 PTB_ENGINE.KEYBOARD.Parameters(); % <= here is paramters non Task specific
 
@@ -159,7 +161,7 @@ sca;
 Priority(0);
 
 % Audio : comment/uncomment
-if strcmp(S.Task, 'Emotion')
+if strcmp(S.Task, 'Emotion') || strcmp(S.Task, 'Fluency')
     PsychPortAudio('Close');
 end
 

@@ -95,4 +95,11 @@ p.Emotion.Likert.tick_label_bot_size_ratio  = 0.10;              % Size = Screen
 p.Emotion.Likert.tick_label_top_size_ratio  = 0.05;              % Size = ScreenY_px * ratio
 
 
+%% Fluency
+
+p.Fluency.Text.SizeInstruction = 0.10;              % TextSize = round(ScreenY_px * Size)
+p.Fluency.Text.Color           = [127 127 127 255]; % [R G B a], from 0 to 255
+p.Fluency.Text.Center          = [0.5 0.5];         % Position_px = [ScreenX_px ScreenY_px] .* Position
+
+
 end % function

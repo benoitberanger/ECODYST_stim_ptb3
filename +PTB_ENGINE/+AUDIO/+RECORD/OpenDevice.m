@@ -11,14 +11,14 @@ EchoStop(mfilename)
 
 % Playback device initialization
 S.PTB.Audio.Record.pahandle = PsychPortAudio('Open', [],... % open first device available
-    2                                                  ,... % 2 means playback
+    2                                                  ,... % 2 means record
     S.PTB.Audio.Record.LowLatencyMode                  ,...
     S.PTB.Audio.Record.SamplingFrequency               ,...
     S.PTB.Audio.Record.Channels                        );
 
 
 % Preallocate an internal audio recording  buffer with a capacity of 60 seconds:
-PsychPortAudio('GetAudioData', S.PTB.Audio.Record.pahandle, 60);
+PsychPortAudio('GetAudioData', S.PTB.Audio.Record.pahandle, 120);
 
 S.PTB.Audio.Record.anticipation = 0.001; % in secondes
 

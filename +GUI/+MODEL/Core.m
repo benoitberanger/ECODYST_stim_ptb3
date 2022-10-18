@@ -127,6 +127,7 @@ if strcmp(S.Task, 'Emotion')
     PTB_ENGINE.AUDIO.PLAYBACK.OpenDevice(); % this opens the playback device (speakers/headphones) and setup according the the paramters above
 end
 if strcmp(S.Task, 'Fluency')
+    PTB_ENGINE.AUDIO.       Initialize(); % !!! This must be done once before !!!
     PTB_ENGINE.AUDIO.RECORD.Parameters(); % <= here is all paramters
     PTB_ENGINE.AUDIO.RECORD.OpenDevice(); % this opens the record device (microphone) and setup according the the paramters above
 end

@@ -52,17 +52,17 @@ p.condition(c).instruction = 'des noms d''animaux';
 c = 2;
 p.condition(c).type = 'semantic';
 p.condition(c).name = 'cloths';
-p.condition(c).instruction = 'des noms de vÃªtements';
+p.condition(c).instruction = 'des noms de vêtements';
 
 c = 3;
 p.condition(c).type = 'phonemic';
 p.condition(c).name = 'F';
-p.condition(c).instruction = 'mots dÃ©butants par Â« F Â»';
+p.condition(c).instruction = 'mots débutants par « F »';
 
 c = 4;
 p.condition(c).type = 'phonemic';
 p.condition(c).name = 'C';
-p.condition(c).instruction = 'mots dÃ©butants par Â« C Â»';
+p.condition(c).instruction = 'mots débutants par « C »';
 
 
 %% Graphics

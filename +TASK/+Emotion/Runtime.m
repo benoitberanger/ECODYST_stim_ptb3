@@ -153,12 +153,46 @@ try
                 
             end % while
             
+         elseif strcmp(type, 'postscript') % ------------------------------
+            
+            % Draw
+            % black screen
+            Screen('DrawingFinished', wPtr);
+            
+            % Flip at the right moment
+            desired_onset =  StartTime + evt_onset - slack;
+            real_onset = Screen('Flip', wPtr, desired_onset);
+            
+            % Save onset
+            ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});
+            
+            if S.MovieMode, PTB_ENGINE.VIDEO.MOVIE.AddFrameFrontBuffer(wPtr,moviePtr, round(evt_duration/S.PTB.Video.IFI)); end
+            
+            printlog()
+            
+            % While loop for most of the duration of the event, so we can press ESCAPE
+            next_onset = StartTime + next_evt_onset - slack;
+            while secs < next_onset
+                
+                [keyIsDown, secs, keyCode] = KbCheck();
+                if keyIsDown
+                    EXIT = keyCode(KEY_ESCAPE);
+                    if EXIT, break, end
+                end
+                
+            end % while
+            
         elseif strcmp(type, 'playback') % -------------------------------------
+            
+            % Draw
+            % black screen
+            Screen('DrawingFinished', wPtr);
             
             % Playback at the right moment
             idx = find(contains({AUDIOFILE.filename},content));
             desired_onset =  StartTime + evt_onset - S.PTB.Audio.Playback.anticipation;
             real_onset = AUDIOFILE(idx).Playback(desired_onset);
+            Screen('Flip', wPtr);
             
             % Save onset
             ER.AddEvent({evt_name real_onset-StartTime [] EP.Data{evt, 4:end}});

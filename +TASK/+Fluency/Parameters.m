@@ -44,25 +44,21 @@ end
 
 instruction_rest = 'repos';
 
-c = 1;
-p.condition(c).type = 'semantic';
-p.condition(c).name = 'animals';
-p.condition(c).instruction = 'des noms d''animaux';
+p.condition(1,1).type = 'semantic';
+p.condition(1,1).name = 'animals';
+p.condition(1,1).instruction = 'des noms d''animaux';
 
-c = 2;
-p.condition(c).type = 'semantic';
-p.condition(c).name = 'cloths';
-p.condition(c).instruction = 'des noms de vêtements';
+p.condition(1,2).type = 'semantic';
+p.condition(1,2).name = 'cloths';
+p.condition(1,2).instruction = 'des noms de vêtements';
 
-c = 3;
-p.condition(c).type = 'phonemic';
-p.condition(c).name = 'F';
-p.condition(c).instruction = 'mots débutants par « F »';
+p.condition(2,1).type = 'phonemic';
+p.condition(2,1).name = 'F';
+p.condition(2,1).instruction = 'mots débutants par « F »';
 
-c = 4;
-p.condition(c).type = 'phonemic';
-p.condition(c).name = 'C';
-p.condition(c).instruction = 'mots débutants par « C »';
+p.condition(2,2).type = 'phonemic';
+p.condition(2,2).name = 'C';
+p.condition(2,2).instruction = 'mots débutants par « C »';
 
 
 %% Graphics
@@ -78,11 +74,14 @@ p = TASK.Graphics( p );
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Randmization
 
-block_order = Shuffle(1:4);
+type_order = Shuffle([1 2]);
+name_order = Shuffle([1 2]);
 
-for cond = 1 : length(block_order)
-    p.block(cond)      = p.condition(block_order(cond));
-end
+
+p.block(1) = p.condition(type_order(1),name_order(1));
+p.block(2) = p.condition(type_order(2),name_order(1));
+p.block(3) = p.condition(type_order(1),name_order(2));
+p.block(4) = p.condition(type_order(2),name_order(2));
 
 
 %% Build planning

@@ -92,6 +92,14 @@ p = TASK.Graphics( p );
 %% Randmization
 
 
+type_shuffled   = Shuffle({'relax' 'stress'});
+number_shuffled = [Shuffle([1 2]) Shuffle([1 2])];
+order = {
+    type_shuffled{1} number_shuffled(1)
+    type_shuffled{2} number_shuffled(2)
+    type_shuffled{1} number_shuffled(3)
+    type_shuffled{2} number_shuffled(4)
+    };
 
 
 %% Build planning
@@ -109,45 +117,19 @@ EP.AddStartTime('StartTime',0);
 
 % --- Stim ----------------------------------------------------------------
 
-EP.AddPlanning({'relax_1_baseline1_instruction'  NextOnset(EP) p.dur_baseline_instruction  1 'relax'  'baseline' 'instruction' 'baseline_instruction.mp3'})
-EP.AddPlanning({'relax_1_baseline1_rest'         NextOnset(EP) p.dur_baseline_rest         1 'relax'  'baseline' 'rest'        ''})
-EP.AddPlanning({'relax_1_script_instruction'     NextOnset(EP) p.dur_script_instruction    1 'relax'  'script'   'instruction' 'script_instruction.mp3'})
-EP.AddPlanning({'relax_1_script_playback'        NextOnset(EP) p.dur_script_playback       1 'relax'  'script'   'playback'    'Script_Relax1.mp3'})
-EP.AddPlanning({'relax_1_postscript'             NextOnset(EP) p.dur_postscript            1 'relax'  'script'   'postscript'  ''})
-EP.AddPlanning({'relax_1_recovery_instruction'   NextOnset(EP) p.dur_recovery_instruction  1 'relax'  'recovery' 'instruction' 'recovery_instruction.mp3'})
-EP.AddPlanning({'relax_1_recovery_rest'          NextOnset(EP) p.dur_recovery_rest         1 'relax'  'recovery' 'rest'        ''})
-EP.AddPlanning({'relax_1_likert_immersion'       NextOnset(EP) p.dur_likert                1 'relax'  'lickert'  'immersion'   p.txt_likert_immersion})
-EP.AddPlanning({'relax_1_likert_anxiety'         NextOnset(EP) p.dur_likert                1 'relax'  'lickert'  'anxiety'     p.txt_likert_stress})
-
-EP.AddPlanning({'stress_1_baseline1_instruction' NextOnset(EP) p.dur_baseline_instruction  1 'stress' 'baseline' 'instruction' 'baseline_instruction.mp3'})
-EP.AddPlanning({'stress_1_baseline1_rest'        NextOnset(EP) p.dur_baseline_rest         1 'stress' 'baseline' 'rest'        ''})
-EP.AddPlanning({'stress_1_script_instruction'    NextOnset(EP) p.dur_script_instruction    1 'stress' 'script'   'instruction' 'script_instruction.mp3'})
-EP.AddPlanning({'stress_1_script_playback'       NextOnset(EP) p.dur_script_playback       1 'stress' 'script'   'playback'    'Script_Stress1.mp3'})
-EP.AddPlanning({'stress_1_postscript'            NextOnset(EP) p.dur_postscript            1 'stress' 'script'   'postscript'  ''})
-EP.AddPlanning({'stress_1_recovery_instruction'  NextOnset(EP) p.dur_recovery_instruction  1 'stress' 'recovery' 'instruction' 'recovery_instruction.mp3'})
-EP.AddPlanning({'stress_1_recovery_rest'         NextOnset(EP) p.dur_recovery_rest         1 'stress' 'recovery' 'rest'        ''})
-EP.AddPlanning({'stress_1_likert_immersion'      NextOnset(EP) p.dur_likert                1 'stress' 'lickert'  'immersion'   p.txt_likert_immersion})
-EP.AddPlanning({'stress_1_likert_anxiety'        NextOnset(EP) p.dur_likert                1 'stress' 'lickert'  'anxiety'     p.txt_likert_stress})
-
-EP.AddPlanning({'relax_2_baseline1_instruction'  NextOnset(EP) p.dur_baseline_instruction  2 'relax'  'baseline' 'instruction' 'baseline_instruction.mp3'})
-EP.AddPlanning({'relax_2_baseline1_rest'         NextOnset(EP) p.dur_baseline_rest         2 'relax'  'baseline' 'rest'        ''})
-EP.AddPlanning({'relax_2_script_instruction'     NextOnset(EP) p.dur_script_instruction    2 'relax'  'script'   'instruction' 'script_instruction.mp3'})
-EP.AddPlanning({'relax_2_script_playback'        NextOnset(EP) p.dur_script_playback       2 'relax'  'script'   'playback'    'Script_Relax2.mp3'})
-EP.AddPlanning({'relax_2_postscript'             NextOnset(EP) p.dur_postscript            2 'relax'  'script'   'postscript'  ''})
-EP.AddPlanning({'relax_2_recovery_instruction'   NextOnset(EP) p.dur_recovery_instruction  2 'relax'  'recovery' 'instruction' 'recovery_instruction.mp3'})
-EP.AddPlanning({'relax_2_recovery_rest'          NextOnset(EP) p.dur_recovery_rest         2 'relax'  'recovery' 'rest'        ''})
-EP.AddPlanning({'relax_2_likert_immersion'       NextOnset(EP) p.dur_likert                2 'relax'  'lickert'  'immersion'   p.txt_likert_immersion})
-EP.AddPlanning({'relax_2_likert_anxiety'         NextOnset(EP) p.dur_likert                2 'relax'  'lickert'  'anxiety'     p.txt_likert_stress})
-
-EP.AddPlanning({'stress_2_baseline1_instruction' NextOnset(EP) p.dur_baseline_instruction  2 'stress' 'baseline' 'instruction' 'baseline_instruction.mp3'})
-EP.AddPlanning({'stress_2_baseline1_rest'        NextOnset(EP) p.dur_baseline_rest         2 'stress' 'baseline' 'rest'        ''})
-EP.AddPlanning({'stress_2_script_instruction'    NextOnset(EP) p.dur_script_instruction    2 'stress' 'script'   'instruction' 'script_instruction.mp3'})
-EP.AddPlanning({'stress_2_script_playback'       NextOnset(EP) p.dur_script_playback       2 'stress' 'script'   'playback'    'Script_Stress2.mp3'})
-EP.AddPlanning({'stress_2_postscript'            NextOnset(EP) p.dur_postscript            2 'stress' 'script'   'postscript'  ''})
-EP.AddPlanning({'stress_2_recovery_instruction'  NextOnset(EP) p.dur_recovery_instruction  2 'stress' 'recovery' 'instruction' 'recovery_instruction.mp3'})
-EP.AddPlanning({'stress_2_recovery_rest'         NextOnset(EP) p.dur_recovery_rest         2 'stress' 'recovery' 'rest'        ''})
-EP.AddPlanning({'stress_2_likert_immersion'      NextOnset(EP) p.dur_likert                2 'stress' 'lickert'  'immersion'   p.txt_likert_immersion})
-EP.AddPlanning({'stress_2_likert_anxiety'        NextOnset(EP) p.dur_likert                2 'stress' 'lickert'  'anxiety'     p.txt_likert_stress})
+for o = 1: size(order,1)
+    type = order{o,1};
+    num  = order{o,2};
+    EP.AddPlanning({sprintf('%s_%d__baseline_instruction', type, num)  NextOnset(EP) p.dur_baseline_instruction  num type  'baseline' 'instruction' 'baseline_instruction.mp3'})
+    EP.AddPlanning({sprintf('%s_%d__baseline_rest'       , type, num)  NextOnset(EP) p.dur_baseline_rest         num type  'baseline' 'rest'        ''                        })
+    EP.AddPlanning({sprintf('%s_%d__script_instruction'  , type, num)  NextOnset(EP) p.dur_script_instruction    num type  'script'   'instruction' 'script_instruction.mp3'  })
+    EP.AddPlanning({sprintf('%s_%d__script_playback'     , type, num)  NextOnset(EP) p.dur_script_playback       num type  'script'   'playback'    'Script_Relax1.mp3'       })
+    EP.AddPlanning({sprintf('%s_%d__postscript'          , type, num)  NextOnset(EP) p.dur_postscript            num type  'script'   'postscript'  ''                        })
+    EP.AddPlanning({sprintf('%s_%d__recovery_instruction', type, num)  NextOnset(EP) p.dur_recovery_instruction  num type  'recovery' 'instruction' 'recovery_instruction.mp3'})
+    EP.AddPlanning({sprintf('%s_%d__recovery_rest'       , type, num)  NextOnset(EP) p.dur_recovery_rest         num type  'recovery' 'rest'        ''                        })
+    EP.AddPlanning({sprintf('%s_%d__likert_immersion'    , type, num)  NextOnset(EP) p.dur_likert                num type  'lickert'  'immersion'   p.txt_likert_immersion    })
+    EP.AddPlanning({sprintf('%s_%d__likert_anxiety'      , type, num)  NextOnset(EP) p.dur_likert                num type  'lickert'  'anxiety'     p.txt_likert_stress       })
+end
 
 % --- Stop ----------------------------------------------------------------
 

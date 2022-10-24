@@ -8,7 +8,28 @@ EchoStart(mfilename)
 try
     %% Preparation
     
-    names = S.EP.Data(2:end-1,1);
+    regressor_order = {
+        'relax'  1
+        'stress' 1
+        'relax'  2
+        'stress' 2
+        };
+    
+    names = {};
+    for o = 1: size(regressor_order,1)
+        type = regressor_order{o,1};
+        num  = regressor_order{o,2};
+        names{end+1} = sprintf('%s_%d__baseline_instruction', type, num);
+        names{end+1} = sprintf('%s_%d__baseline_rest'      , type, num);
+        names{end+1} = sprintf('%s_%d__script_instruction'  , type, num);
+        names{end+1} = sprintf('%s_%d__script_playback'     , type, num);
+        names{end+1} = sprintf('%s_%d__postscript'          , type, num);
+        names{end+1} = sprintf('%s_%d__recovery_instruction', type, num);
+        names{end+1} = sprintf('%s_%d__recovery_rest'       , type, num);
+        names{end+1} = sprintf('%s_%d__likert_immersion'    , type, num);
+        names{end+1} = sprintf('%s_%d__likert_anxiety'      , type, num);
+    end
+    
     
     % 'onsets' & 'durations' for SPM
     onsets    = cell(size(names));

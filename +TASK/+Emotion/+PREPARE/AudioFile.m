@@ -15,10 +15,10 @@ list = {
     fullfile(filedir_common , 'baseline_instruction.mp3')
     fullfile(filedir_common , 'script_instruction.mp3')
     fullfile(filedir_common , 'recovery_instruction.mp3')
-    fullfile(filedir_subject, 'Script_Relax1.mp3')
-    fullfile(filedir_subject, 'Script_Relax2.mp3')
-    fullfile(filedir_subject, 'Script_Stress1.mp3')
-    fullfile(filedir_subject, 'Script_Stress2.mp3')
+    fullfile(filedir_subject, 'Script_relax1.mp3')
+    fullfile(filedir_subject, 'Script_relax2.mp3')
+    fullfile(filedir_subject, 'Script_stress1.mp3')
+    fullfile(filedir_subject, 'Script_stress2.mp3')
     };
 
 

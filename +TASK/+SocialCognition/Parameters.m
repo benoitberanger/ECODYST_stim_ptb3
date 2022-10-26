@@ -15,7 +15,7 @@ p = struct; % This structure will contain all task specific parameters, such as 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Social cognition
 
-p.nBlock = 2; % repetitions of each condition
+p.nBlock = 1; % repetitions of each condition
 
 
 %% Timings

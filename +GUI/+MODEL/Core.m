@@ -261,6 +261,14 @@ if S.EyelinkMode
 end
 
 
+%% Mic : write file
+
+if strcmp(S.Task, 'Fluency')
+    audiodata = [S.BR.Data{:,6}];
+    audiowrite([S.DataFileFPath '.wav'],audiodata,S.PTB.Audio.Record.SamplingFrequency)
+end
+
+
 %% Ready for another run
 
 set(handles.text_LastFileNameAnnouncer, 'Visible', 'on')

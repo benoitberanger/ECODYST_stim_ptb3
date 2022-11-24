@@ -42,7 +42,7 @@ end
 
 %% Fluency blocks
 
-instruction_rest = 'repos';
+instruction_rest = 'dites repos de temps en temps';
 
 p.condition(1,1).type = 'semantic';
 p.condition(1,1).name = 'animals';

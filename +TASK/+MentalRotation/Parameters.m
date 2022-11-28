@@ -13,11 +13,19 @@ p = struct; % This structure will contain all task specific parameters, such as 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % MODIFY FROM HERE....
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% 3D Tetris
+%% 3D Tetris (1/2)
 
 p.cube_segment = [4 3 4 3]; % IMPORTANT : keep an asymatric tetris, so there is no ambiguity
-p.angle        = [0 60 120]; % degees == difficulty level
-p.num_tetris   = 10;
+
+p.miniblock  = {
+    % angle  name
+    0        'same'
+    0        'same'
+    120      'same'
+    120      'mirror'
+    };
+
+p.num_tetris = 30;  % == number of repetitions
 
 
 %% Timings
@@ -61,8 +69,7 @@ p = TASK.Graphics( p );
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Define a planning <--- paradigme
 
-nAngle  = length(p.angle);
-nTrials = nAngle * p.num_tetris * 2; % x2 because of same VS mirror
+nTrials = size(p.miniblock,2) * p.num_tetris;
 p.nTrials = nTrials;
 
 
@@ -111,34 +118,15 @@ all_jitters = Shuffle(all_jitters);
 
 %% Pseudo-randomize events
 
-event_list = cell(nTrials, 3);
-
-mb_length = nAngle * 2;
-
+event_list = {};
 for n = 1 : p.num_tetris
-    
-    miniblock_same = cell(nAngle,2);
-    miniblock_same(:,1) = num2cell(p.angle');
-    miniblock_same(:,2) = {'same'};
-    
-    miniblock_mirror = miniblock_same;
-    miniblock_mirror(:,2) = {'mirror'};
-    
-    miniblock = Shuffle([miniblock_same ; miniblock_mirror], 2);
-    
-    idx = (1:mb_length) + (n-1)*mb_length;
-    event_list(idx,1:2) = miniblock;
-    
+    event_list = [event_list ; Shuffle(p.miniblock,2)]; %#ok<AGROW> 
 end
 
-tetris_list = repmat(all_tetris, [mb_length 1]);
+tetris_list = repmat(all_tetris, [size(p.miniblock,1) 1]);
 tetris_list = Shuffle(tetris_list,2);
 
 event_list(:,3) = num2cell(tetris_list,2);
-
-% event_table = cell2table(event_list,...
-%     'VariableNames', {'angle', 'condition', 'tetris'},...
-%     'RowNames', cellstr(num2str( (1:nTrials)' )));
 
 
 %% Build planning

@@ -12,9 +12,17 @@ try
         'Rest'
         'Click'
         };
-    for a = 1 : length( S.TaskParam.angle )
-        names{end+1} = sprintf('Trial__same__%03d', S.TaskParam.angle(a));
-        names{end+1} = sprintf('Trial__mirr__%03d', S.TaskParam.angle(a));
+    
+    same_mb = strcmp(S.TaskParam.miniblock(:,2), 'same');
+    same_angle = unique([S.TaskParam.miniblock{same_mb,1}]);
+    for a = 1 : length( same_angle )
+        names{end+1} = sprintf('Trial__same__%03d', same_angle(a)); %#ok<AGROW> 
+    end
+    
+    mirr_mb = strcmp(S.TaskParam.miniblock(:,2), 'mirror');
+    mirr_angle = unique([S.TaskParam.miniblock{mirr_mb,1}]);
+    for a = 1 : length( mirr_angle )
+        names{end+1} = sprintf('Trial__mirr__%03d', mirr_angle(a)); %#ok<AGROW> 
     end
     
     % 'onsets' & 'durations' for SPM
@@ -32,7 +40,6 @@ try
     
     % Delete trial when subject did not respond
     trial_to_delete = BehaviorData.RT_s_ < 0;
-    
     
     
     %% Onsets building
@@ -111,8 +118,8 @@ try
             if isempty(S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),3})
                 S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),3} =  S.ER.Data{end,2} - S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),1};
             end
-            click_onset    = [ click_onset    ; cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(click_idx,1)) ];
-            click_duration = [ click_duration ; cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(click_idx,3)) ];
+            click_onset    = [ click_onset    ; cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(click_idx,1)) ]; %#ok<AGROW> 
+            click_duration = [ click_duration ; cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(click_idx,3)) ]; %#ok<AGROW> 
         else
             % pass
         end

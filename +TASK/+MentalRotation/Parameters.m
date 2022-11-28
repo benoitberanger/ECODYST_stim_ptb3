@@ -69,7 +69,7 @@ p = TASK.Graphics( p );
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Define a planning <--- paradigme
 
-nTrials = size(p.miniblock,2) * p.num_tetris;
+nTrials = size(p.miniblock,1) * p.num_tetris;
 p.nTrials = nTrials;
 
 

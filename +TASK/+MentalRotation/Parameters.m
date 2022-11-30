@@ -25,7 +25,7 @@ p.miniblock  = {
     120      'mirror'
     };
 
-p.num_tetris = 30;  % == number of repetitions
+p.num_tetris = 15;  % == number of repetitions
 
 
 %% Timings

@@ -91,15 +91,18 @@ p = TASK.Graphics( p );
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Randmization
 
-
 type_shuffled   = Shuffle({'relax' 'stress'});
-number_shuffled = [Shuffle([1 2]) Shuffle([1 2])];
+number_shuffled = Shuffle([1 2]);
 order = {
     type_shuffled{1} number_shuffled(1)
     type_shuffled{2} number_shuffled(2)
-    type_shuffled{1} number_shuffled(3)
-    type_shuffled{2} number_shuffled(4)
+    type_shuffled{1} number_shuffled(2)
+    type_shuffled{2} number_shuffled(1)
     };
+
+% sanity check
+order_check = strcat(order(:,1), '_', cellfun(@num2str, order(:,2)) );
+assert(length(unique(order_check)) == length(order_check), 'bad randomization')
 
 
 %% Build planning

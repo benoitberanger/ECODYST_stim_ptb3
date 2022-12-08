@@ -21,7 +21,7 @@ p.nBlock = 6;
 p.freqActionCue = 1.0;
 
 % instructions
-p.instrAction = 'pianotez';
+p.instrAction = 'ouvrez et fermez la main';
 p.instrRest   = 'restez immobile';
 
 

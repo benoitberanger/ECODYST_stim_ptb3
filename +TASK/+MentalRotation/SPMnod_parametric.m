@@ -1,4 +1,4 @@
-function [ names , onsets , durations, pmod, orth, tmod ] = SPMnod_parametric()
+function [ names, onsets, durations, pmod, orth, tmod ] = SPMnod_parametric()
 global S
 
 %SPMNOD Build 'names', 'onsets', 'durations' for SPM
@@ -27,8 +27,8 @@ try
     end
     
     % Delete trial when subject did not respond
-    trial_to_delete = BehaviorData.RT_s_ < 0;
-    
+    %     trial_to_delete = BehaviorData.RT_s_ < 0;
+    trial_OutOfTime = BehaviorData.RT_s_ < 0;
     
     
     %% Onsets building
@@ -40,11 +40,11 @@ try
             %pass
         elseif strcmp(EventData{event,1}, 'Trial')
             trial_count = trial_count + 1;
-            if trial_to_delete(trial_count)
-                % pass
-            else
-                onsets{num.(EventData{event,1})} = [onsets{num.(EventData{event,1})} ; EventData{event,2}];
-            end
+            %             if trial_to_delete(trial_count)
+            %                 % pass
+            %             else
+            onsets{num.(EventData{event,1})} = [onsets{num.(EventData{event,1})} ; EventData{event,2}];
+            %             end
         else
             onsets{num.(EventData{event,1})} = [onsets{num.(EventData{event,1})} ; EventData{event,2}];
         end
@@ -61,11 +61,11 @@ try
             %pass
         elseif strcmp(EventData{event,1}, 'Trial')
             trial_count = trial_count + 1;
-            if trial_to_delete(trial_count)
-                % pass
-            else
-                durations{num.(EventData{event,1})} = [ durations{num.(EventData{event,1})} ; EventData{event+1,2}-EventData{event,2}] ;
-            end
+            %             if trial_to_delete(trial_count)
+            %                 % pass
+            %             else
+            durations{num.(EventData{event,1})} = [ durations{num.(EventData{event,1})} ; EventData{event+1,2}-EventData{event,2}] ;
+            %             end
         else
             durations{num.(EventData{event,1})} = [ durations{num.(EventData{event,1})} ; EventData{event+1,2}-EventData{event,2}] ;
         end
@@ -119,10 +119,13 @@ try
     
     %% data correction
     
-    % Delete trial when subject did not respond
-    BehaviorData(trial_to_delete,:) = [];
+    %     % Delete trial when subject did not respond
+    %     BehaviorData(trial_to_delete,:) = [];
     
     BehaviorData.subj_resp_num = double(strcmp(BehaviorData.subj_resp,'mirror'));
+    BehaviorData.RT_s_(trial_OutOfTime) = S.TaskParam.durTetris; % use maximum time value
+    BehaviorData.resp_ok(trial_OutOfTime) = 0; % use maximum time value
+    BehaviorData.subj_resp_num(trial_OutOfTime) = 0.5;
     
     
     %% Parmetric modulation

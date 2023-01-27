@@ -1,4 +1,4 @@
-function [ names , onsets , durations] = SPMnod_block()
+function [ names , onsets , durations ] = SPMnod_block()
 global S
 
 %SPMNOD Build 'names', 'onsets', 'durations' for SPM
@@ -16,13 +16,13 @@ try
     same_mb = strcmp(S.TaskParam.miniblock(:,2), 'same');
     same_angle = unique([S.TaskParam.miniblock{same_mb,1}]);
     for a = 1 : length( same_angle )
-        names{end+1} = sprintf('Trial__same__%03d', same_angle(a)); %#ok<AGROW> 
+        names{end+1} = sprintf('Trial__same__%03d', same_angle(a)); %#ok<AGROW>
     end
     
     mirr_mb = strcmp(S.TaskParam.miniblock(:,2), 'mirror');
     mirr_angle = unique([S.TaskParam.miniblock{mirr_mb,1}]);
     for a = 1 : length( mirr_angle )
-        names{end+1} = sprintf('Trial__mirr__%03d', mirr_angle(a)); %#ok<AGROW> 
+        names{end+1} = sprintf('Trial__mirr__%03d', mirr_angle(a)); %#ok<AGROW>
     end
     
     % 'onsets' & 'durations' for SPM
@@ -38,8 +38,8 @@ try
         num.(names{n}) = n;
     end
     
-    % Delete trial when subject did not respond
-    trial_to_delete = BehaviorData.RT_s_ < 0;
+    %     % Delete trial when subject did not respond
+    %     trial_to_delete = BehaviorData.RT_s_ < 0;
     
     
     %% Onsets building
@@ -51,14 +51,14 @@ try
             %pass
         elseif strcmp(EventData{event,1}, 'Trial')
             trial_count = trial_count + 1;
-            if trial_to_delete(trial_count)
-                % pass
-            else
-                angle = EventData{event,5};
-                cond = EventData{event,6};
-                evt_name = sprintf('Trial__%s__%03d', cond(1:4), angle);
-                onsets{num.(evt_name)} = [onsets{num.(evt_name)} ; EventData{event,2}];
-            end
+            %             if trial_to_delete(trial_count)
+            %                 % pass
+            %             else
+            angle = EventData{event,5};
+            cond = EventData{event,6};
+            evt_name = sprintf('Trial__%s__%03d', cond(1:4), angle);
+            onsets{num.(evt_name)} = [onsets{num.(evt_name)} ; EventData{event,2}];
+            %             end
         else
             onsets{num.(EventData{event,1})} = [onsets{num.(EventData{event,1})} ; EventData{event,2}];
         end
@@ -75,14 +75,14 @@ try
             %pass
         elseif strcmp(EventData{event,1}, 'Trial')
             trial_count = trial_count + 1;
-            if trial_to_delete(trial_count)
-                % pass
-            else
-                angle = EventData{event,5};
-                cond = EventData{event,6};
-                evt_name = sprintf('Trial__%s__%03d', cond(1:4), angle);
-                durations{num.(evt_name)} = [ durations{num.(evt_name)} ; EventData{event+1,2}-EventData{event,2}] ;
-            end
+            %             if trial_to_delete(trial_count)
+            %                 % pass
+            %             else
+            angle = EventData{event,5};
+            cond = EventData{event,6};
+            evt_name = sprintf('Trial__%s__%03d', cond(1:4), angle);
+            durations{num.(evt_name)} = [ durations{num.(evt_name)} ; EventData{event+1,2}-EventData{event,2}] ;
+            %             end
         else
             durations{num.(EventData{event,1})} = [ durations{num.(EventData{event,1})} ; EventData{event+1,2}-EventData{event,2}] ;
         end
@@ -118,8 +118,8 @@ try
             if isempty(S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),3})
                 S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),3} =  S.ER.Data{end,2} - S.KL.KbEvents{click_spot.(keys{f}),2}{click_idx(end),1};
             end
-            click_onset    = [ click_onset    ; cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(click_idx,1)) ]; %#ok<AGROW> 
-            click_duration = [ click_duration ; cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(click_idx,3)) ]; %#ok<AGROW> 
+            click_onset    = [ click_onset    ; cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(click_idx,1)) ]; %#ok<AGROW>
+            click_duration = [ click_duration ; cell2mat(S.KL.KbEvents{click_spot.(keys{f}),2}(click_idx,3)) ]; %#ok<AGROW>
         else
             % pass
         end
